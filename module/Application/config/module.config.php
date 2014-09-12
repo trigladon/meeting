@@ -60,7 +60,13 @@ return array(
         'aliases' => array(
             'translator' => 'MvcTranslator',
         ),
+        'factories' => [
+            'Zend\Authentication\AuthenticationService' => function($sm) {
+                    // Create your authentication service!
+                }
+        ]
     ),
+
     'translator' => array(
         'locale' => 'en_US',
         'translation_file_patterns' => array(
