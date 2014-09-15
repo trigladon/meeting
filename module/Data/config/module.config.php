@@ -1,8 +1,6 @@
 <?php
 
 return [
-
-
     'doctrine' => array(
         'driver' => array(
             'data_entities' => array(
@@ -16,7 +14,16 @@ return [
                     'Data\Entity' => 'data_entities'
                 )
             )
-        )
+        ),
+        'authentication' => array(
+            'orm_default' => array(
+                'object_manager' => 'Doctrine\ORM\EntityManager',
+                'identity_class' => 'Data\Entity\User',
+                'identity_property' => 'email',
+                'credential_property' => 'password',
+                'credential_callable' => array('Data\Manager\AuthManager', 'credentialCallable')
+            ),
+        ),
     ),
 
 ];

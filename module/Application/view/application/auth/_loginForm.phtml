@@ -1,0 +1,15 @@
+<?php
+/** @var $form \Zend\Form\Form */
+$loginForm->prepare();
+?>
+<?php echo $this->form()->openTag($loginForm); ?>
+<?php echo $this->formElementErrors($loginForm); ?>
+<?php echo $this->formRow($loginForm->get('csrf'));?>
+<?php echo $this->formLabel($loginForm->get('email')); ?>
+<?php echo $this->formInput($loginForm->get('email')); ?>
+<?php echo $this->formLabel($loginForm->get('password')); ?>
+<?php echo $this->formInput($loginForm->get('password')); ?>
+<?php echo $this->formLabel($loginForm->get('remember')); ?>
+<?php echo $this->formInput($loginForm->get('remember')); ?>
+<?php echo $this->formSubmit($loginForm->get('submit')); ?>
+<?php echo $this->form()->closeTag(); ?>

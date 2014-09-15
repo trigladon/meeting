@@ -1,0 +1,10 @@
+<?php if (!empty($this->messages)):?>
+    <?php foreach($this->messages as $type => $arrayMessages):  ?>
+        <?php foreach($arrayMessages as $message): ?>
+            <div class="<?=$this->classes[$type]?>">
+                <button class="close" aria-hidden="true" data-dismiss="alert" type="button"></button>
+                <?php echo $message;?>
+            </div>
+        <?php endforeach; ?>
+    <?php endforeach; ?>
+<?php endif; ?>

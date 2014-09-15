@@ -1,0 +1,11 @@
+<?php
+
+$title = 'Sign in';
+
+$this->headTitle($this->translate($title));
+
+?>
+
+<div class="form">
+    <?=$this->render('\application\auth\_loginForm.phtml', ['loginForm' => $loginForm])?>
+</div>
