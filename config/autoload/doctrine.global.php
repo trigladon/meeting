@@ -14,6 +14,7 @@ return array(
                     'user' => 'root',
                     'password' => 'root',
                     'dbname' => 'meeting',
+                    'table_prefix' => 'o_o_',
                     'driverOptions' => array(
                         \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
                         \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'

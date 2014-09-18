@@ -1,20 +1,4 @@
 <?php
-/*
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
- * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * This software consists of voluntary contributions made by many individuals
- * and is licensed under the MIT license.
- */
 
 /**
  * Copy-paste this file to your config/autoload folder (don't forget to remove the .dist extension!)
@@ -77,7 +61,39 @@ return [
          *
          * Supported options depend of the role provider, so please refer to the official documentation
          */
-        'role_provider' => [],
+        'role_provider' => [
+            'ZfcRbac\Role\ObjectRepositoryRoleProvider' => [
+                'object_manager'     => 'doctrine.entitymanager.orm_default',
+                'class_name'         => 'Data\Entity\Role',
+                'role_name_property' => 'name',
+            ],
+        ],
+
+//        'providers' => array(
+//            'ZfcRbac\Provider\AdjacencyList\Role\DoctrineDbal' => array(
+//                'connection' => 'doctrine.connection.orm_default',
+//                'options' => array(
+//                    'table'         => 'role',
+//                    'id_column'     => 'role_id',
+//                    'name_column'   => 'role_name',
+//                    'join_column'   => 'parent_role_id'
+//                )
+//            ),
+//            'ZfcRbac\Provider\Generic\Permission\DoctrineDbal' => array(
+//                'connection' => 'doctrine.connection.orm_default',
+//                'options' => array(
+//                    'permission_table'      => 'permission',
+//                    'role_table'            => 'role',
+//                    'role_join_table'       => 'role_permission',
+//                    'permission_id_column'  => 'perm_id',
+//                    'permission_join_column'=> 'perm_id',
+//                    'role_id_column'        => 'role_id',
+//                    'role_join_column'      => 'role_id',
+//                    'permission_name_column'=> 'perm_name',
+//                    'role_name_column'      => 'role_name'
+//                )
+//            ),
+//        ),
 
         /**
          * Configure the unauthorized strategy. It is used to render a template whenever a user is unauthorized

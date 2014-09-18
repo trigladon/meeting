@@ -1,6 +1,6 @@
 <?php
 
-namespace Data\DAO;
+namespace Common\DAO;
 
 class UserDAO extends BaseDAO
 {

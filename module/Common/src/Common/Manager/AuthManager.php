@@ -1,9 +1,10 @@
 <?php
 
-namespace Data\Manager;
+namespace Common\Manager;
 
-use Data\Entity\User;
+use Common\Entity\User;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Session\SessionManager;
 
 class AuthManager extends BaseManager
 {
@@ -16,8 +17,7 @@ class AuthManager extends BaseManager
     public function getAuthService()
     {
         if ($this->authService === null) {
-            // doctrine.authenticationservice.orm_default    Zend\Authentication\AuthenticationService
-            $this->authService = $this->getServiceManager()->get('doctrine.authenticationservice.orm_default');
+            $this->authService = $this->getServiceLocator()->get('Zend\Authentication\AuthenticationService');
         }
 
         return $this->authService;
@@ -39,14 +39,17 @@ class AuthManager extends BaseManager
      */
     public function logout() {
         $this->getAuthService()->clearIdentity();
+        $userSession = new SessionManager();
+        $userSession->forgetMe();
     }
 
     /**
      * @param $email
      * @param $password
+     * @param $remember
      * @return \Zend\Authentication\Result
      */
-    public function authentication($email, $password)
+    public function authentication($email, $password, $remember)
     {
         $this->getAuthService()->getAdapter()
             ->setIdentityValue($email)
@@ -55,9 +58,27 @@ class AuthManager extends BaseManager
         $result = $this->getAuthService()->authenticate();
         if ($result->isValid()){
             $this->getAuthService()->getStorage()->write($result->getIdentity());
+
+            if ($remember) {
+                $time = 60*60*24*365;
+
+                $sessionManager = new SessionManager();
+                $sessionManager->rememberMe($time);
+            }
         }
 
         return $result;
+    }
+
+
+    public function getIdentity()
+    {
+        return $this->getAuthService()->getIdentity();
+    }
+
+    public function hasIdentity()
+    {
+        return $this->getAuthService()->hasIdentity();
     }
 
 }

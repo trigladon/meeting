@@ -25,5 +25,8 @@ return [
             ),
         ),
     ),
+    'doctrine_factories' => array(
+        'entitymanager'            => 'Data\Factory\EntityManagerFactory',
+    ),
 
 ];

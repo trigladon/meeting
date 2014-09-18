@@ -1,6 +1,6 @@
 <?php
 
-namespace Data\Entity;
+namespace Common\Entity;
 
 abstract class BaseEntity
 {

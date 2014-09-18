@@ -1,19 +1,23 @@
 <?php
 
-namespace Data\Entity;
+namespace Common\Entity;
 
+use ZfcRbac\Identity\IdentityInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Math\Rand;
+use Rbac\Role\RoleInterface;
 
 /**
  * Class User
  *
- * @ORM\Table(name="o_o_user")
+ * @ORM\Table(name="user")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
-class User extends BaseEntity
+class User extends BaseEntity implements IdentityInterface
 {
 
     /**
@@ -23,49 +27,62 @@ class User extends BaseEntity
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    public $id;
+    protected  $id;
 
     /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
-    public $email;
+    protected $email;
 
     /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=50, nullable=true)
      */
-    public $password;
+    protected $password;
 
     /**
      * @var string
      *
      * @ORM\Column(name="salt", type="string", length=50, nullable=true)
      */
-    public $salt;
+    protected $salt;
 
     /**
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255)
      */
-    public $username;
+    protected $username;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
-    public $created;
+    protected $created;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
      */
-    public $updated;
+    protected $updated;
+
+    /**
+     * @var Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Role")
+     */
+    protected $roles;
+
+
+    public function __construct()
+    {
+        $this->roles = new ArrayCollection();
+    }
 
     /**
      * @ORM\PreUpdate
@@ -84,6 +101,42 @@ class User extends BaseEntity
         $this->setUpdated(new \DateTime());
         $this->setSalt(Rand::getBytes(Bcrypt::MIN_SALT_SIZE));
     }
+
+    /**
+     * @return Collection
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * @param Collection $roles
+     * @return $this
+     */
+    public function setRole(Collection $roles)
+    {
+        $this->roles->clear();
+        foreach($roles as $role){
+            if ($role instanceof RoleInterface){
+                $this->roles[] = $role;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param RoleInterface $role
+     * @return $this
+     */
+    public function addRole(RoleInterface $role)
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
 
     /**
      * @param \DateTime $created
@@ -217,10 +270,5 @@ class User extends BaseEntity
     {
         return $this->username;
     }
-
-
-
-
-
 
 }

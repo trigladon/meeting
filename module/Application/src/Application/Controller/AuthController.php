@@ -3,7 +3,8 @@
 namespace Application\Controller;
 
 use Application\Form\LoginForm;
-use Data\Manager\AuthManager;
+use Common\Manager\AuthManager;
+use Common\Manager\TranslatorManager;
 
 class AuthController extends BaseController
 {
@@ -12,7 +13,6 @@ class AuthController extends BaseController
 
     public function loginAction()
     {
-
         $loginForm = new LoginForm();
         $request = $this->getRequest();
 
@@ -22,16 +22,17 @@ class AuthController extends BaseController
 
             if ($loginForm->isValid()) {
 
-                $data = $request->getPost();
+                $translatorManager = new TranslatorManager($this->getServiceLocator());
                 $authManager = new AuthManager($this->getServiceLocator());
-                $result = $authManager->authentication($data['email'], $data['password']);
+
+                $data = $request->getPost();
+                $result = $authManager->authentication($data['email'], $data['password'], (array_key_exists('remember', $data) ? true : false));
 
                 if ($result->isValid()){
                     return $this->toHome();
                 } else {
-                    $this->setErrorMessage('Invalid email or password');
+                    $this->setErrorMessage($translatorManager->translate('Invalid email or password'));
                 }
-
             }
         }
 
@@ -44,8 +45,13 @@ class AuthController extends BaseController
 
     public function logoutAction()
     {
+
         $authManager = new AuthManager($this->getServiceLocator());
+        $translatorManager = new TranslatorManager($this->getServiceLocator());
         $authManager->logout();
+        $this->setSuccessMessage($translatorManager->translate('Success logout'));
+
+
         return $this->toHome();
     }
 

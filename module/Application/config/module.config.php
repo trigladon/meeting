@@ -82,7 +82,7 @@ return array(
         ),
         'factories' => [
             'Zend\Authentication\AuthenticationService' => function($sm) {
-                    // Create your authentication service!
+                    return $sm->get('doctrine.authenticationservice.orm_default');
                 }
         ]
     ),
