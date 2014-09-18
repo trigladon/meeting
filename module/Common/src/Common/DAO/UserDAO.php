@@ -7,7 +7,7 @@ class UserDAO extends BaseDAO
 
     public function getRepositoryName()
     {
-        return 'Data\Entity\User';
+        return 'Common\Entity\User';
     }
 
 

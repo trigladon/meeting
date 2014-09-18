@@ -7,7 +7,7 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'Application',
-        'Data',
+        'Common',
         'Admin',
 
 

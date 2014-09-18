@@ -64,36 +64,10 @@ return [
         'role_provider' => [
             'ZfcRbac\Role\ObjectRepositoryRoleProvider' => [
                 'object_manager'     => 'doctrine.entitymanager.orm_default',
-                'class_name'         => 'Data\Entity\Role',
+                'class_name'         => 'Common\Entity\Role',
                 'role_name_property' => 'name',
             ],
         ],
-
-//        'providers' => array(
-//            'ZfcRbac\Provider\AdjacencyList\Role\DoctrineDbal' => array(
-//                'connection' => 'doctrine.connection.orm_default',
-//                'options' => array(
-//                    'table'         => 'role',
-//                    'id_column'     => 'role_id',
-//                    'name_column'   => 'role_name',
-//                    'join_column'   => 'parent_role_id'
-//                )
-//            ),
-//            'ZfcRbac\Provider\Generic\Permission\DoctrineDbal' => array(
-//                'connection' => 'doctrine.connection.orm_default',
-//                'options' => array(
-//                    'permission_table'      => 'permission',
-//                    'role_table'            => 'role',
-//                    'role_join_table'       => 'role_permission',
-//                    'permission_id_column'  => 'perm_id',
-//                    'permission_join_column'=> 'perm_id',
-//                    'role_id_column'        => 'role_id',
-//                    'role_join_column'      => 'role_id',
-//                    'permission_name_column'=> 'perm_name',
-//                    'role_name_column'      => 'role_name'
-//                )
-//            ),
-//        ),
 
         /**
          * Configure the unauthorized strategy. It is used to render a template whenever a user is unauthorized

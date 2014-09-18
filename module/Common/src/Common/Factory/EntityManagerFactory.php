@@ -1,6 +1,6 @@
 <?php
 
-namespace Data\Factory;
+namespace Common\Factory;
 
 use Doctrine\ORM\EntityManager;
 use DoctrineModule\Service\AbstractFactory;
