@@ -9,9 +9,6 @@ return array(
         'Application',
         'Common',
         'Admin',
-
-
-
     ),
 
     // These are various options for the listeners attached to the ModuleManager

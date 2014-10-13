@@ -77,18 +77,18 @@ return array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
             'Zend\Log\LoggerAbstractServiceFactory',
         ),
-        'aliases' => array(
-            'translator' => 'MvcTranslator',
-        ),
         'factories' => [
             'Zend\Authentication\AuthenticationService' => function($sm) {
                     return $sm->get('doctrine.authenticationservice.orm_default');
-                }
+                },
+            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
         ]
     ),
 
     'translator' => array(
         'locale' => 'en_US',
+        //'locale' => 'ru_RU',
         'translation_file_patterns' => array(
             array(
                 'type'     => 'gettext',

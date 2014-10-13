@@ -1,7 +1,6 @@
 <?php
 
 namespace Common\Manager;
-
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class BaseManager
@@ -35,8 +34,6 @@ class BaseManager
     {
         return $this->serviceLocator;
     }
-
-
 
 
 }

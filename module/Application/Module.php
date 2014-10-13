@@ -37,9 +37,7 @@ class Module
         return array(
             'factories' => array(
                 'renderFlashMessages' => function ($sm) {
-                        $flashMessage = new FlashMessage();
-                        $flashMessage->setServiceManager($sm->getServiceLocator());
-                        return $flashMessage;
+                        return new FlashMessage($sm->getServiceLocator());
                     },
             )
         );

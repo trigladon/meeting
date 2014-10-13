@@ -18,12 +18,11 @@ class EntityManagerFactory extends AbstractFactory
         $options    = $this->getOptions($sl, 'entitymanager');
         $connection = $sl->get($options->getConnection());
         $config     = $sl->get($options->getConfiguration());
-        $mainConfig = $sl->get('config');
 
         // initializing the resolver
         //       rely on its factory code
         $sl->get($options->getEntityResolver());
-        $configTablePrefix = $mainConfig['doctrine']['connection']['orm_default']['params']['table_prefix'];
+        $configTablePrefix = $sl->get('config')['doctrine']['connection']['orm_default']['params']['table_prefix'];
 
         // Table Prefix
         $tablePrefix = new \Common\DoctrineExtension\DoctrineTablePrefix($configTablePrefix);

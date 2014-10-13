@@ -1,0 +1,58 @@
+<?php $pages = $this->container->getPages(); ?>
+<ul class="page-sidebar-menu page-sidebar-menu-hover-submenu " data-auto-scroll="true" data-slide-speed="200">
+<?php $firstMenu = true; ?>
+<?php /** @var $page Zend\Navigation\Page\Mvc */ ?>
+<?php foreach($pages as $page): ?>
+
+    <?php $props = $page->getCustomProperties(); ?>
+    <?php $isActive = $page->isActive(true); ?>
+    <?php $hasPages = $page->hasPages(); ?>
+
+    <li class="<?=($firstMenu ? 'start ': '').($isActive ? ' active ' : ($hasPages && $isActive ? ' active open ' : ""))?>">
+        <a href="<?=($hasPages ? 'javascript:;' : $this->url($page->get('route')))?>">
+            <?php if (array_key_exists('icon', $props)): ?>
+                <i class="<?=$props['icon']?>"></i>
+            <?php endif; ?>
+            <span class="title"><?=$this->translate($page->get('label'))?></span>
+            <?=($isActive ? '<span class="selected"></span>' : '')?>
+            <?=($hasPages ? '<span class="arrow '.($isActive ? ' open ' : '').'"></span>' : '')?>
+        </a>
+        <?php if ($hasPages): ?>
+            <ul class="sub-menu">
+                <?php foreach($page->getPages() as $subPage): ?>
+                    <?php viewSubMenu($subPage, $this); ?>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+    </li>
+    <?php $firstMenu = false; ?>
+<?php endforeach; ?>
+<?php
+
+function viewSubMenu($page, $helper)
+{
+
+    $props = $page->getCustomProperties();
+    $isActive = $page->isActive(true);
+    $hasPages = $page->hasPages();
+
+    echo  '<li class="'.($isActive ? ' active ' : ($hasPages && $isActive ? ' active open ' : "")).'">';
+    echo '<a href="'.($hasPages ? 'javascript:;' : $helper->url($page->get('route'))).'">';
+    if (array_key_exists('icon', $props)) {
+        echo '<i class="fa ' . $props['icon'] . '"></i>';
+    }
+    echo '<span class="title">&nbsp;'.$helper->translate($page->get('label')).'</span>';
+    echo ($isActive ? '<span class="selected"></span>' : '');
+    echo ($hasPages ? '<span class="arrow '.($isActive ? ' open ' : '').'"></span>' : '');
+    echo '</a>';
+    if ($hasPages) {
+        echo '<ul class="sub-menu">';
+        foreach ($page->getPages() as $subPage) {
+            viewSubMenu($subPage, $helper);
+        }
+        echo '</ul>';
+    }
+    echo '</li>';
+}
+
+?>

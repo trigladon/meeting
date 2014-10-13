@@ -3,8 +3,8 @@
 namespace Common\Manager;
 
 use Common\Entity\User;
+use Zend\Authentication\Result;
 use Zend\Crypt\Password\Bcrypt;
-use Zend\Session\SessionManager;
 
 class AuthManager extends BaseManager
 {
@@ -39,7 +39,7 @@ class AuthManager extends BaseManager
      */
     public function logout() {
         $this->getAuthService()->clearIdentity();
-        $userSession = new SessionManager();
+        $userSession = new \Zend\Session\SessionManager();
         $userSession->forgetMe();
     }
 
@@ -62,7 +62,7 @@ class AuthManager extends BaseManager
             if ($remember) {
                 $time = 60*60*24*365;
 
-                $sessionManager = new SessionManager();
+                $sessionManager = new \Zend\Session\SessionManager();
                 $sessionManager->rememberMe($time);
             }
         }
@@ -70,6 +70,21 @@ class AuthManager extends BaseManager
         return $result;
     }
 
+    public function result($result)
+    {
+
+        switch ($result->getCode()) {
+            case Result::SUCCESS:{}; break;
+            case Result::FAILURE: {};
+            case Result::FAILURE_CREDENTIAL_INVALID: {};
+            case Result::FAILURE_IDENTITY_NOT_FOUND: {};
+            case Result::FAILURE_IDENTITY_AMBIGUOUS: {};
+            case Result::FAILURE_UNCATEGORIZED: {} ;break;
+            default: {}; break;
+        }
+
+
+    }
 
     public function getIdentity()
     {

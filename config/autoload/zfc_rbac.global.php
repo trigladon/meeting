@@ -1,4 +1,5 @@
 <?php
+use Common\Entity\Role;
 
 /**
  * Copy-paste this file to your config/autoload folder (don't forget to remove the .dist extension!)
@@ -19,7 +20,7 @@ return [
          *
          * This role is used by the authorization service when the authentication service returns no identity
          */
-        // 'guest_role' => 'guest',
+        'guest_role' => Role::ROLE_GUEST,
 
         /**
          * Set the guards
@@ -32,7 +33,14 @@ return [
          *          ]
          *      ]
          */
-        // 'guards' => [],
+        'guards' => [
+            'ZfcRbac\Guard\RouteGuard' => [
+	            'admin-login' => Role::ROLE_GUEST,
+	            'admin-refresh-captcha' => Role::ROLE_GUEST,
+	            'admin-recovery-password' => Role::ROLE_GUEST,
+	            'admin*' => Role::ROLE_ADMIN
+            ]
+        ],
 
         /**
          * As soon as one rule for either route or controller is specified, a guard will be automatically

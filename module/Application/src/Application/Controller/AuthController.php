@@ -13,20 +13,28 @@ class AuthController extends BaseController
 
     public function loginAction()
     {
+        $authManager = new AuthManager($this->getServiceLocator());
+        $translatorManager = new TranslatorManager($this->getServiceLocator());
+
+        if ($authManager->hasIdentity()){
+            $this->setErrorMessage($translatorManager->translate('You are logged!'));
+            return $this->toHome();
+        }
+
         $loginForm = new LoginForm();
         $request = $this->getRequest();
-
         if ($request->isPost()) {
 
             $loginForm->setData($request->getPost());
 
             if ($loginForm->isValid()) {
 
-                $translatorManager = new TranslatorManager($this->getServiceLocator());
-                $authManager = new AuthManager($this->getServiceLocator());
-
                 $data = $request->getPost();
-                $result = $authManager->authentication($data['email'], $data['password'], (array_key_exists('remember', $data) ? true : false));
+                $result = $authManager->authentication(
+                    $data['email'],
+                    $data['password'],
+                    (array_key_exists('remember', $data) ? true : false)
+                );
 
                 if ($result->isValid()){
                     return $this->toHome();
@@ -39,17 +47,18 @@ class AuthController extends BaseController
         return [
             'loginForm' => $loginForm
         ];
-
-
     }
 
     public function logoutAction()
     {
-
         $authManager = new AuthManager($this->getServiceLocator());
         $translatorManager = new TranslatorManager($this->getServiceLocator());
-        $authManager->logout();
-        $this->setSuccessMessage($translatorManager->translate('Success logout'));
+        if ($authManager->hasIdentity()){
+            $authManager->logout();
+            $this->setSuccessMessage($translatorManager->translate('Success logout'));
+        } else {
+            $this->setErrorMessage($translatorManager->translate('You are not logged'));
+        }
 
 
         return $this->toHome();

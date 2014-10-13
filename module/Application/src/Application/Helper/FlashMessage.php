@@ -3,6 +3,7 @@
 namespace Application\Helper;
 
 use Zend\Mvc\Controller\Plugin\FlashMessenger;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\View\Helper\AbstractHelper;
 use Zend\View\Model\ViewModel;
@@ -15,6 +16,12 @@ class FlashMessage extends AbstractHelper
     protected $serviceManager = null;
 
     protected $flashMessenger = null;
+
+
+    public function __construct(ServiceLocatorInterface $serviceManager)
+    {
+        $this->setServiceManager($serviceManager);
+    }
 
     /**
      * @return FlashMessenger
@@ -29,10 +36,10 @@ class FlashMessage extends AbstractHelper
     }
 
     /**
-     * @param null $serviceManager
+     * @param ServiceLocatorInterface $serviceManager
      * @return $this
      */
-    public function setServiceManager($serviceManager)
+    public function setServiceManager(ServiceLocatorInterface $serviceManager)
     {
         $this->serviceManager = $serviceManager;
 

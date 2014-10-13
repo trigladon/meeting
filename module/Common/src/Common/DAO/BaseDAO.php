@@ -3,7 +3,7 @@
 namespace Common\DAO;
 
 
-use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use \Doctrine\Orm\AbstractQuery;
 use \Doctrine\ORM\EntityManager;
 
@@ -20,7 +20,7 @@ abstract class BaseDAO
      */
     protected $entityManager = null;
     /**
-     * @var ServiceManager|null
+     * @var ServiceLocatorInterface|null
      */
     protected $serviceManager = null;
 
@@ -30,9 +30,9 @@ abstract class BaseDAO
     abstract function getRepositoryName();
 
     /**
-     * @param ServiceManager $sm
+     * @param ServiceLocatorInterface $sm
      */
-    public function __construct(ServiceManager $sm)
+    public function __construct(ServiceLocatorInterface $sm)
     {
         $this->setServiceManager($sm);
     }

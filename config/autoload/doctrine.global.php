@@ -13,7 +13,7 @@ return array(
                     'port' => 3306,
                     'user' => 'root',
                     'password' => 'root',
-                    'dbname' => 'meeting',
+                    'dbname' => 'meet',
                     'table_prefix' => 'o_o_',
                     'driverOptions' => array(
                         \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,

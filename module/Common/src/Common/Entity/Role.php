@@ -15,6 +15,12 @@ use ZfcRbac\Permission\PermissionInterface;
  */
 class Role extends BaseEntity implements HierarchicalRoleInterface
 {
+	const ROLE_GUEST = 'Guest';
+	const ROLE_USER = 'User';
+	const ROLE_MANAGER = 'Manager';
+	const ROLE_ADMIN = 'Admin';
+	const ROLE_GOD_MODE = 'God mode';
+
     /**
      * @var int|null
      *

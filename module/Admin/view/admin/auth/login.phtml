@@ -1,0 +1,15 @@
+<?php
+
+$title = 'Sign in';
+
+$this->headTitle($this->translate($title));
+?>
+
+<!-- BEGIN LOGIN FORM -->
+
+<!-- END LOGIN FORM -->
+
+
+<div class="form">
+    <?=$this->render('\admin\auth\_loginForm.phtml', ['loginForm' => $loginForm, 'loginError' => $loginError])?>
+</div>

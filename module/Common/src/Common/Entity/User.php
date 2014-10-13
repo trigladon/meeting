@@ -20,6 +20,13 @@ use Rbac\Role\RoleInterface;
 class User extends BaseEntity implements IdentityInterface
 {
 
+    const STATUS_NO_ACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_BANNED = 2;
+
+    const DELETED_YES = 'yes';
+    const DELETED_NO = 'no';
+
     /**
      * @var integer
      *
@@ -27,47 +34,103 @@ class User extends BaseEntity implements IdentityInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected  $id;
+    protected $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
     protected $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=50, nullable=true)
+     * @ORM\Column(name="password", type="string", length=50, nullable=false)
      */
     protected $password;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="salt", type="string", length=50, nullable=true)
+     * @ORM\Column(name="salt", type="string", length=50, nullable=false)
      */
     protected $salt;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="status", type="integer", nullable=true)
+     */
+    protected $status;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=255)
+     * @ORM\Column(name="type", type="string", nullable=false)
      */
-    protected $username;
+    protected $type;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
+     */
+    protected $firstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+     */
+    protected $lastName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="middle_name", type="string", length=255, nullable=true)
+     */
+    protected $middleName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", nullable=true)
+     */
+    protected $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="about", type="string", nullable=true)
+     */
+    protected $about;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     * @ORM\Column(name="birthday", type="date", nullable=false)
+     */
+    protected $birthday;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="deleted", type="string", length=3, nullable=false)
+     */
+    protected $deleted;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime", nullable=true)
      */
     protected $created;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
      */
     protected $updated;
 
@@ -78,10 +141,32 @@ class User extends BaseEntity implements IdentityInterface
      */
     protected $roles;
 
+    /**
+     * @var UserCode
+     *
+     * @ORM\OneToOne(targetEntity="UserCode", mappedBy="user")
+     */
+    protected $code;
+
+    /**
+     * @var UserBanned
+     *
+     * @ORM\OneToMany(targetEntity="UserBanned", mappedBy="admin")
+     * @ORM\JoinColumn(name="id_banned", referencedColumnName="id")
+     */
+    protected $adminBan;
+
+    /**
+     * @var UserBanned
+     *
+     * @ORM\OneToOne(targetEntity="UserBanned", mappedBy="userBanned")
+     */
+    protected $banned;
 
     public function __construct()
     {
-        $this->roles = new ArrayCollection();
+        $this->roles    = new ArrayCollection();
+        $this->adminBan = new ArrayCollection();
     }
 
     /**
@@ -99,7 +184,8 @@ class User extends BaseEntity implements IdentityInterface
     {
         $this->setCreated(new \DateTime());
         $this->setUpdated(new \DateTime());
-        $this->setSalt(Rand::getBytes(Bcrypt::MIN_SALT_SIZE));
+        //$this->setSalt(Rand::getBytes(Bcrypt::MIN_SALT_SIZE));
+        $this->deleted = self::DELETED_NO;
     }
 
     /**
@@ -112,13 +198,14 @@ class User extends BaseEntity implements IdentityInterface
 
     /**
      * @param Collection $roles
+     *
      * @return $this
      */
     public function setRole(Collection $roles)
     {
         $this->roles->clear();
-        foreach($roles as $role){
-            if ($role instanceof RoleInterface){
+        foreach ($roles as $role) {
+            if ($role instanceof RoleInterface) {
                 $this->roles[] = $role;
             }
         }
@@ -128,6 +215,7 @@ class User extends BaseEntity implements IdentityInterface
 
     /**
      * @param RoleInterface $role
+     *
      * @return $this
      */
     public function addRole(RoleInterface $role)
@@ -137,9 +225,70 @@ class User extends BaseEntity implements IdentityInterface
         return $this;
     }
 
+    /**
+     * @return UserBanned
+     */
+    public function getAdminBan()
+    {
+        return $this->adminBan;
+    }
+
+    /**
+     * @param UserBanned $adminBan
+     *
+     * @return $this
+     */
+    public function setAdminBan($adminBan)
+    {
+        $this->adminBan = $adminBan;
+
+        return $this;
+    }
+
+    /**
+     * @return UserBanned
+     */
+    public function getBanned()
+    {
+        return $this->banned;
+    }
+
+    /**
+     * @param UserBanned $banned
+     *
+     * @return $this
+     */
+    public function setBanned($banned)
+    {
+        $this->banned = $banned;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param mixed $code
+     *
+     * @return $this
+     */
+    public function addCode(UserCode $code)
+    {
+        $this->code = $code->setUser($this);
+
+        return $this;
+    }
+
 
     /**
      * @param \DateTime $created
+     *
      * @return $this
      */
     public function setCreated($created)
@@ -159,6 +308,7 @@ class User extends BaseEntity implements IdentityInterface
 
     /**
      * @param string $email
+     *
      * @return $this
      */
     public function setEmail($email)
@@ -178,6 +328,7 @@ class User extends BaseEntity implements IdentityInterface
 
     /**
      * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
@@ -197,6 +348,7 @@ class User extends BaseEntity implements IdentityInterface
 
     /**
      * @param string $password
+     *
      * @return $this
      */
     public function setPassword($password)
@@ -216,6 +368,7 @@ class User extends BaseEntity implements IdentityInterface
 
     /**
      * @param string $salt
+     *
      * @return $this
      */
     public function setSalt($salt)
@@ -235,6 +388,7 @@ class User extends BaseEntity implements IdentityInterface
 
     /**
      * @param \DateTime $updated
+     *
      * @return $this
      */
     public function setUpdated($updated)
@@ -253,12 +407,21 @@ class User extends BaseEntity implements IdentityInterface
     }
 
     /**
-     * @param string $username
+     * @return int
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     *
      * @return $this
      */
-    public function setUsername($username)
+    public function setStatus($status)
     {
-        $this->username = $username;
+        $this->status = $status;
 
         return $this;
     }
@@ -266,9 +429,167 @@ class User extends BaseEntity implements IdentityInterface
     /**
      * @return string
      */
-    public function getUsername()
+    public function getAbout()
     {
-        return $this->username;
+        return $this->about;
     }
+
+    /**
+     * @param string $about
+     *
+     * @return $this
+     */
+    public function setAbout($about)
+    {
+        $this->about = $about;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getBirthday()
+    {
+        return $this->birthday;
+    }
+
+    /**
+     * @param \DateTime $birthday
+     *
+     * @return $this
+     */
+    public function setBirthday($birthday)
+    {
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * @param string $deleted
+     *
+     * @return $this
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     *
+     * @return $this
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     *
+     * @return $this
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMiddleName()
+    {
+        return $this->middleName;
+    }
+
+    /**
+     * @param string $middleName
+     *
+     * @return $this
+     */
+    public function setMiddleName($middleName)
+    {
+        $this->middleName = $middleName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getFullName()
+    {
+        return $this->firstName . ' ' . $this->getLastName();
+    }
+
 
 }
