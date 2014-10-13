@@ -74,7 +74,7 @@ class Module
     {
         return array(
             'factories' => array(
-                'AdminAssetsPath' => function() {
+                'getAdminAssetsPath' => function() {
                     return new AdminAssetPath();
                 },
                 'getProjectData' => function($sm) {

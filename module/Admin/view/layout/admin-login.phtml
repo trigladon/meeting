@@ -5,22 +5,20 @@
 <html lang="en">
 <!--<![endif]-->
     <head>
-        <meta charset="utf-8"/>
-        <?php echo $this->headTitle($this->translate($this->getProjectData()['siteName']))->setSeparator(' - ')->setAutoEscape(false) ?>
-        <?php echo $this->headMeta()
-            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-        ?>
-        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        <meta content="" name="description"/>
-        <meta content="" name="author"/>
+        <?php $this->headMeta()->appendName('Content-type', 'text/html; charset=utf-8'); ?>
+        <?php $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0')->appendHttpEquiv('X-UA-Compatible', 'IE=edge'); ?>
+        <?php $this->headMeta("test description text", "description"); ?>
+        <?php $this->headMeta($this->getProjectData()['siteName'], "author"); ?>
+        <?php echo $this->headMeta(); ?>
+        <?php echo $this->headTitle($this->translate($this->getProjectData()['siteName']))->setSeparator(' - ')->setAutoEscape(false); ?>
+
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->AdminAssetsPath() . '/css/components.css' )
-                        ->prependStylesheet($this->AdminAssetsPath() . '/css/login.css')
-                        ->prependStylesheet($this->AdminAssetsPath() . '/plugins/uniform/css/uniform.default.css')
-                        ->prependStylesheet($this->AdminAssetsPath() . '/plugins/bootstrap/css/bootstrap.min.css')
-                        ->prependStylesheet($this->AdminAssetsPath() . '/plugins/simple-line-icons/simple-line-icons.min.css')
-                        ->prependStylesheet($this->AdminAssetsPath() . "/plugins/font-awesome/css/font-awesome.min.css")
+                        ->prependStylesheet($this->getAdminAssetsPath() . '/css/components.css' )
+                        ->prependStylesheet($this->getAdminAssetsPath() . '/css/login.css')
+                        ->prependStylesheet($this->getAdminAssetsPath() . '/plugins/uniform/css/uniform.default.css')
+                        ->prependStylesheet($this->getAdminAssetsPath() . '/plugins/bootstrap/css/bootstrap.min.css')
+                        ->prependStylesheet($this->getAdminAssetsPath() . '/plugins/simple-line-icons/simple-line-icons.min.css')
+                        ->prependStylesheet($this->getAdminAssetsPath() . "/plugins/font-awesome/css/font-awesome.min.css")
                         ->prependStylesheet("http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all")
         ?>
 
@@ -41,19 +39,19 @@
         <div class="copyright">
             <?=date('Y')?> &copy; <?=$this->getProjectData()['siteName'] ?>
         </div>
-    <!--[if lt IE 9]>
-    <?=$this->headScript()->prependFile($this->AdminAssetsPath() . "/plugins/excanvas.min.js", 'text/javascript')
-                        ->prependFile($this->AdminAssetsPath() . "/plugins/respond.min.js", 'text/javascript'); ?>
-    <![endif]-->
-    <?=$this->headScript()->appendFile($this->basePath().'/backend/scripts/captcha.js', 'text/javascript')
-                        ->prependFile($this->AdminAssetsPath() . "/scripts/login.js", 'text/javascript')
-                        ->prependFile($this->AdminAssetsPath() . "/scripts/metronic.js", 'text/javascript')
-                        ->prependFile($this->AdminAssetsPath() . "/plugins/select2/select2.min.js", 'text/javascript')
-                        ->prependFile($this->AdminAssetsPath() . "/plugins/jquery-validation/js/jquery.validate.min.js", 'text/javascript')
-                        ->prependFile($this->AdminAssetsPath() . "/plugins/uniform/jquery.uniform.min.js", 'text/javascript')
-                        ->prependFile($this->AdminAssetsPath() . "/plugins/bootstrap/js/bootstrap.min.js", 'text/javascript')
-                        ->prependFile($this->AdminAssetsPath() . "/plugins/jquery-1.11.0.min.js", 'text/javascript')
-    ;?>
+
+        <?php echo $this->headScript()
+            ->appendFile($this->getAdminAssetsPath(). '/plugins/plugins/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
+            ->appendFile($this->getAdminAssetsPath(). '/plugins/excanvas.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
+            ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-1.11.0.min.js', 'text/javascript')
+            ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap/js/bootstrap.min.js', 'text/javascript')
+            ->appendFile($this->getAdminAssetsPath(). '/plugins/uniform/jquery.uniform.min.js', 'text/javascript')
+            ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-validation/js/jquery.validate.min.js', 'text/javascript')
+            ->appendFile($this->getAdminAssetsPath(). '/plugins/select2/select2.min.js', 'text/javascript')
+            ->appendFile($this->getAdminAssetsPath(). '/scripts/metronic.js', 'text/javascript')
+            ->appendFile($this->getAdminAssetsPath(). '/scripts/login.js', 'text/javascript')
+            ->appendFile($this->getAdminAssetsPath(). '/scripts/captcha.js', 'text/javascript')
+        ?>
     <script>
         jQuery(document).ready(function() {
             Metronic.init();
