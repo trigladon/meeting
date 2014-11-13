@@ -4,32 +4,40 @@ namespace Admin\Form;
 
 use Zend\Form\Form;
 use Admin\Form\Filter\LoginFormFilter;
-use Common\Manager\TranslatorManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\Container;
-use Common\Manager\SessionManager;
-use Zend\Form\Element\Captcha;
 use Zend\Captcha\Image;
 
 class LoginForm extends Form
 {
 
-	const CAPTCHA_DIR_DATA = 'data/captcha';
-	const CAPTCHA_IMG_URL_PART = '/img/captcha';
+    const SESSION_LOGIN_COUNT = 'login-count';
+    const SESSION_LOGIN_NAMESPACE = 'login';
+    const COUNT_FAILED_LOGIN_TO_VIEW_CAPTCHA = 2;
 
-    public function __construct(ServiceLocatorInterface $serviceLocator, Container $container, $options = [])
+    protected $captchaOptions = [
+        'dirData' => 'data/captcha',
+        'imgUrlPart' => '/img/captcha',
+        'imgDir' => 'public/img/captcha',
+    ];
+
+    /**
+     * @var Container
+     */
+    protected $sessionContainer = null;
+
+    public function __construct(ServiceLocatorInterface $serviceLocator, $options = [])
     {
 
 	    $loginCount = 0;
-	    if ($container->offsetExists(SessionManager::SESSION_LOGIN_COUNT)){
-		    $loginCount = $container->offsetGet(SessionManager::SESSION_LOGIN_COUNT);
+	    if ($this->getSessionContainer()->offsetExists(self::SESSION_LOGIN_COUNT)){
+		    $loginCount = $this->getSessionContainer()->offsetGet(self::SESSION_LOGIN_COUNT);
 	    }
 
         parent::__construct(__CLASS__, $options);
 
         $this->setAttribute('method', 'post');
 	    $this->setAttribute('class', 'login-form');
-	    $translator = new TranslatorManager($serviceLocator);
         $this->setInputFilter(new LoginFormFilter($serviceLocator));
 
 
@@ -40,10 +48,10 @@ class LoginForm extends Form
                     'required' => 'required',
                     'class' => 'form-control placeholder-no-fix',
 	                'autocomplete' => "off",
-	                'placeholder' => $translator->translate('E-mail'),
+	                'placeholder' => 'E-mail',
                 ],
                 'options' => [
-                    'label' => $translator->translate('E-mail'),
+                    'label' => 'E-mail',
                 ]
             ]);
 
@@ -54,10 +62,10 @@ class LoginForm extends Form
 	                'required' => 'required',
 	                'class' => 'form-control placeholder-no-fix',
 	                'autocomplete' => "off",
-	                'placeholder' => $translator->translate('Password'),
+	                'placeholder' => 'Password',
                 ],
                 'options' => [
-                    'label' => $translator->translate('Password'),
+                    'label' => 'Password',
                 ]
             ]);
 
@@ -87,8 +95,8 @@ class LoginForm extends Form
                 ]
             ]);
 
-	    if ($loginCount >= 2) {
-			$this->addCaptcha($translator);
+	    if ($loginCount >= self::COUNT_FAILED_LOGIN_TO_VIEW_CAPTCHA) {
+			$this->addCaptcha();
 	    }
 
         $this->add([
@@ -100,11 +108,11 @@ class LoginForm extends Form
             ]);
     }
 
-	public function addCaptcha(TranslatorManager $translator)
+	public function addCaptcha()
 	{
 		if (!$this->has('captcha')){
 			$captchaImage = new Image(  array(
-					'font'          => self::CAPTCHA_DIR_DATA.'/fonts/arial.ttf',
+					'font'          => $this->captchaOptions['dirData'].'/fonts/arial.ttf',
 					'width'         => 300,
 					'height'        => 100,
 					'fsize'         => 20,
@@ -113,8 +121,8 @@ class LoginForm extends Form
 					'lineNoiseLevel'=> 2
 				)
 			);
-			$captchaImage->setImgDir('public/img/captcha');
-			$captchaImage->setImgUrl(self::CAPTCHA_IMG_URL_PART);
+			$captchaImage->setImgDir($this->captchaOptions['imgDir']);
+			$captchaImage->setImgUrl($this->captchaOptions['imgUrlPart']);
 
 			$this->add(array(
 				'type' => 'Zend\Form\Element\Captcha',
@@ -122,7 +130,7 @@ class LoginForm extends Form
 				'attributes' => [
 					'class' => 'form-control placeholder-no-fix valid',
 					'autocomplete' => "off",
-					'placeholder' => $translator->translate('Captcha'),
+					'placeholder' => 'Captcha',
 				],
 				'options' => array(
 					'label' => 'Please verify you are human',
@@ -132,6 +140,55 @@ class LoginForm extends Form
 		}
 
 	}
+
+    /**
+     */
+    public function unsetSessionLoginCount()
+    {
+        if ($this->getSessionContainer()->offsetExists(self::SESSION_LOGIN_COUNT)){
+            $this->getSessionContainer()->offsetUnset(self::SESSION_LOGIN_COUNT);
+        }
+    }
+
+    /**
+     */
+    public function updateSessionLoginContainer()
+    {
+        if ($this->getSessionContainer()->offsetExists(self::SESSION_LOGIN_COUNT)){
+            $countTemp = $this->getSessionContainer()->offsetGet(self::SESSION_LOGIN_COUNT) + 1;
+            $this->getSessionContainer()->offsetSet(self::SESSION_LOGIN_COUNT, $countTemp);
+            if ($countTemp >= 2 && !$this->has('captcha')) {
+                $this->addCaptcha();
+            }
+        } else {
+            $this->getSessionContainer()->offsetSet(self::SESSION_LOGIN_COUNT, 0);
+        }
+    }
+
+    /**
+     * @return Container
+     */
+    protected function getSessionContainer()
+    {
+        if ($this->sessionContainer === null) {
+            $this->sessionContainer = new Container(self::SESSION_LOGIN_NAMESPACE);
+        }
+
+        return $this->sessionContainer;
+    }
+
+    /**
+     * @param Container $sessionContainer
+     *
+     * @return $this
+     */
+    protected function setSessionContainer(Container $sessionContainer)
+    {
+        $this->sessionContainer = $sessionContainer;
+
+        return $this;
+    }
+
 
 
 

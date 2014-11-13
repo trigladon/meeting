@@ -14,13 +14,16 @@ return array(
                     'user' => 'root',
                     'password' => 'root',
                     'dbname' => 'meet',
-                    'table_prefix' => 'o_o_',
+                    'tablePrefix' => 'o_o_',
                     'driverOptions' => array(
                         \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
                         \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
                     ),
                 )
             )
+        ),
+        'sessionDBOptions' => array(
+            'tableName' => 'session', // table name without prefix
         )
     )
 );

@@ -22,7 +22,7 @@ class EntityManagerFactory extends AbstractFactory
         // initializing the resolver
         //       rely on its factory code
         $sl->get($options->getEntityResolver());
-        $configTablePrefix = $sl->get('config')['doctrine']['connection']['orm_default']['params']['table_prefix'];
+        $configTablePrefix = $sl->get('config')['doctrine']['connection']['orm_default']['params']['tablePrefix'];
 
         // Table Prefix
         $tablePrefix = new \Common\DoctrineExtension\DoctrineTablePrefix($configTablePrefix);

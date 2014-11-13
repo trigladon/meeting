@@ -25,8 +25,51 @@ return [
             ),
         ),
     ),
+
     'doctrine_factories' => array(
         'entitymanager'            => 'Common\Factory\EntityManagerFactory',
+    ),
+
+    'translator' => array(
+        'locale' => 'en_US',
+        //'locale' => 'ru_RU',
+        'translation_file_patterns' => array(
+            array(
+                'type'     => 'gettext',
+                'base_dir' => __DIR__ . '/../language',
+                'pattern'  => '%s.mo',
+            ),
+        ),
+    ),
+
+    'service_manager' => array(
+        'abstract_factories' => array(
+            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
+            'Zend\Log\LoggerAbstractServiceFactory',
+        ),
+        'factories' => [
+            'admin-navigation' => 'Admin\Navigation\Factory\AdminNavigationFactory',
+            'Zend\Authentication\AuthenticationService' => function($sm) {
+                return $sm->get('doctrine.authenticationservice.orm_default');
+            },
+            'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
+            'Zend\Session\SessionManager' => function($sm) {
+                $doctrineConfig = $sm->get('config')['doctrine'];
+
+                $sessionManager = new \Zend\Session\SessionManager(null, null, new Common\Session\SaveHandler\Gateway($sm->get('doctrine.connection.orm_default'), $doctrineConfig));
+                $sessionManager->start();
+
+                return $sessionManager;
+            },
+            'Zend\Log' => function ($sm) {
+                $filename = 'log_' . date('Y.m.d') . '.txt';
+                $log = new Zend\Log\Logger();
+                $writer = new Zend\Log\Writer\Stream('./data/logs/' . $filename);
+                $log->addWriter($writer);
+
+                return $log;
+            },
+        ]
     ),
 
 ];

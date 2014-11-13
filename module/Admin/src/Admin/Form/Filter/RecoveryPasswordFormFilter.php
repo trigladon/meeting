@@ -3,7 +3,6 @@
 namespace Admin\Form\Filter;
 
 use Zend\InputFilter\InputFilter;
-use DoctrineModule\Validator\ObjectExists;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Admin\Form\Validator\UserStatus;
 

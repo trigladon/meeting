@@ -9,11 +9,18 @@
 
 namespace Application;
 
-use Zend\Authentication\AuthenticationService;
-use Application\Helper\FlashMessage;
+use Zend\Mvc\MvcEvent;
+use Zend\Session\Container;
 
 class Module
 {
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        Container::setDefaultManager(
+            $e->getApplication()->getServiceManager()->get('Zend\Session\SessionManager')
+        );
+    }
 
     public function getConfig()
     {
@@ -29,17 +36,6 @@ class Module
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
-        );
-    }
-
-    public function getViewHelperConfig()
-    {
-        return array(
-            'factories' => array(
-                'renderFlashMessages' => function ($sm) {
-                        return new FlashMessage($sm->getServiceLocator());
-                    },
-            )
         );
     }
 }

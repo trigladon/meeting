@@ -5,11 +5,14 @@ namespace Common\Manager;
 use Common\Entity\User;
 use Zend\Authentication\Result;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Db\Adapter\Adapter;
 
 class AuthManager extends BaseManager
 {
 
     protected $authService = null;
+
+    protected $cookieTime = 31536000; //60*60*24*365
 
     /**
      * @return \Zend\Authentication\AuthenticationService
@@ -30,17 +33,18 @@ class AuthManager extends BaseManager
      */
     public static function credentialCallable(User $identity, $password)
     {
-        $bCrypt = new Bcrypt();
-        return $bCrypt->verify($password.$identity->getSalt(), $identity->getPassword());
+        $bCrypt = new Bcrypt(['salt' => $identity->getSalt()]);
+        return $bCrypt->verify($password, $identity->getPassword());
     }
 
     /**
      *logout
      */
-    public function logout() {
+    public function logout()
+    {
         $this->getAuthService()->clearIdentity();
-        $userSession = new \Zend\Session\SessionManager();
-        $userSession->forgetMe();
+        $sessionManager = $this->getServiceLocator()->get('Zend\Session\SessionManager');;
+        $sessionManager->forgetMe();
     }
 
     /**
@@ -57,33 +61,35 @@ class AuthManager extends BaseManager
 
         $result = $this->getAuthService()->authenticate();
         if ($result->isValid()){
-            $this->getAuthService()->getStorage()->write($result->getIdentity());
 
             if ($remember) {
-                $time = 60*60*24*365;
-
-                $sessionManager = new \Zend\Session\SessionManager();
-                $sessionManager->rememberMe($time);
+                $sessionManager = $this->getServiceLocator()->get('Zend\Session\SessionManager');
+                $sessionManager->rememberMe($this->cookieTime);
             }
         }
 
         return $result;
     }
 
-    public function result($result)
+    /**
+     * @param Result $result
+     *
+     * @return string
+     */
+    public function getAuthenticationMessage(Result $result)
     {
+        $message = 'Login failed';
 
         switch ($result->getCode()) {
-            case Result::SUCCESS:{}; break;
-            case Result::FAILURE: {};
-            case Result::FAILURE_CREDENTIAL_INVALID: {};
-            case Result::FAILURE_IDENTITY_NOT_FOUND: {};
-            case Result::FAILURE_IDENTITY_AMBIGUOUS: {};
-            case Result::FAILURE_UNCATEGORIZED: {} ;break;
-            default: {}; break;
+            case Result::SUCCESS:{ $message = 'You are logged successfully.'; }; break;
+            case Result::FAILURE_CREDENTIAL_INVALID: { $message = 'Login failed. Your credential is invalid.'; } break;
+            case Result::FAILURE_IDENTITY_NOT_FOUND: { $message = 'Login failed. Account not found.'; } break;
+            case Result::FAILURE: ;
+            case Result::FAILURE_IDENTITY_AMBIGUOUS: ;
+            case Result::FAILURE_UNCATEGORIZED: { $message = 'Login failed.'; } break;
         }
 
-
+        return $message;
     }
 
     public function getIdentity()

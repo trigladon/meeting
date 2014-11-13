@@ -42,17 +42,17 @@ class LoginFormFilter extends InputFilter
 //                        ],
 //	                    'break_chain_on_failure' => true,
 //                    ],
-                    [
-                        'name' => 'Admin\Form\Validator\UserStatus',
-                        'options' => [
-                            'object_repository' => $serviceLocator->get('doctrine.entitymanager.orm_default')->getRepository('Common\Entity\User'),
-                            'fields' => 'email',
-                            'messages' => [
-                                UserStatus::ERROR_STATUS_NO_ACTIVE => 'Your account is not active',
-                                UserStatus::ERROR_STATUS_BANNED => "You are banned",
-                            ]
-                        ]
-                    ]
+//                    [
+//                        'name' => 'Admin\Form\Validator\UserStatus',
+//                        'options' => [
+//                            'object_repository' => $serviceLocator->get('doctrine.entitymanager.orm_default')->getRepository('Common\Entity\User'),
+//                            'fields' => 'email',
+//                            'messages' => [
+//                                UserStatus::ERROR_STATUS_NO_ACTIVE => 'Your account is not active',
+//                                UserStatus::ERROR_STATUS_BANNED => "You are banned",
+//                            ]
+//                        ]
+//                    ]
                 ]
             ]);
 

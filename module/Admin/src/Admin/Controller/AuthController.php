@@ -7,8 +7,6 @@ use Admin\Form\RecoveryPasswordForm;
 use Common\Manager\AuthManager;
 use Common\Manager\TranslatorManager;
 use Common\Manager\UserManager;
-use Zend\Session\Container;
-use Common\Manager\SessionManager;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -20,9 +18,6 @@ class AuthController extends BaseController
     {
         $authManager = new AuthManager($this->getServiceLocator());
         $translatorManager = new TranslatorManager($this->getServiceLocator());
-	    $sessionContainer = new Container(SessionManager::SESSION_LOGIN_NAMESPACE);
-
-	    $loginError = null;
 
 	    try{
 	        if ($authManager->hasIdentity()){
@@ -30,39 +25,23 @@ class AuthController extends BaseController
 	            return $this->toHome();
 	        }
 
-            $loginForm = new LoginForm($this->getServiceLocator(), $sessionContainer);
+            $loginForm = new LoginForm($this->getServiceLocator());
 
 	        $request = $this->getRequest();
 	        if ($request->isPost()) {
-
 
 	            $loginForm->setData($request->getPost());
 	            if ($loginForm->isValid()) {
 
 	                $data = $request->getPost();
-	                $result = $authManager->authentication(
-	                    $data['email'],
-	                    $data['password'],
-	                    (array_key_exists('remember', $data) ? true : false)
-	                );
+	                $result = $authManager->authentication($data['email'], $data['password'], (array_key_exists('remember', $data) ? true : false));
 
 	                if ($result->isValid()){
-		                if ($sessionContainer->offsetExists(SessionManager::SESSION_LOGIN_COUNT)){
-			                $sessionContainer->offsetUnset(SessionManager::SESSION_LOGIN_COUNT);
-		                }
+                        $loginForm->unsetSessionLoginCount();
 	                    return $this->toHome();
 	                } else {
-
-		                if ($sessionContainer->offsetExists(SessionManager::SESSION_LOGIN_COUNT)){
-			                $countTemp = $sessionContainer->offsetGet(SessionManager::SESSION_LOGIN_COUNT) + 1;
-							$sessionContainer->offsetSet(SessionManager::SESSION_LOGIN_COUNT, $countTemp);
-			                if ($countTemp >= 2) {
-				                $loginForm->addCaptcha($translatorManager);
-			                }
-		                } else {
-							$sessionContainer->offsetSet(SessionManager::SESSION_LOGIN_COUNT, 0);
-		                }
-		                $this->setErrorMessage($translatorManager->translate('Invalid email or password'));
+		                $loginForm->updateSessionLoginContainer();
+		                $this->setErrorMessage($translatorManager->translate($authManager->getAuthenticationMessage($result)));
 	                }
 	            }
 	        }
@@ -73,7 +52,6 @@ class AuthController extends BaseController
 
         return [
             'loginForm' => $loginForm,
-	        'loginError' => $loginError,
         ];
     }
 
@@ -85,7 +63,7 @@ class AuthController extends BaseController
 
 		try{
 
-			$recoveryForm = new RecoveryPasswordForm($this->getServiceLocator(), $translatorManager);
+			$recoveryForm = new RecoveryPasswordForm($this->getServiceLocator());
 
 			if ($request->isPost())
 			{
@@ -121,13 +99,14 @@ class AuthController extends BaseController
 			$this->getResponse()->setStatusCode(404);
 			return;
 		}
-		$sessionContainer = new Container(SessionManager::SESSION_LOGIN_NAMESPACE);
-		$loginForm = new LoginForm($this->getServiceLocator(), $sessionContainer);
+
+		$loginForm = new LoginForm($this->getServiceLocator());
 		$captcha = $loginForm->get('captcha')->getCaptcha();
 
-		$data['id'] = $captcha->generate();
-		$data['src'] = $captcha->getImgUrl() . $captcha->getId() . $captcha->getSuffix();
-		return new JsonModel($data);
+		return new JsonModel([
+            'id' => $captcha->generate(),
+            'src' => $captcha->getImgUrl() . $captcha->getId() . $captcha->getSuffix(),
+        ]);
 	}
 
     public function logoutAction()
@@ -143,34 +122,5 @@ class AuthController extends BaseController
 
         return $this->toRoute('admin-login');
     }
-
-	public function generateCaptchaAction()
-	{
-
-		$response = $this->getResponse();
-		$response->getHeaders()->addHeaderLine('Content-Type', "image/png");
-
-		$id = $this->params('id', false);
-
-		if ($id) {
-
-			$image = './data/captcha/' . $id;
-
-			if (file_exists($image) !== false) {
-				$imagegetcontent = @file_get_contents($image);
-
-				$response->setStatusCode(200);
-				$response->setContent($imagegetcontent);
-
-				if (file_exists($image) == true) {
-					unlink($image);
-				}
-			}
-
-		}
-
-		return $response;
-
-	}
 
 }

@@ -9,7 +9,7 @@
     <?php $hasPages = $page->hasPages(); ?>
 
     <li class="<?=($firstMenu ? 'start ': '').($isActive ? ' active ' : ($hasPages && $isActive ? ' active open ' : ""))?>">
-        <a href="<?=($hasPages ? 'javascript:;' : $this->url($page->get('route')))?>">
+        <a href="<?=($hasPages ? 'javascript:;' : $page->getHref())?>">
             <?php if (array_key_exists('icon', $props)): ?>
                 <i class="<?=$props['icon']?>"></i>
             <?php endif; ?>
@@ -37,7 +37,7 @@ function viewSubMenu($page, $helper)
     $hasPages = $page->hasPages();
 
     echo  '<li class="'.($isActive ? ' active ' : ($hasPages && $isActive ? ' active open ' : "")).'">';
-    echo '<a href="'.($hasPages ? 'javascript:;' : $helper->url($page->get('route'))).'">';
+    echo '<a href="'.($hasPages ? 'javascript:;' : $page->getHref()).'">';
     if (array_key_exists('icon', $props)) {
         echo '<i class="fa ' . $props['icon'] . '"></i>';
     }

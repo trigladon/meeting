@@ -1,6 +1,14 @@
 <?php
 
 return [
+    'controllers' => array(
+        'invokables' => array(
+            'Admin\Controller\Auth' => 'Admin\Controller\AuthController',
+            'Admin\Controller\Admin' => 'Admin\Controller\AdminController',
+            'Admin\Controller\User' => 'Admin\Controller\UserController',
+        ),
+    ),
+
     'router' => array(
         'routes' => array(
             'admin-home' => array(
@@ -35,20 +43,6 @@ return [
 			                'defaults' => array(),
 		                ),
 	                ),
-
-	                'admin_captcha_form_generate' => array(
-		                'type'    => 'segment',
-		                'options' => array(
-			                'route'    =>  '/[:controller[/captcha/[:id]]]',
-			                'constraints' => array(
-				                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-			                ),
-			                'defaults' => array(
-				                'controller' => 'Auth',
-				                'action'     => 'generate-captcha',
-			                ),
-		                ),
-	                ),
                 ),
             ),
 	        'admin-refresh-captcha'=> array(
@@ -80,20 +74,21 @@ return [
 						'action' => 'recovery-password'
 					)
 		        )
-	        )
-        ),
-    ),
-
-    'service_manager' => array(
-        'factories' => array(
-            'admin-navigation' => 'Admin\Navigation\Factory\AdminNavigationFactory',
-        )
-    ),
-
-    'controllers' => array(
-        'invokables' => array(
-            'Admin\Controller\Auth' => 'Admin\Controller\AuthController',
-            'Admin\Controller\Admin' => 'Admin\Controller\AdminController',
+	        ),
+            'admin-user' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/user[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action' => 'all'
+                    )
+                )
+            )
         ),
     ),
 

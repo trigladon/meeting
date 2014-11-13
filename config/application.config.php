@@ -1,12 +1,14 @@
 <?php
+
+
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
+        'Application',
         'ZendDeveloperTools',
         'ZfcRbac',
         'DoctrineModule',
         'DoctrineORMModule',
-        'Application',
         'Common',
         'Admin',
     ),
@@ -66,5 +68,9 @@ return array(
 
    // Initial configuration with which to seed the ServiceManager.
    // Should be compatible with Zend\ServiceManager\Config.
-   // 'service_manager' => array(),
+//   'service_manager' => array(
+//       'factories' => array(
+//
+//       )
+//   ),
 );

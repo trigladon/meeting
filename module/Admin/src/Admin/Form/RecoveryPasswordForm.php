@@ -2,14 +2,13 @@
 
 namespace Admin\Form;
 
-use Common\Manager\TranslatorManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Form\Form;
 
 class RecoveryPasswordForm extends Form
 {
 
-	public function __construct(ServiceLocatorInterface $serviceLocatorInterface,TranslatorManager $translatorManager, $name = __CLASS__)
+	public function __construct(ServiceLocatorInterface $serviceLocatorInterface, $name = __CLASS__)
 	{
 		parent::__construct($name);
 		$this->setAttributes([
@@ -25,10 +24,10 @@ class RecoveryPasswordForm extends Form
 				'type' => 'email',
 				'class' => 'form-control placeholder-no-fix',
 				'autocomplete' => 'off',
-				'placeholder' => $translatorManager->translate('E-mail'),
+				'placeholder' => 'E-mail',
 			],
 			'options' => [
-				'label' => $translatorManager->translate('E-mail'),
+				'label' => 'E-mail',
 			]
 		]);
 

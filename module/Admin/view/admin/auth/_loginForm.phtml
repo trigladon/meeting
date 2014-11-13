@@ -15,12 +15,6 @@ $loginForm->prepare();
 <?php echo $this->form()->openTag($loginForm); ?>
 <?php echo $this->formInput($loginForm->get('csrf'));?>
 	<h3 class="form-title"><?=$this->translate('Login to your account')?></h3>
-	<?php if ($loginError != null):  ?>
-	<div class="alert alert-danger display-show">
-		<button class="close" data-close="alert"></button>
-		<span><?=$loginError ?></span>
-	</div>
-	<?php endif; ?>
 	<div class="alert alert-danger display-hide">
 		<button class="close" data-close="alert"></button>
 		<span><?=$this->translate('Enter your e-mail and password.')?></span>

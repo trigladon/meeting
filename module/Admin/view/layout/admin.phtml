@@ -13,20 +13,23 @@
     <?php echo $this->headMeta(); ?>
     <?php echo $this->headTitle($this->translate($this->getProjectData()['siteName']))->setSeparator(' - ')->setAutoEscape(false); ?>
 
-    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-        ->appendStylesheet('http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all')
-        ->appendStylesheet($this->getAdminAssetsPath().'/plugins/font-awesome/css/font-awesome.min.css')
-        ->appendStylesheet($this->getAdminAssetsPath().'/plugins/simple-line-icons/simple-line-icons.min.css')
-        ->appendStylesheet($this->getAdminAssetsPath().'/plugins/bootstrap/css/bootstrap.min.css')
-        ->appendStylesheet($this->getAdminAssetsPath().'/plugins/uniform/css/uniform.default.css')
-        ->appendStylesheet($this->getAdminAssetsPath().'/plugins/bootstrap-switch/css/bootstrap-switch.min.css')
-        ->appendStylesheet($this->getAdminAssetsPath().'/css/components.css')
-        ->appendStylesheet($this->getAdminAssetsPath().'/css/plugins.css')
-        ->appendStylesheet($this->getAdminAssetsPath().'/css/layout.css')
-        ->appendStylesheet($this->getAdminAssetsPath().'/css/themes/default.css')
-        ->appendStylesheet($this->getAdminAssetsPath().'/css/custom.css')
-    ;
-    ?>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css">
+    <link href="<?=$this->getAdminAssetsPath()?>/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="<?=$this->getAdminAssetsPath()?>/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css">
+    <link href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="<?=$this->getAdminAssetsPath()?>/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
+    <link href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN THEME STYLES -->
+    <link href="<?=$this->getAdminAssetsPath()?>/css/components.css" rel="stylesheet" type="text/css"/>
+    <link href="<?=$this->getAdminAssetsPath()?>/css/plugins.css" rel="stylesheet" type="text/css"/>
+    <link href="<?=$this->getAdminAssetsPath()?>/css/layout.css" rel="stylesheet" type="text/css"/>
+    <link id="style_color" href="<?=$this->getAdminAssetsPath()?>/css/themes/default.css" rel="stylesheet" type="text/css"/>
+    <link href="<?=$this->getAdminAssetsPath()?>/css/custom.css" rel="stylesheet" type="text/css"/>
+    <!-- END THEME STYLES -->
+    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'));?>
+
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -44,7 +47,78 @@
         <!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
     </div>
 </div>
-<!-- END LOGO -->
+    <!-- END LOGO -->
+    <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+    <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+    </a>
+    <!-- END RESPONSIVE MENU TOGGLER -->
+    <!-- BEGIN PAGE ACTIONS -->
+    <!-- DOC: Remove "hide" class to enable the page header actions -->
+    <div class="page-actions">
+        <div class="btn-group">
+            <button type="button" class="btn btn-circle red-pink dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-plus"></i>&nbsp;<span class="hidden-sm hidden-xs"><?=$this->translate('New')?>&nbsp;</span>&nbsp;<i class="fa fa-angle-down"></i>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    <a href="#">
+                        <i class="fa fa-user"></i> New User </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-gift"></i> New Event <span class="badge badge-success">4</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-shopping-cart"></i> New order </a>
+                </li>
+                <li class="divider">
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-send-o"></i> Pending Orders <span class="badge badge-danger">4</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="fa fa-users"></i> Pending Users <span class="badge badge-warning">12</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="btn-group hide">
+            <button type="button" class="btn btn-circle green-haze dropdown-toggle" data-toggle="dropdown">
+                <i class="icon-bell"></i>&nbsp;<span class="hidden-sm hidden-xs">Post&nbsp;</span>&nbsp;<i class="fa fa-angle-down"></i>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li>
+                    <a href="#">
+                        <i class="icon-docs"></i> New Post </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="icon-tag"></i> New Comment </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="icon-share"></i> Share </a>
+                </li>
+                <li class="divider">
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="icon-flag"></i> Comments <span class="badge badge-success">4</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="icon-users"></i> Feedbacks <span class="badge badge-danger">2</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 <!-- BEGIN PAGE TOP -->
 <div class="page-top">
 <!-- BEGIN TOP NAVIGATION MENU -->
@@ -159,9 +233,14 @@
     ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery.cokie.min.js', 'text/javascript')
     ->appendFile($this->getAdminAssetsPath(). '/plugins/uniform/jquery.uniform.min.js', 'text/javascript')
     ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-switch/js/bootstrap-switch.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/select2/select2.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/datatables/media/js/jquery.dataTables.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js', 'text/javascript')
     ->appendFile($this->getAdminAssetsPath(). '/scripts/metronic.js', 'text/javascript')
     ->appendFile($this->getAdminAssetsPath(). '/scripts/layout.js', 'text/javascript')
     ->appendFile($this->getAdminAssetsPath(). '/scripts/demo.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/scripts/table-editable.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/scripts/table-advanced.js', 'text/javascript')
 ;
 ?>
 <script>
@@ -169,6 +248,7 @@
         Metronic.init(); // init metronic core components
         Layout.init(); // init current layout
         Demo.init(); // init demo features
+        TableAdvanced.init();
     });
 </script>
 <!-- END JAVASCRIPTS -->

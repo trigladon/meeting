@@ -2,9 +2,15 @@
 
 namespace Common;
 
+use Application\Helper\FlashMessage;
+use Admin\Helper\AdminAssetPath;
+use Admin\Helper\ProjectData;
+use Admin\Helper\PageTitle;
+use Admin\Helper\RouteName;
 
 class Module
 {
+
 
     public function getConfig()
     {
@@ -21,4 +27,28 @@ class Module
             ),
         );
     }
+
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                'renderFlashMessages' => function ($sm) {
+                    return new FlashMessage($sm->getServiceLocator());
+                },
+                'getAdminAssetsPath' => function() {
+                    return new AdminAssetPath();
+                },
+                'getProjectData' => function($sm) {
+                    return new ProjectData($sm->getServiceLocator());
+                },
+                'getRouteName' => function($sm) {
+                    return new RouteName($sm->getServiceLocator());
+                },
+                'getPageTitle' => function($sm) {
+                    return new PageTitle($sm->getServiceLocator());
+                }
+            )
+        );
+    }
+
 }

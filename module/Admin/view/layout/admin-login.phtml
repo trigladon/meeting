@@ -12,15 +12,16 @@
         <?php echo $this->headMeta(); ?>
         <?php echo $this->headTitle($this->translate($this->getProjectData()['siteName']))->setSeparator(' - ')->setAutoEscape(false); ?>
 
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->getAdminAssetsPath() . '/css/components.css' )
-                        ->prependStylesheet($this->getAdminAssetsPath() . '/css/login.css')
-                        ->prependStylesheet($this->getAdminAssetsPath() . '/plugins/uniform/css/uniform.default.css')
-                        ->prependStylesheet($this->getAdminAssetsPath() . '/plugins/bootstrap/css/bootstrap.min.css')
-                        ->prependStylesheet($this->getAdminAssetsPath() . '/plugins/simple-line-icons/simple-line-icons.min.css')
-                        ->prependStylesheet($this->getAdminAssetsPath() . "/plugins/font-awesome/css/font-awesome.min.css")
-                        ->prependStylesheet("http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all")
-        ?>
+        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico')); ?>
+
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css">
+        <link href="<?=$this->getAdminAssetsPath()?>/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="<?=$this->getAdminAssetsPath()?>/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css">
+        <link href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+        <link href="<?=$this->getAdminAssetsPath()?>/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
+
+        <link href="<?=$this->getAdminAssetsPath()?>/css/login.css" rel="stylesheet" type="text/css"/>
+        <link href="<?=$this->getAdminAssetsPath()?>/css/components.css" rel="stylesheet" type="text/css"/>
 
     </head>
 
@@ -40,18 +41,25 @@
             <?=date('Y')?> &copy; <?=$this->getProjectData()['siteName'] ?>
         </div>
 
-        <?php echo $this->headScript()
-            ->appendFile($this->getAdminAssetsPath(). '/plugins/plugins/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
-            ->appendFile($this->getAdminAssetsPath(). '/plugins/excanvas.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
-            ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-1.11.0.min.js', 'text/javascript')
-            ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap/js/bootstrap.min.js', 'text/javascript')
-            ->appendFile($this->getAdminAssetsPath(). '/plugins/uniform/jquery.uniform.min.js', 'text/javascript')
-            ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-validation/js/jquery.validate.min.js', 'text/javascript')
-            ->appendFile($this->getAdminAssetsPath(). '/plugins/select2/select2.min.js', 'text/javascript')
-            ->appendFile($this->getAdminAssetsPath(). '/scripts/metronic.js', 'text/javascript')
-            ->appendFile($this->getAdminAssetsPath(). '/scripts/login.js', 'text/javascript')
-            ->appendFile($this->getAdminAssetsPath(). '/scripts/captcha.js', 'text/javascript')
-        ?>
+        <?php echo $this->headScript();?>
+        <!--[if lt IE 9]>
+        <script src="<?=$this->getAdminAssetsPath() ?>/plugins/respond.min.js"></script>
+        <script src="<?=$this->getAdminAssetsPath() ?>/plugins/excanvas.min.js"></script>
+        <![endif]-->
+        <script src="<?=$this->getAdminAssetsPath() ?>/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+        <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+        <script src="<?=$this->getAdminAssetsPath() ?>/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="<?=$this->getAdminAssetsPath() ?>/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+        <!-- END CORE PLUGINS -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <script src="<?=$this->getAdminAssetsPath() ?>/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="<?=$this->getAdminAssetsPath() ?>/plugins/select2/select2.min.js"></script>
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        <script src="<?=$this->getAdminAssetsPath() ?>/scripts/metronic.js" type="text/javascript"></script>
+        <script src="<?=$this->getAdminAssetsPath() ?>/scripts/login.js" type="text/javascript"></script>
+        <script src="<?=$this->getAdminAssetsPath() ?>/scripts/captcha.js" type="text/javascript"></script>
+
     <script>
         jQuery(document).ready(function() {
             Metronic.init();
