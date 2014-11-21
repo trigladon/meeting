@@ -1,7 +1,7 @@
 <?php
 
 namespace Common\Manager;
-
+;
 use Zend\View\Helper\Url;
 use Common\Entity\BaseEntity;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -183,6 +183,14 @@ class CommonManager extends BaseManager
     protected function getFunctionColumn(BaseEntity $entity, $function, $fieldName = null) {
 
         if (is_callable($function)) {
+            /**
+             * TODO check parameters and transfer necessary parameters
+             *
+             * $temp = new \ReflectionFunction($function);
+             * $param = $temp->getParameters();
+             * @var $param[1] \ReflectionParameter
+             * var_dump($param[1]->getClass());
+             */
             return call_user_func($function, $entity->{'get'.ucfirst($fieldName)}(), $this->manager);
         } else {
             return $entity->{$function}();
@@ -223,7 +231,12 @@ class CommonManager extends BaseManager
             $buttonsOptions['default']);
 
         if (isset($button['modal'])) {
-            $result .= '<span href="#modal" url="' . $url . '" title=""';
+            $result .= '<span data-toggle="modal" href="#basic" url="' . $url . '"'.
+                (!isset($button['modal']['title'])          ? '' : ' title ="'.htmlspecialchars($button['modal']['title']).'"').
+                (!isset($button['modal']['description'])    ? '' : ' description = "'.htmlspecialchars($button['modal']['description']).'"').
+                (!isset($button['modal']['button'])         ? '' : ' button = "'.htmlspecialchars($button['modal']['button']).'"').
+                (!isset($button['modal']['color'])          ? '' : ' color = "'.htmlspecialchars($button['modal']['color']).'"')
+            ;
             $endTag = '</span>';
         } else {
             $result .= '<a href="' . $url . '"';
@@ -231,8 +244,8 @@ class CommonManager extends BaseManager
         }
 
         $result .= ' class="'.(isset($button['class']) ? $button['class'] : $buttonOption['class']).'" >'.
-            (isset($button['name']) ? $button['name'] : $buttonOption['name']).
-            $endTag;
+            $this->getTranslatorManager()->translate((isset($button['name']) ? $button['name'] : $buttonOption['name']))
+            .$endTag;
 
         return $result;
     }

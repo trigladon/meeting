@@ -136,7 +136,7 @@ class UserController extends BaseController {
 //                                'modal' => [
 //                                    'title' => 'Title text',
 //                                    'description' => 'Description',
-//                                    'button-name' => 'Remove',
+//                                    'button' => 'Remove',
 //                                ],
 //                                'name' => 'Publish',
 //                                'type' => CommonManager::BUTTON_TYPE_DEFAULT,
@@ -158,8 +158,9 @@ class UserController extends BaseController {
 //                                ],
 //                                'modal' => [
 //                                    'title' => 'Title text',
-//                                    'description' => 'Description',
-//                                    'button-name' => 'Remove',
+//                                    'description' => 'Unpublish this user',
+//                                    'button' => 'Unpublish',
+//                                    'color' => 'btn purple',
 //                                ],
 //                                'name' => 'Unpublish',
 //                                'type' => CommonManager::BUTTON_TYPE_DEFAULT,
@@ -182,9 +183,10 @@ class UserController extends BaseController {
                             ]
                         ],
                         'modal' => [
-                            'title' => 'Title text',
-                            'description' => 'Description',
-                            'button-name' => 'Remove',
+//                            'title' => 'Title text',
+                            'description' => 'Description "" \"" text >text </span>',
+                            'button' => 'Remove',
+                            'color' => 'btn btn-danger',
                         ],
                         'name' => 'Remove',
                         'type' => CommonManager::BUTTON_TYPE_DEFAULT,

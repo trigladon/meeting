@@ -55,14 +55,17 @@
     ->appendFile($this->getAdminAssetsPath(). '/scripts/demo.js', 'text/javascript')
     ->appendFile($this->getAdminAssetsPath(). '/scripts/global/datatable.js', 'text/javascript')
     ->appendFile($this->getAdminAssetsPath(). '/scripts/table-ajax.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/scripts/modal.js', 'text/javascript')
 
 ;
 ?>
 <script>
     jQuery(document).ready(function() {
+        Modal.init('#basic');
         Metronic.init(); // init metronic core components
         Layout.init(); // init current layout
         Demo.init(); // init demo features
+        $()
     });
 </script>
 <!-- BEGIN HEADER -->
@@ -235,6 +238,7 @@
                     </div>
                 </div>
                 <!-- END PAGE CONTENT-->
+                <?=$this->render('\partial\modal.phtml');?>
             </div>
         </div>
     </div>
