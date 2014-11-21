@@ -5,11 +5,15 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class BaseManager
 {
-
     /**
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator = null;
+
+    /**
+     * @var TranslatorManager
+     */
+    protected $translatorManager = null;
 
     public function __construct(ServiceLocatorInterface $sm)
     {
@@ -33,6 +37,31 @@ class BaseManager
     public function getServiceLocator()
     {
         return $this->serviceLocator;
+    }
+
+
+    /**
+     * @return TranslatorManager
+     */
+    public function getTranslatorManager()
+    {
+        if ($this->translatorManager === null) {
+            $this->translatorManager = new TranslatorManager($this->getServiceLocator());
+        }
+
+        return $this->translatorManager;
+    }
+
+    /**
+     * @param TranslatorManager $translatorManager
+     *
+     * @return $this
+     */
+    public function setTranslatorManager(TranslatorManager $translatorManager) {
+
+        $this->translatorManager = $translatorManager;
+
+        return $this;
     }
 
 

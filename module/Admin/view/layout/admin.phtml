@@ -34,6 +34,37 @@
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 <body class="page-header-fixed page-container-bg-solid page-sidebar-closed-hide-logo page-header-fixed-mobile page-footer-fixed1">
+<?php echo $this->headScript()
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/excanvas.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-1.11.0.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-migrate-1.2.1.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap/js/bootstrap.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-slimscroll/jquery.slimscroll.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery.blockui.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery.cokie.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/uniform/jquery.uniform.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-switch/js/bootstrap-switch.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/select2/select2.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/datatables/media/js/jquery.dataTables.min.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/scripts/metronic.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/scripts/layout.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/scripts/demo.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/scripts/global/datatable.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/scripts/table-ajax.js', 'text/javascript')
+
+;
+?>
+<script>
+    jQuery(document).ready(function() {
+        Metronic.init(); // init metronic core components
+        Layout.init(); // init current layout
+        Demo.init(); // init demo features
+    });
+</script>
 <!-- BEGIN HEADER -->
 <div class="page-header navbar navbar-fixed-top">
 <!-- BEGIN HEADER INNER -->
@@ -220,37 +251,8 @@
 <!-- END FOOTER -->
 <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 <!-- BEGIN CORE PLUGINS -->
-<?php echo $this->headScript()
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/excanvas.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-1.11.0.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-migrate-1.2.1.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap/js/bootstrap.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-slimscroll/jquery.slimscroll.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery.blockui.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery.cokie.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/uniform/jquery.uniform.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-switch/js/bootstrap-switch.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/select2/select2.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/datatables/media/js/jquery.dataTables.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/metronic.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/layout.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/demo.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/table-editable.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/table-advanced.js', 'text/javascript')
-;
-?>
-<script>
-    jQuery(document).ready(function() {
-        Metronic.init(); // init metronic core components
-        Layout.init(); // init current layout
-        Demo.init(); // init demo features
-        TableAdvanced.init();
-    });
-</script>
+
+
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

@@ -4,7 +4,7 @@
         <?php foreach($this->pages as $count => $page): ?>
             <?php $prop = $page->getCustomProperties(); ?>
             <li>
-                <?=(array_key_exists('icon', $prop) ? '<i class="fa '.$prop['icon'].'"></i>' : '')?>
+                <?=(isset($prop['icon']) ? '<i class="fa '.$prop['icon'].'"></i>' : '')?>
                 <a href="<?=$this->url($page->get('route'))?>"><?=$this->translate($page->get('label'))?></a>
                 <?php if ($counter > $count): ?>
                     <i class="fa fa-angle-right"></i>

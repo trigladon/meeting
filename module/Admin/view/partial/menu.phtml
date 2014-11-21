@@ -10,7 +10,7 @@
 
     <li class="<?=($firstMenu ? 'start ': '').($isActive ? ' active ' : ($hasPages && $isActive ? ' active open ' : ""))?>">
         <a href="<?=($hasPages ? 'javascript:;' : $page->getHref())?>">
-            <?php if (array_key_exists('icon', $props)): ?>
+            <?php if (isset($props['icon'])): ?>
                 <i class="<?=$props['icon']?>"></i>
             <?php endif; ?>
             <span class="title"><?=$this->translate($page->get('label'))?></span>

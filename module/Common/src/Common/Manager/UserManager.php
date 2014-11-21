@@ -69,4 +69,46 @@ class UserManager extends BaseEntityManager
         return $code;
     }
 
+    public function getUserTypesForSelect()
+    {
+        return [
+            User::TYPE_COMPANY => $this->getTranslatorManager()->translate('Company'),
+            User::TYPE_USER => $this->getTranslatorManager()->translate('User'),
+        ];
+    }
+
+    public function getUserTypeNameByIdType($idType)
+    {
+        if (isset($this->getUserTypesForSelect()[$idType])) {
+            return $this->getUserTypesForSelect()[$idType];
+        }
+        return $idType;
+    }
+
+    public function getUserStatusForSelect()
+    {
+        return [
+            User::STATUS_ACTIVE => $this->getTranslatorManager()->translate('Active'),
+            User::STATUS_NO_ACTIVE => $this->getTranslatorManager()->translate('No active'),
+            User::STATUS_BANNED => $this->getTranslatorManager()->translate('Banned'),
+        ];
+    }
+
+    public function getUserStatusNameByIdStatus($idStatus)
+    {
+        if (isset($this->getUserStatusForSelect()[$idStatus])) {
+            return $this->getUserStatusForSelect()[$idStatus];
+        }
+
+        return $idStatus;
+    }
+
+    public function getListDataForTable($offset, $limit)
+    {
+        return [
+            'count' => $this->getDAO()->countAll(),
+            'data' => $this->getDAO()->findAllOffsetAndLimit($offset*$limit, $limit)
+        ];
+    }
+
 }

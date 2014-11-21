@@ -8,33 +8,30 @@ var TableAjax = function () {
         });
     }
 
-    var handleRecords = function () {
+    var handleRecords = function (settings) {
 
         var grid = new Datatable();
 
-        grid.init({
-            src: $("#datatable_ajax"),
-            onSuccess: function (grid) {
-                // execute some code after table records loaded
-            },
-            onError: function (grid) {
-                // execute some code on network or other general error  
-            },
+        grid.init($.extend({
+            //src: $("#datatable_ajax"),
+            //onSuccess: function (grid) {
+            //    // execute some code after table records loaded
+            //},
+            //onError: function (grid) {
+            //    // execute some code on network or other general error
+            //},
             loadingMessage: 'Loading...',
             dataTable: { // here you can define a typical datatable settings from http://datatables.net/usage/options 
                 "lengthMenu": [
-                    [10, 20, 50, 100, 150, -1],
-                    [10, 20, 50, 100, 150, "All"] // change per page values here
+                    [10, 20, 50, 100],
+                    [10, 20, 50, 100] // change per page values here
                 ],
                 "pageLength": 10, // default record count per page
-                "ajax": {
-                    "url": "demo/table_ajax.php", // ajax source
-                },
                 "order": [
                     [1, "asc"]
                 ] // set first column as a default sort by asc
             }
-        });
+        }, settings));
 
         // handle group actionsubmit button click
         grid.getTableWrapper().on('click', '.table-group-action-submit', function (e) {
@@ -69,10 +66,10 @@ var TableAjax = function () {
     return {
 
         //main function to initiate the module
-        init: function () {
+        init: function (settings) {
 
             initPickers();
-            handleRecords();
+            handleRecords(settings);
         }
 
     };

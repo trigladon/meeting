@@ -31,8 +31,8 @@ return [
     ),
 
     'translator' => array(
-        'locale' => 'en_US',
-        //'locale' => 'ru_RU',
+        //'locale' => 'en_US',
+        'locale' => 'ru_RU',
         'translation_file_patterns' => array(
             array(
                 'type'     => 'gettext',
@@ -54,9 +54,17 @@ return [
             },
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',
             'Zend\Session\SessionManager' => function($sm) {
-                $doctrineConfig = $sm->get('config')['doctrine'];
+                $config = $sm->get('config');
+                $sessionConfig = new Zend\Session\Config\SessionConfig();
 
-                $sessionManager = new \Zend\Session\SessionManager(null, null, new Common\Session\SaveHandler\Gateway($sm->get('doctrine.connection.orm_default'), $doctrineConfig));
+                $sessionManager = new \Zend\Session\SessionManager(
+                    $sessionConfig->setOptions($config['session']['options']),
+                    null,
+                    new Common\Session\SaveHandler\Gateway(
+                        $sm->get('doctrine.connection.orm_default'),
+                        $config['doctrine']
+                    )
+                );
                 $sessionManager->start();
 
                 return $sessionManager;

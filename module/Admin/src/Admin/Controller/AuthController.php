@@ -34,7 +34,7 @@ class AuthController extends BaseController
 	            if ($loginForm->isValid()) {
 
 	                $data = $request->getPost();
-	                $result = $authManager->authentication($data['email'], $data['password'], (array_key_exists('remember', $data) ? true : false));
+	                $result = $authManager->authentication($data['email'], $data['password'], (isset($data['remember']) ? true : false));
 
 	                if ($result->isValid()){
                         $loginForm->unsetSessionLoginCount();

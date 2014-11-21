@@ -41,9 +41,6 @@ class Module
                 'getProjectData' => function($sm) {
                     return new ProjectData($sm->getServiceLocator());
                 },
-                'getRouteName' => function($sm) {
-                    return new RouteName($sm->getServiceLocator());
-                },
                 'getPageTitle' => function($sm) {
                     return new PageTitle($sm->getServiceLocator());
                 }

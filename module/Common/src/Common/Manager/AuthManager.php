@@ -5,7 +5,7 @@ namespace Common\Manager;
 use Common\Entity\User;
 use Zend\Authentication\Result;
 use Zend\Crypt\Password\Bcrypt;
-use Zend\Db\Adapter\Adapter;
+use Zend\Authentication\AuthenticationService;
 
 class AuthManager extends BaseManager
 {

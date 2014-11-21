@@ -33,7 +33,7 @@ class AuthController extends BaseController
                 $result = $authManager->authentication(
                     $data['email'],
                     $data['password'],
-                    (array_key_exists('remember', $data) ? true : false)
+                    (isset($data['remember']) ? true : false)
                 );
 
                 if ($result->isValid()){

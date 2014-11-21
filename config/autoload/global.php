@@ -9,6 +9,12 @@ return array(
 
         'emailSend' => 'help@meeting.com',
         'emailSendName' => 'Meeting.com',
+
+        'options' => [
+            'dateTimeFormat' => 'm-d-Y h:i:s',
+            'dateFormat' => 'm-d-Y',
+        ],
+
     ],
 
     'email' =>array(
@@ -33,11 +39,13 @@ return array(
     ),
 
     'session' => array(
-        'remember_me_seconds' => 2419200,
-        'use_cookies'       => true,
-        'cookie_httponly'   => true,
-        'cookie_lifetime'   => 2419200,
-        'gc_maxlifetime'    => 2419200,
+        'options' => [
+            'remember_me_seconds' => 2419200,
+            'use_cookies'       => true,
+            'cookie_httponly'   => true,
+            'cookie_lifetime'   => 2419200,
+            'gc_maxlifetime'    => 2419200,
+        ]
     ),
 
     'navigation' => [

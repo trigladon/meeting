@@ -27,6 +27,9 @@ class User extends BaseEntity implements IdentityInterface
     const DELETED_YES = 'yes';
     const DELETED_NO = 'no';
 
+    const TYPE_COMPANY = 'company';
+    const TYPE_USER = 'user';
+
     /**
      * @var integer
      *

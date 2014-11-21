@@ -135,17 +135,17 @@ class MailManager extends BaseManager
         }
 
         $result = [
-            'user' => [ 'email' => '', 'name' => '' ],
-            'language' => $this->getProjectConfig()[ 'defaultLanguageLocale' ]
+            'user' => ['email' => '', 'name' => ''],
+            'language' => $this->getProjectConfig()['defaultLanguageLocale']
         ];
 
         if (is_array($to)) {
             $result[ 'user' ] = $to;
         } else
             if ($to instanceof User) {
-                $result = [ 'user' => [ 'email' => $to->getEmail(), 'name'  => $to->getFullName() ], 'language' => [] ];
+                $result = ['user' => ['email' => $to->getEmail(), 'name' => $to->getFullName()], 'language' => [] ];
             } else {
-                $result[ 'user' ][ 'email' ] = $to;
+                $result['user']['email'] = $to;
             }
 
         return $result;

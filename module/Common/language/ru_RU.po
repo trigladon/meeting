@@ -30,7 +30,7 @@ msgstr "Все права защищены."
 #: ../view/application/index/index.phtml:2
 #, php-format
 msgid "Welcome to %sZend Framework 2%s"
-msgstr "Привет, %sZend Framework 2%s"
+msgstr "Привет человечище, %sZend Framework 2%s"
 
 #: ../view/application/index/index.phtml:3
 #, php-format
