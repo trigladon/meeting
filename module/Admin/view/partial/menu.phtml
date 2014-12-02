@@ -4,37 +4,42 @@
 <?php /** @var $page Zend\Navigation\Page\Mvc */ ?>
 <?php foreach($pages as $page): ?>
 
-    <?php $props = $page->getCustomProperties(); ?>
-    <?php $isActive = $page->isActive(true); ?>
-    <?php $hasPages = $page->hasPages(); ?>
+    <?php if ($page->isVisible() && (!isset($subProp['visible-in-menu']) || (isset($subProp['visible-in-menu']) && $subProp['visible-in-menu']))): ?>
+        <?php $props = $page->getCustomProperties(); ?>
+        <?php $isActive = $page->isActive(true); ?>
+        <?php $hasPages = hasChildrenVisible($page); ?>
 
-    <li class="<?=($firstMenu ? 'start ': '').($isActive ? ' active ' : ($hasPages && $isActive ? ' active open ' : ""))?>">
-        <a href="<?=($hasPages ? 'javascript:;' : $page->getHref())?>">
-            <?php if (isset($props['icon'])): ?>
-                <i class="<?=$props['icon']?>"></i>
+        <li class="<?=($firstMenu ? 'start ': '').($isActive ? ' active ' : ($hasPages && $isActive ? ' active open ' : ""))?>">
+            <a href="<?=($hasPages ? 'javascript:;' : $page->getHref())?>">
+                <?php if (isset($props['icon'])): ?>
+                    <i class="<?=$props['icon']?>"></i>
+                <?php endif; ?>
+                <span class="title"><?=$this->translate($page->get('label'))?></span>
+                <?=($isActive ? '<span class="selected"></span>' : '')?>
+                <?=($hasPages ? '<span class="arrow '.($isActive ? ' open ' : '').'"></span>' : '')?>
+            </a>
+            <?php if ($hasPages): ?>
+                <ul class="sub-menu">
+                    <?php foreach($page->getPages() as $subPage): ?>
+                        <?php $subProp = $subPage->getCustomProperties(); ?>
+                        <?php if ($subPage->isVisible() && (!isset($subProp['visible-in-menu']) || (isset($subProp['visible-in-menu']) && $subProp['visible-in-menu']))): ?>
+                            <?php viewSubMenu($subPage, $this); ?>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
             <?php endif; ?>
-            <span class="title"><?=$this->translate($page->get('label'))?></span>
-            <?=($isActive ? '<span class="selected"></span>' : '')?>
-            <?=($hasPages ? '<span class="arrow '.($isActive ? ' open ' : '').'"></span>' : '')?>
-        </a>
-        <?php if ($hasPages): ?>
-            <ul class="sub-menu">
-                <?php foreach($page->getPages() as $subPage): ?>
-                    <?php viewSubMenu($subPage, $this); ?>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-    </li>
-    <?php $firstMenu = false; ?>
+        </li>
+        <?php $firstMenu = false; ?>
+    <?php endif; ?>
 <?php endforeach; ?>
 <?php
 
-function viewSubMenu($page, $helper)
+function viewSubMenu(Zend\Navigation\Page\AbstractPage $page, $helper)
 {
 
     $props = $page->getCustomProperties();
     $isActive = $page->isActive(true);
-    $hasPages = $page->hasPages();
+    $hasPages = hasChildrenVisible($page);
 
     echo  '<li class="'.($isActive ? ' active ' : ($hasPages && $isActive ? ' active open ' : "")).'">';
     echo '<a href="'.($hasPages ? 'javascript:;' : $page->getHref()).'">';
@@ -48,11 +53,31 @@ function viewSubMenu($page, $helper)
     if ($hasPages) {
         echo '<ul class="sub-menu">';
         foreach ($page->getPages() as $subPage) {
-            viewSubMenu($subPage, $helper);
+            $subProp = $subPage->getCustomProperties();
+            if ($subPage->isVisible() && (!isset($subProp['visible-in-menu']) || (isset($subProp['visible-in-menu']) && $subProp['visible-in-menu']))){
+                viewSubMenu($subPage, $helper);
+            }
         }
         echo '</ul>';
     }
     echo '</li>';
+}
+
+function hasChildrenVisible(Zend\Navigation\Page\AbstractPage $page)
+{
+    if (!$page->hasChildren()){
+        return false;
+    }
+
+    foreach($page->getPages() as $childrenPage) {
+        $props = $childrenPage->getCustomProperties();
+
+        if (!isset($props['visible-in-menu']) || (isset($props['visible-in-menu']) && $props['visible-in-menu'])){
+            return true;
+        }
+    }
+
+    return false;
 }
 
 ?>

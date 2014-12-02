@@ -61,13 +61,23 @@ class Role extends BaseEntity implements HierarchicalRoleInterface
     }
 
     /**
-     * Get the role identifier
-     *
-     * @return int
+     * @return int|null
      */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param int|null $id
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

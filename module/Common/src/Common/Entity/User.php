@@ -110,9 +110,9 @@ class User extends BaseEntity implements IdentityInterface
     protected $about;
 
     /**
-     * @var \DateTime
+     * @var string
      *
-     * @ORM\Column(name="birthday", type="date", nullable=false)
+     * @ORM\Column(name="birthday", type="text", nullable=false)
      */
     protected $birthday;
 
@@ -147,7 +147,7 @@ class User extends BaseEntity implements IdentityInterface
     /**
      * @var UserCode
      *
-     * @ORM\OneToOne(targetEntity="UserCode", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="UserCode", mappedBy="user", cascade={"persist","remove"})
      */
     protected $code;
 
@@ -204,7 +204,7 @@ class User extends BaseEntity implements IdentityInterface
      *
      * @return $this
      */
-    public function setRole(Collection $roles)
+    public function setRoles(Collection $roles)
     {
         $this->roles->clear();
         foreach ($roles as $role) {
@@ -221,9 +221,33 @@ class User extends BaseEntity implements IdentityInterface
      *
      * @return $this
      */
-    public function addRole(RoleInterface $role)
+    public function addRoles($role)
     {
-        $this->roles[] = $role;
+        if (is_array($role) || $role instanceof ArrayCollection) {
+            foreach($role as $newRole) {
+                $this->addRoles($newRole);
+            }
+        }else {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param RoleInterface $role
+     *
+     * @return $this
+     */
+    public function removeRoles($role)
+    {
+        if (is_array($role) || $role instanceof ArrayCollection) {
+            foreach($role as $newRole) {
+                $this->removeRoles($newRole);
+            }
+        }else {
+            $this->roles->removeElement($role);
+        }
 
         return $this;
     }
@@ -281,7 +305,7 @@ class User extends BaseEntity implements IdentityInterface
      *
      * @return $this
      */
-    public function addCode(UserCode $code)
+    public function setCode(UserCode $code)
     {
         $this->code = $code->setUser($this);
 

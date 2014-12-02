@@ -6,6 +6,7 @@ use Common\Entity\User;
 use Zend\Authentication\Result;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Authentication\AuthenticationService;
+use DoctrineModule\Authentication\Adapter;
 
 class AuthManager extends BaseManager
 {

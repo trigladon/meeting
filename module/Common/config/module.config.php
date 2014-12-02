@@ -31,8 +31,8 @@ return [
     ),
 
     'translator' => array(
-        //'locale' => 'en_US',
-        'locale' => 'ru_RU',
+        'locale' => 'en_US',
+        //'locale' => 'ru_RU',
         'translation_file_patterns' => array(
             array(
                 'type'     => 'gettext',
@@ -41,7 +41,6 @@ return [
             ),
         ),
     ),
-
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -49,7 +48,11 @@ return [
         ),
         'factories' => [
             'admin-navigation' => 'Admin\Navigation\Factory\AdminNavigationFactory',
+//            'doctrine.authenticationservice.orm_default' => function($sm){
+//                return new Common\Authentication\Adapter\AuthObjectRepository();
+//            },
             'Zend\Authentication\AuthenticationService' => function($sm) {
+                //return $sm->get('Common\Authentication\Adapter\AuthObjectRepository');
                 return $sm->get('doctrine.authenticationservice.orm_default');
             },
             'translator' => 'Zend\I18n\Translator\TranslatorServiceFactory',

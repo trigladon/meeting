@@ -11,8 +11,10 @@ return array(
         'emailSendName' => 'Meeting.com',
 
         'options' => [
-            'dateTimeFormat' => 'm-d-Y h:i:s',
-            'dateFormat' => 'm-d-Y',
+            'dateTimeFormat' => 'Y-m-d h:i:s',
+            'dateFormat' => 'Y-m-d',
+            
+            'dateFormatJs' => 'yyyy-mm-dd',
         ],
 
     ],
@@ -59,19 +61,34 @@ return array(
                 'label' => 'User',
                 'route' => 'admin-user',
                 'icon'  => 'icon-users',
-                'action' => 'all',
                 'pages' => [
                      [
                         'label' => 'All users',
                         'route' => 'admin-user',
                         'icon'  => 'fa-users',
                         'action' => 'all',
+                        'pages' => [
+                            [
+                                'label' => 'Add user',
+                                'route' => 'admin-user',
+                                'icon'  => 'fa-user',
+                                'action' => 'add',
+                                'visible-in-menu' => false,
+                            ],
+                            [
+                                'label' => 'Edit user',
+                                'route' => 'admin-user',
+                                'icon'  => 'fa-user',
+                                'action' => 'edit',
+                                'visible-in-menu' => false,
+                            ]
+                        ]
                     ],
                     [
                         'label' => 'Patients',
                         'route' => 'admin-user',
                         'icon'  => 'fa-user-md',
-                        'action'=> 'patients'
+                        'action'=> 'patients',
                     ]
                 ]
             ],

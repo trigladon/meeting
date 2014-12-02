@@ -4,8 +4,11 @@ namespace Common\Manager;
 
 use Common\DAO\UserCodeDAO;
 use Common\DAO\UserDAO;
+use Common\Entity\Role;
 use Common\Entity\User;
 use Common\Entity\UserCode;
+use Zend\Crypt\Password\Bcrypt;
+use Zend\Math\Rand;
 
 class UserManager extends BaseEntityManager
 {
@@ -64,12 +67,17 @@ class UserManager extends BaseEntityManager
 
         $code->setType($type);
         $code->setCode(md5($user->getEmail().time()));
-        $code->setUser($user);
 
         return $code;
     }
 
-    public function getUserTypesForSelect()
+    public function removeUser(User $user)
+    {
+        $user->setDeleted(User::DELETED_YES);
+        $this->saveUser($user, false);
+    }
+
+    public function getTypesForSelect()
     {
         return [
             User::TYPE_COMPANY => $this->getTranslatorManager()->translate('Company'),
@@ -77,15 +85,17 @@ class UserManager extends BaseEntityManager
         ];
     }
 
-    public function getUserTypeNameByIdType($idType)
+    public function getTypeNameByIdType($idType)
     {
-        if (isset($this->getUserTypesForSelect()[$idType])) {
-            return $this->getUserTypesForSelect()[$idType];
+        $selectData = $this->getTypesForSelect();
+
+        if (isset($selectData[$idType])) {
+            return $selectData[$idType];
         }
         return $idType;
     }
 
-    public function getUserStatusForSelect()
+    public function getStatusForSelect()
     {
         return [
             User::STATUS_ACTIVE => $this->getTranslatorManager()->translate('Active'),
@@ -94,13 +104,47 @@ class UserManager extends BaseEntityManager
         ];
     }
 
-    public function getUserStatusNameByIdStatus($idStatus)
+    public function getStatusNameByIdStatus($idStatus)
     {
-        if (isset($this->getUserStatusForSelect()[$idStatus])) {
-            return $this->getUserStatusForSelect()[$idStatus];
+        $selectData = $this->getStatusForSelect();
+
+        if (isset($selectData[$idStatus])) {
+            return $selectData[$idStatus];
         }
 
         return $idStatus;
+    }
+
+    public function saveUser(User $user, $createCode = true)
+    {
+        if ($this->isNewEntity($user)) {
+
+            $salt = Rand::getString(Bcrypt::MIN_SALT_SIZE);
+            $secure = new Bcrypt(['salt' => $salt]);
+            $password = $this->generatePassword();
+
+            $user->setSalt($salt)
+                ->setPassword($secure->create($password));
+        }
+
+        if ($createCode) {
+            $user->setCode($this->createUserCode($user, UserCode::TYPE_REGISTRATION));
+        }
+
+        $this->getDAO()->save($user);
+
+    }
+
+    protected function generatePassword($length = 8) {
+        $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $count = mb_strlen($chars);
+
+        for ($i = 0, $result = ''; $i < $length; $i++) {
+            $index = rand(0, $count - 1);
+            $result .= mb_substr($chars, $index, 1);
+        }
+
+        return $result;
     }
 
     public function getListDataForTable($offset, $limit)
@@ -108,6 +152,35 @@ class UserManager extends BaseEntityManager
         return [
             'count' => $this->getDAO()->countAll(),
             'data' => $this->getDAO()->findAllOffsetAndLimit($offset*$limit, $limit)
+        ];
+    }
+
+    public function getDeletedNameForSelect()
+    {
+        return [
+            User::DELETED_NO => $this->getTranslatorManager()->translate('No'),
+            User::DELETED_YES => $this->getTranslatorManager()->translate('Yes'),
+        ];
+    }
+
+    public function getDeletedNameByIdDeleted($idDeleted)
+    {
+        $selectData = $this->getDeletedNameForSelect();
+
+        if (isset($selectData[$idDeleted])) {
+            return $selectData[$idDeleted];
+        }
+        return $selectData[$idDeleted];
+    }
+
+    public static function getRolesForSelect()
+    {
+        return [
+            1 => Role::ROLE_GUEST,
+            2 => Role::ROLE_USER,
+            3 => Role::ROLE_MANAGER,
+            4 => Role::ROLE_ADMIN,
+            5 => Role::ROLE_GOD_MODE
         ];
     }
 

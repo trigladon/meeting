@@ -11,6 +11,8 @@ class PageTitle extends AbstractHelper
 
     protected $serviceLocator = null;
 
+    protected $active = null;
+
     public function __construct(ServiceLocatorInterface $serviceLocatorInterface)
     {
         $this->serviceLocator = $serviceLocatorInterface;
@@ -18,10 +20,14 @@ class PageTitle extends AbstractHelper
 
     public function __invoke($navigation)
     {
-        $menu = new Menu();
-        $active = $menu->findActive($this->getServiceLocator()->get($navigation));
 
-        return !empty($active['page']) ? $active['page'] : null;
+        if ($this->active === null){
+            $menu = new Menu();
+            $active = $menu->findActive($this->getServiceLocator()->get($navigation));
+            $this->active = (isset($active['page']) ? $active['page'] : null);
+        }
+
+        return $this->active !== null ? $this->active->getLabel() : '';
     }
 
     /**

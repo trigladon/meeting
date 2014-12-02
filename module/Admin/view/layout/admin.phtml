@@ -11,7 +11,8 @@
     <?php $this->headMeta("test description text", "description"); ?>
     <?php $this->headMeta($this->getProjectData()['siteName'], "author"); ?>
     <?php echo $this->headMeta(); ?>
-    <?php echo $this->headTitle($this->translate($this->getProjectData()['siteName']))->setSeparator(' - ')->setAutoEscape(false); ?>
+    <?php $title = $this->getPageTitle('admin-navigation') ?>
+    <?php echo $this->headTitle($this->translate($title).' - '.$this->translate($this->getProjectData()['siteName']))->setSeparator(' - ')->setAutoEscape(false); ?>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css">
@@ -21,6 +22,15 @@
     <link href="<?=$this->getAdminAssetsPath()?>/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css">
     <link href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
+    <link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-select/bootstrap-select.min.css"/>
+    <link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/select2/select2.css"/>
+    <link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/jquery-multi-select/css/multi-select.css"/>
+
+    <link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-datepicker/css/datepicker3.css"/>
+    <link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"/>
+    <link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-colorpicker/css/colorpicker.css"/>
+    <link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css"/>
+    <link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-datetimepicker/css/datetimepicker.css"/>
     <!-- BEGIN THEME STYLES -->
     <link href="<?=$this->getAdminAssetsPath()?>/css/components.css" rel="stylesheet" type="text/css"/>
     <link href="<?=$this->getAdminAssetsPath()?>/css/plugins.css" rel="stylesheet" type="text/css"/>
@@ -56,16 +66,32 @@
     ->appendFile($this->getAdminAssetsPath(). '/scripts/global/datatable.js', 'text/javascript')
     ->appendFile($this->getAdminAssetsPath(). '/scripts/table-ajax.js', 'text/javascript')
     ->appendFile($this->getAdminAssetsPath(). '/scripts/modal.js', 'text/javascript')
+    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', 'text/javascript')
+//    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', 'text/javascript')
+//    ->appendFile($this->getAdminAssetsPath(). '/plugins/clockface/js/clockface.js', 'text/javascript')
+//    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-daterangepicker/moment.min.js', 'text/javascript')
+//    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-daterangepicker/daterangepicker.js', 'text/javascript')
+//    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', 'text/javascript')
+//    ->appendFile($this->getAdminAssetsPath(). '/scripts/components-pickers.js', 'text/javascript')
 
 ;
 ?>
+
 <script>
     jQuery(document).ready(function() {
         Modal.init('#basic');
         Metronic.init(); // init metronic core components
         Layout.init(); // init current layout
         Demo.init(); // init demo features
-        $()
+        if (jQuery().datepicker) {
+            $('.date-picker').datepicker({
+                rtl: Metronic.isRTL(),
+                orientation: "left",
+                autoclose: true,
+                format: '<?=$this->getProjectData()['options']['dateFormatJs']?>'
+            });
+            //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
+        }
     });
 </script>
 <!-- BEGIN HEADER -->
@@ -228,7 +254,7 @@
             <div class="page-content">
                 <!-- BEGIN PAGE HEADER-->
                 <?=$this->renderFlashMessages();?>
-                <h3 class="page-title"><?=$this->getPageTitle('admin-navigation')->get('label');?></h3>
+                <h3 class="page-title"><?=$this->translate($title ? $title : 'Page');?></h3>
                 <?=$this->navigation('admin-navigation')->breadcrumbs()->setMinDepth(0)->setPartial(array('partial/breadcrumbs', 'admin'))->render(); ?>
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->

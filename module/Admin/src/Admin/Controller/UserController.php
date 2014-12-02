@@ -2,11 +2,17 @@
 
 namespace Admin\Controller;
 
+use Admin\Form\NewUserForm;
+use Admin\Form\UserForm;
+use Common\Entity\User;
 use Common\Manager\CommonManager;
 use Common\Manager\UserManager;
+use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 
 class UserController extends BaseController {
+
+    protected $defaultRoute = 'admin-user';
 
     public function allAction() {
 
@@ -39,11 +45,96 @@ class UserController extends BaseController {
         return ['tableInfo' => $tableInfo];
     }
 
-    public function patientsAction()
+    public function addAction()
     {
 
+        try{
 
-        return [];
+            $userForm = new UserForm($this->getServiceLocator());
+            $user = new User();
+            $userForm->bind($user);
+
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+
+                $userForm->setData($request->getPost());
+
+                if ($userForm->isValid()) {
+
+                    $userManager = new UserManager($this->getServiceLocator());
+                    $userManager->saveUser($user);
+                    $this->setSuccessMessage($userManager->getTranslatorManager()->translate('New account create success'));
+                    return $this->toDefaultRoute();
+                }
+            }
+
+        }catch (\Exception $e)
+        {
+            throw new \Exception($e->getMessage());
+        }
+
+
+        return [
+            'userForm' => $userForm
+        ];
+    }
+
+    public function editAction()
+    {
+
+        try{
+            $userManager = new UserManager($this->getServiceLocator());
+            $user = $userManager->getDAO()->findById($this->params()->fromRoute('id', 0));
+            if ($user === null) {
+                $this->setErrorMessage('Account not found');
+                return $this->toDefaultRoute();
+            }
+            $request = $this->getRequest();
+            $userForm = new UserForm($this->getServiceLocator(), $userManager);
+            $userForm->bind($user);
+
+            if ($request->isPost()) {
+
+                $userForm->setData($request->getPost());
+
+                if ($userForm->isValid()) {
+
+                    $userManager->saveUser($user, false);
+                    $this->setSuccessMessage($userManager->getTranslatorManager()->translate('Account save success'));
+                    return $this->toDefaultRoute();
+                }
+            }
+
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return new ViewModel(
+            ['userForm' => $userForm],
+            ['template' => '/admin/user/add.phtml']
+        );
+    }
+
+    public function deleteAction()
+    {
+        try{
+
+            $userManager = new UserManager($this->getServiceLocator());
+            $user = $userManager->getDAO()->findById($this->params()->fromRoute('id', 0));
+            if ($user === null) {
+                $this->setErrorMessage('Account not found');
+                return $this->toDefaultRoute();
+            }
+
+            $userManager->removeUser($user);
+            $this->setSuccessMessage($userManager->getTranslatorManager()->translate('Account remove success'));
+            return $this->toDefaultRoute();
+
+        }catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+
     }
 
     protected function getUserTableInfo()
@@ -73,7 +164,7 @@ class UserController extends BaseController {
             [
                 'type' => CommonManager::TYPE_COLUMN_FUNCTION,
                 CommonManager::TYPE_COLUMN_FUNCTION => function($idType, UserManager $userManager) {
-                    return $userManager->getUserTypeNameByIdType($idType);
+                    return $userManager->getTypeNameByIdType($idType);
                 },
                 'name' => 'Type',
                 'percent' => '10%',
@@ -82,11 +173,20 @@ class UserController extends BaseController {
             [
                 'type' => CommonManager::TYPE_COLUMN_FUNCTION,
                 CommonManager::TYPE_COLUMN_FUNCTION => function($idStatus, UserManager $userManager) {
-                    return $userManager->getUserStatusNameByIdStatus($idStatus);
+                    return $userManager->getStatusNameByIdStatus($idStatus);
                 },
                 'name' => 'Status',
                 'percent' => '10%',
                 'property' => 'status',
+            ],
+            [
+                'type' => CommonManager::TYPE_COLUMN_FUNCTION,
+                CommonManager::TYPE_COLUMN_FUNCTION => function($idDeleted, UserManager $userManager) {
+                    return $userManager->getDeletedNameByIdDeleted($idDeleted);
+                },
+                'name' => 'Deleted',
+                'percent' => '5%',
+                'property' => 'deleted',
             ],
             [
                 'type' => CommonManager::TYPE_COLUMN_DATETIME,
@@ -195,7 +295,7 @@ class UserController extends BaseController {
 
                 ],
                 'name' => 'Actions',
-                'percent' => '20%',
+                'percent' => '15%',
                 'property' => 'actions',
             ],
         ];

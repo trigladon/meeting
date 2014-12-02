@@ -1,3 +1,4 @@
+
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <?php $counter = count($this->pages) - 1; ?>
@@ -5,7 +6,11 @@
             <?php $prop = $page->getCustomProperties(); ?>
             <li>
                 <?=(isset($prop['icon']) ? '<i class="fa '.$prop['icon'].'"></i>' : '')?>
-                <a href="<?=$this->url($page->get('route'))?>"><?=$this->translate($page->get('label'))?></a>
+                <?php if ($count == $counter): ?>
+                    <span><?=$this->translate($page->get('label'))?></span>
+                <?php else: ?>
+                    <a href="<?=$this->url($page->get('route'))?>"><?=$this->translate($page->get('label'))?></a>
+                <?php endif; ?>
                 <?php if ($counter > $count): ?>
                     <i class="fa fa-angle-right"></i>
                 <?php endif; ?>
