@@ -26,10 +26,6 @@ return [
         ),
     ),
 
-    'doctrine_factories' => array(
-        'entitymanager'            => 'Common\Factory\EntityManagerFactory',
-    ),
-
     'translator' => array(
         'locale' => 'en_US',
         //'locale' => 'ru_RU',
@@ -41,6 +37,36 @@ return [
             ),
         ),
     ),
+    'form_elements' => [
+        'factories' => array(
+            //adminka
+
+                //fieldsets
+                'Admin\Form\Fieldset\UserRoleFieldset' => function($sm) {
+                    return new \Admin\Form\Fieldset\UserRoleFieldset($sm->getServiceLocator());
+                },
+                'Admin\Form\Fieldset\AssetImageFieldset' => function($sm) {
+                    return new \Admin\Form\Fieldset\AssetImageFieldset($sm->getServiceLocator());
+                },
+                'Admin\Form\Fieldset\AssetFieldset' => function($sm) {
+                    return new \Admin\Form\Fieldset\AssetFieldset($sm->getServiceLocator());
+                },
+
+                //form
+                'Admin\Form\UserForm' => function($sm) {
+                    return new \Admin\Form\UserForm($sm->getServiceLocator());
+                },
+                'Admin\Form\AssetForm' => function($sm) {
+                    return new \Admin\Form\AssetForm($sm->getServiceLocator());
+                },
+                'Admin\Form\PatientForm' => function($sm) {
+                    return new \Admin\Form\PatientForm($sm->getServiceLocator());
+                }
+
+
+            //front
+        )
+    ],
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -48,9 +74,7 @@ return [
         ),
         'factories' => [
             'admin-navigation' => 'Admin\Navigation\Factory\AdminNavigationFactory',
-//            'doctrine.authenticationservice.orm_default' => function($sm){
-//                return new Common\Authentication\Adapter\AuthObjectRepository();
-//            },
+
             'Zend\Authentication\AuthenticationService' => function($sm) {
                 //return $sm->get('Common\Authentication\Adapter\AuthObjectRepository');
                 return $sm->get('doctrine.authenticationservice.orm_default');

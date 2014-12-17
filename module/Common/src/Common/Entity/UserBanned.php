@@ -44,21 +44,21 @@ class UserBanned extends BaseEntity
      */
     protected $created;
 
-    /**
-     * @var User
-     *
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="adminBan")
-     * @ORM\JoinColumn(name="id_admin", referencedColumnName="id")
-     */
-    protected $admin;
-
-    /**
-     * @var User
-     *
-     * @ORM\OneToOne(targetEntity="User", inversedBy="banned")
-     * @ORM\JoinColumn(name="id_banned", referencedColumnName="id")
-     */
-    protected $userBanned;
+//    /**
+//     * @var User
+//     *
+//     * @ORM\ManyToOne(targetEntity="User", inversedBy="adminBan")
+//     * @ORM\JoinColumn(name="id_admin", referencedColumnName="id")
+//     */
+//    protected $admin;
+//
+//    /**
+//     * @var User
+//     *
+//     * @ORM\OneToOne(targetEntity="User", inversedBy="banned")
+//     * @ORM\JoinColumn(name="id_banned", referencedColumnName="id")
+//     */
+//    protected $userBanned;
 
     /**
      * @ORM\PrePersist

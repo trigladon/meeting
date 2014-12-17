@@ -2,8 +2,13 @@
 
 namespace Admin;
 
+use Admin\Form\Fieldset\TestFieldset;
+use Admin\Form\Fieldset\UserRoleFieldset;
+use Admin\Form\UserForm;
+use Common\Manager\UserManager;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\MvcEvent;
+use Zend\ModuleManager\Feature\FormElementProviderInterface;
 
 class Module
 {
@@ -37,4 +42,5 @@ class Module
             ),
         );
     }
+
 }

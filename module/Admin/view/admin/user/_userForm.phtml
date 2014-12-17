@@ -8,53 +8,54 @@
     </div>
 <?php endif;?>
 <?=$this->form()->openTag($userForm); ?>
+<div class="form-body">
 <?=$this->formRow($userForm->get('csrf')); ?>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('email'));?>
-        <div class="col-sm-4"><?=$this->formInput($userForm->get('email'))?></div>
+        <div class="col-sm-9"><?=$this->formInput($userForm->get('email'))?></div>
     </div>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('type'));?>
-        <div class="col-sm-4"><?=$this->formSelect($userForm->get('type'))?></div>
+        <div class="col-sm-9"><?=$this->formSelect($userForm->get('type'))?></div>
     </div>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('firstName'));?>
-        <div class="col-sm-4"><?=$this->formInput($userForm->get('firstName'))?></div>
+        <div class="col-sm-9"><?=$this->formInput($userForm->get('firstName'))?></div>
     </div>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('lastName'));?>
-        <div class="col-sm-4"><?=$this->formInput($userForm->get('lastName'))?></div>
+        <div class="col-sm-9"><?=$this->formInput($userForm->get('lastName'))?></div>
     </div>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('middleName'));?>
-        <div class="col-sm-4"><?=$this->formInput($userForm->get('middleName'))?></div>
+        <div class="col-sm-9"><?=$this->formInput($userForm->get('middleName'))?></div>
     </div>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('title'));?>
-        <div class="col-sm-4"><?=$this->formInput($userForm->get('title'))?></div>
+        <div class="col-sm-9"><?=$this->formInput($userForm->get('title'))?></div>
     </div>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('about'));?>
-        <div class="col-sm-4"><?=$this->formTextArea($userForm->get('about'))?></div>
+        <div class="col-sm-9"><?=$this->formTextArea($userForm->get('about'))?></div>
     </div>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('birthday'));?>
-        <div class="col-sm-4"><?=$this->formInput($userForm->get('birthday'))?></div>
+        <div class="col-sm-9"><?=$this->formInput($userForm->get('birthday'))?></div>
     </div>
     <?php $roles = $userForm->get('roles'); ?>
     <?php foreach($roles as $element):?>
     <div class="form-group">
         <?=$this->formLabel($roles);?>
-        <div class="col-sm-4"><?=$this->formSelect($element->get('id'))?></div>
+        <div class="col-sm-9"><?=$this->formSelect($element->get('id'))?></div>
     </div>
     <?php endforeach; ?>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('status'));?>
-        <div class="col-sm-4"><?=$this->formSelect($userForm->get('status'))?></div>
+        <div class="col-sm-9"><?=$this->formSelect($userForm->get('status'))?></div>
     </div>
     <div class="form-group">
         <?=$this->formLabel($userForm->get('deleted'));?>
-        <div class="col-sm-4"><?=$this->formSelect($userForm->get('deleted'))?></div>
+        <div class="col-sm-9"><?=$this->formSelect($userForm->get('deleted'))?></div>
     </div>
     <div class="form-actions">
         <div class="row">
@@ -64,4 +65,5 @@
             </div>
         </div>
     </div>
+</div>
 <?=$this->form()->closeTag($userForm); ?>

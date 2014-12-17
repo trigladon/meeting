@@ -2,18 +2,14 @@
 
 namespace Admin\Form\Filter;
 
-use Zend\InputFilter\InputFilter;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Validator\Date;
-
-class UserFormFilter extends InputFilter
+class UserFormFilter extends BaseInputFilter
 {
 
-    public function __construct(ServiceLocatorInterface $sm)
+    public function init()
     {
         $this->add([
                 'name' => 'birthday',
-                'required' => 'true',
+                'required' => true,
                 'filters' => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
@@ -22,7 +18,7 @@ class UserFormFilter extends InputFilter
                     array(
                         'name' => '\Zend\Validator\Date',
                         'options' => [
-                            'format' => $sm->get('config')['projectData']['options']['dateFormat']
+                            'format' => $this->getServiceLocator()->get('config')['projectData']['options']['dateFormat']
                         ],
                         'break_chain_on_failure' => true
                     ),

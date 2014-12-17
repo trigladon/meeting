@@ -7,7 +7,7 @@ error_reporting(E_ALL);
  * to the application root now.
  */
 chdir(dirname(__DIR__));
-define('DIR_ROOT', dirname(__DIR__));
+defined('DIR_ROOT') or define('DIR_ROOT', dirname(__DIR__));
 
 // Decline static file requests back to the PHP built-in webserver
 if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH))) {

@@ -11,11 +11,13 @@ class UserStatus extends ObjectExists
     const ERROR_STATUS_BANNED = 'userBanned';
     const ERROR_STATUS_NO_ACTIVE = 'userNotActive';
     const ERROR_USER_NOT_FOUND = "userNotFound";
+    const ERROR_STATUS_NOT_CONFIRMED_REGISTRATION = 'notConfirmedRegistration';
 
     protected $messageTemplates = array(
             self::ERROR_STATUS_BANNED    => 'You are banned',
             self::ERROR_STATUS_NO_ACTIVE => "Your account is not active",
             self::ERROR_USER_NOT_FOUND   => "Account not found",
+            self::ERROR_STATUS_NOT_CONFIRMED_REGISTRATION => 'You are not confirmed registration',
         );
 
     protected $token;
@@ -47,19 +49,21 @@ class UserStatus extends ObjectExists
         $value = $this->cleanSearchValue($value);
         /** @var $match \Common\Entity\User */
         $match      = $this->objectRepository->findOneBy($value);
-        if ($match === null) {
+        if ($match === null || $match->getDeleted() === User::DELETED_YES) {
             $this->error(self::ERROR_USER_NOT_FOUND);
-            return;
-        }
-
-        $userStatus = $match->getStatus();
-        if ($userStatus === User::STATUS_BANNED) {
-            $this->error(self::ERROR_STATUS_BANNED);
             return false;
         }
 
-        if ($userStatus === User::STATUS_NO_ACTIVE) {
-            $this->error(self::ERROR_STATUS_NO_ACTIVE);
+        $error = null;
+        switch($match->getStatus())
+        {
+            case User::STATUS_NOT_CONFIRMED_REGISTRATION: $error = self::ERROR_STATUS_NOT_CONFIRMED_REGISTRATION; break;
+            case User::STATUS_BANNED: $error = self::ERROR_STATUS_BANNED; break;
+            case User::STATUS_NO_ACTIVE: $error = self::ERROR_STATUS_NO_ACTIVE; break;
+        }
+
+        if ($error !== null) {
+            $this->error($error);
             return false;
         }
 

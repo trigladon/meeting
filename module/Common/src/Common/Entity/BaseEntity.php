@@ -34,5 +34,11 @@ abstract class BaseEntity
         return get_object_vars($this);
     }
 
+    protected function createHash($string)
+    {
+        return md5($string);
+    }
+
+
 
 }

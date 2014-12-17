@@ -6,7 +6,7 @@ use Zend\View\Helper\Url;
 use Common\Entity\BaseEntity;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class CommonManager extends BaseManager
+class TableManager extends BaseManager
 {
 
     const TYPE_COLUMN_STRING      = 'string';
@@ -143,8 +143,8 @@ class CommonManager extends BaseManager
                         case self::TYPE_COLUMN_DEFAULT    : $tempResultValue = $this->getDefaultColumn($entity, $value['property']);
                     }
 
-                    if ($tempResultValue !== null) {
-                        $tempData[$value['property']] = $tempResultValue;
+                    if ($value['type'] !== self::TYPE_TABLE) {
+                        $tempData[$value['property']] = ($tempResultValue === null ? '' : $tempResultValue);
                     }
 
                 } else {
@@ -227,7 +227,7 @@ class CommonManager extends BaseManager
         $buttonsOptions = $this->getButtonsOptions();
 
         $buttonOption = (isset($buttonsOptions[strtolower($button[self::BUTTON_TYPE_DEFAULT])]) ?
-            $buttonsOptions[strtolower($button[CommonManager::BUTTON_TYPE_DEFAULT])] :
+            $buttonsOptions[strtolower($button[self::BUTTON_TYPE_DEFAULT])] :
             $buttonsOptions['default']);
 
         if (isset($button['modal'])) {

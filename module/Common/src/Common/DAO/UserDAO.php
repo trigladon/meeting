@@ -33,52 +33,22 @@ class UserDAO extends BaseDAO
 		return $qb->getQuery()->useResultCache($useCache)->getOneOrNullResult($hydrationMode);
 	}
 
-    /**
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function findAllQ()
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        return$qb->select('u')->from($this->getRepositoryName(), 'u');
-    }
+	/**
+	 * @param int $hydrationMode
+	 * @param bool $useCache
+	 * @return array
+	 */
+	public function findAllJoinCode($hydrationMode = AbstractQuery::HYDRATE_OBJECT, $useCache = true)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+		$qb->select('em, uc')
+			->from($this->getRepositoryName(), 'em')
+			->leftJoin('em.code', 'uc')
+		;
 
-    /**
-     * @param      $offset
-     * @param      $limit
-     * @param int  $hydrationMode
-     * @param bool $useCache
-     *
-     * @return ArrayCollection
-     */
-    public function findAllOffsetAndLimit($offset, $limit, $hydrationMode = AbstractQuery::HYDRATE_OBJECT, $useCache = true)
-    {
-        $qb = $this->findAllQ();
-        $qb->setFirstResult($offset)
-            ->setMaxResults($limit);
+		return $qb->getQuery()->useResultCache($useCache, null)->getResult($hydrationMode);
+	}
 
-        return $qb->getQuery()->useResultCache($useCache)->getResult($hydrationMode);
-    }
 
-    /**
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function countQ()
-    {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        return $qb->select('COUNT(u.id)')->from($this->getRepositoryName(), 'u');
-    }
-
-    /**
-     * @param bool $useCache
-     *
-     * @return null|mixed
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     */
-    public function countAll($useCache = true)
-    {
-        $qb = $this->countQ();
-        //var_dump($qb->getQuery()->getSQL()); die();
-        return $qb->getQuery()->useResultCache($useCache)->getSingleScalarResult();
-    }
 
 }

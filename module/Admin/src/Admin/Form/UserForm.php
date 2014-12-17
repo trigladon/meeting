@@ -2,6 +2,7 @@
 
 namespace Admin\Form;
 
+use Common\Entity\User;
 use Common\Manager\BaseEntityManager;
 use Common\Manager\UserManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -11,22 +12,19 @@ use Common\Stdlib\Hydrator\UserHydrator;
 class UserForm extends BaseForm
 {
 
-    protected $doctrineEntityManager = null;
-
-    public function __construct(ServiceLocatorInterface $sm, BaseEntityManager $userManager = null, $name = __CLASS__) {
-
-        parent::__construct($sm, $name);
-
+    public function init()
+    {
         $this->setAttributes([
                 'method' => 'post',
                 'class' => 'form-horizontal form-bordered'
             ]);
 
-        $this->setInputFilter(new UserFormFilter($sm))->setHydrator(new UserHydrator($this->getDoctrineEntityManager()));
+        $this->setInputFilter(new UserFormFilter($this->getServiceLocator()))
+            ->setHydrator(new UserHydrator($this->getDoctrineEntityManager()))
+            ->setObject(new User())
+        ;
 
-        if ($userManager === null) {
-            $userManager = new UserManager($sm);
-        }
+        $userManager = new UserManager($this->getServiceLocator());
 
         $this->add([
                 'name' => 'email',
@@ -124,7 +122,7 @@ class UserForm extends BaseForm
                 'name' => 'about',
                 'type' => 'Textarea',
                 'attributes' => [
-                    'class' => 'form-control',
+                    'class' => 'form-control input-large',
                     'placeholder' => 'About'
                 ],
                 'options' => [
@@ -223,30 +221,5 @@ class UserForm extends BaseForm
             ]);
 
     }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getDoctrineEntityManager()
-    {
-        if ($this->doctrineEntityManager === null) {
-            $this->doctrineEntityManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
-        }
-        return $this->doctrineEntityManager;
-    }
-
-    /**
-     * @param null $doctrineEntityManager
-     *
-     * @return $this
-     */
-    protected function setDoctrineEntityManager($doctrineEntityManager)
-    {
-        $this->doctrineEntityManager = $doctrineEntityManager;
-
-        return $this;
-    }
-
-
 
 }

@@ -5,6 +5,7 @@ return array(
     'projectData' => [
         'siteName' => 'Meeting',
         'defaultLanguage' => 'en',
+        'defaultLanguageId' => 1,
         'defaultLanguageLocale' => 'en_EN',
 
         'emailSend' => 'help@meeting.com',
@@ -16,6 +17,10 @@ return array(
             
             'dateFormatJs' => 'yyyy-mm-dd',
         ],
+
+        'files' => [
+            'size' => 2048000,
+        ]
 
     ],
 
@@ -58,7 +63,7 @@ return array(
                 'icon'  => 'icon-home',
             ],
             [
-                'label' => 'User',
+                'label' => 'Accounts',
                 'route' => 'admin-user',
                 'icon'  => 'icon-users',
                 'pages' => [
@@ -86,9 +91,25 @@ return array(
                     ],
                     [
                         'label' => 'Patients',
-                        'route' => 'admin-user',
+                        'route' => 'admin-patient',
                         'icon'  => 'fa-user-md',
-                        'action'=> 'patients',
+                        'action'=> 'all',
+                        'pages' => [
+                            [
+                                'label' => 'Add patient',
+                                'route' => 'admin-patient',
+                                'icon'  => 'fa-user-md',
+                                'action' => 'add',
+                                'visible-in-menu' => false,
+                            ],
+                            [
+                                'label' => 'Edit patient',
+                                'route' => 'admin-patient',
+                                'icon'  => 'fa-user-md',
+                                'action' => 'edit',
+                                'visible-in-menu' => false,
+                            ]
+                        ]
                     ]
                 ]
             ],
@@ -129,6 +150,27 @@ return array(
                 'label' => 'Pages',
                 'route' => 'admin-login',
                 'icon' => 'icon-docs',
+            ],
+            [
+                'label' => 'Assets',
+                'route' => 'admin-asset',
+                'icon' => 'icon-picture',
+                'pages' => [
+                    [
+                        'label' => 'Add asset',
+                        'route' => 'admin-asset',
+                        'icon'  => 'icon-picture',
+                        'action' => 'add',
+                        'visible-in-menu' => false,
+                    ],
+                    [
+                        'label' => 'Edit asset',
+                        'route' => 'admin-asset',
+                        'icon'  => 'icon-picture',
+                        'action' => 'edit',
+                        'visible-in-menu' => false,
+                    ]
+                ]
             ],
 
         ],

@@ -2,6 +2,7 @@
 
 namespace Common;
 
+use Admin\Helper\YoutubeLink;
 use Application\Helper\FlashMessage;
 use Admin\Helper\AdminAssetPath;
 use Admin\Helper\ProjectData;
@@ -42,6 +43,9 @@ class Module
                 },
                 'getPageTitle' => function($sm) {
                     return new PageTitle($sm->getServiceLocator());
+                },
+                'getYoutubeLink' => function($sm) {
+                    return new YoutubeLink();
                 }
             )
         );

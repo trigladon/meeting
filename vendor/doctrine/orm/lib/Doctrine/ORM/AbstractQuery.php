@@ -784,7 +784,6 @@ abstract class AbstractQuery
                 $result = array();
             }
 
-            var_dump($cacheKey); die();
             $setCacheEntry = function($data) use ($cache, $result, $cacheKey, $realCacheKey, $queryCacheProfile) {
                 $result[$realCacheKey] = $data;
 

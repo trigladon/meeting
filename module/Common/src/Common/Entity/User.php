@@ -13,6 +13,8 @@ use Rbac\Role\RoleInterface;
 /**
  * Class User
  *
+ * TODO add profile image
+ *
  * @ORM\Table(name="user")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
@@ -23,6 +25,7 @@ class User extends BaseEntity implements IdentityInterface
     const STATUS_NO_ACTIVE = 0;
     const STATUS_ACTIVE = 1;
     const STATUS_BANNED = 2;
+    const STATUS_NOT_CONFIRMED_REGISTRATION = 3;
 
     const DELETED_YES = 'yes';
     const DELETED_NO = 'no';
@@ -151,25 +154,42 @@ class User extends BaseEntity implements IdentityInterface
      */
     protected $code;
 
-    /**
-     * @var UserBanned
-     *
-     * @ORM\OneToMany(targetEntity="UserBanned", mappedBy="admin")
-     * @ORM\JoinColumn(name="id_banned", referencedColumnName="id")
-     */
-    protected $adminBan;
+//    /**
+//     * @var UserBanned
+//     *
+//     * @ORM\OneToMany(targetEntity="UserBanned", mappedBy="admin")
+//     * @ORM\JoinColumn(name="id_banned", referencedColumnName="id")
+//     */
+//    protected $adminBan;
+
+//    /**
+//     * @var UserBanned
+//     *
+//     * @ORM\OneToOne(targetEntity="UserBanned", mappedBy="userBanned")
+//     */
+//    protected $banned;
 
     /**
-     * @var UserBanned
+     * @var Language
      *
-     * @ORM\OneToOne(targetEntity="UserBanned", mappedBy="userBanned")
+     * @ORM\OneToOne(targetEntity="Language", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="id_language", referencedColumnName="id")
      */
-    protected $banned;
+    protected $language;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Patient", mappedBy="user", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="id", referencedColumnName="id_user")
+     */
+    protected $patient;
 
     public function __construct()
     {
         $this->roles    = new ArrayCollection();
-        $this->adminBan = new ArrayCollection();
+        $this->patient  = new ArrayCollection();
+//        $this->adminBan = new ArrayCollection();
     }
 
     /**
@@ -188,7 +208,7 @@ class User extends BaseEntity implements IdentityInterface
         $this->setCreated(new \DateTime());
         $this->setUpdated(new \DateTime());
         //$this->setSalt(Rand::getBytes(Bcrypt::MIN_SALT_SIZE));
-        $this->deleted = self::DELETED_NO;
+//        $this->deleted = self::DELETED_NO;
     }
 
     /**
@@ -212,6 +232,36 @@ class User extends BaseEntity implements IdentityInterface
                 $this->roles[] = $role;
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getPatient()
+    {
+        return $this->patient;
+    }
+
+    /**
+     * @return $this
+     */
+    public function addPatient(Patient $patient)
+    {
+        $this->patient[] = $patient;
+
+        return $this;
+    }
+
+    /**
+     * @param Patient $patient
+     *
+     * @return $this
+     */
+    public function removePatient(Patient $patient)
+    {
+        $this->patient->removeElement($patient);
 
         return $this;
     }
@@ -248,6 +298,26 @@ class User extends BaseEntity implements IdentityInterface
         }else {
             $this->roles->removeElement($role);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Language
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param Language $language
+     *
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
 
         return $this;
     }
@@ -618,5 +688,15 @@ class User extends BaseEntity implements IdentityInterface
         return $this->firstName . ' ' . $this->getLastName();
     }
 
+    public function getFolderName()
+    {
+        if ($this->getId() === null) {
+            throw new \Exception('User entity don\'t have identifier');
+        }
+
+        return $this->createHash(
+            $this->getId().
+            $this->getCreated()->format(\DateTime::W3C));
+    }
 
 }

@@ -3,9 +3,11 @@
 return [
     'controllers' => array(
         'invokables' => array(
-            'Admin\Controller\Auth' => 'Admin\Controller\AuthController',
-            'Admin\Controller\Admin' => 'Admin\Controller\AdminController',
-            'Admin\Controller\User' => 'Admin\Controller\UserController',
+            'Admin\Controller\Auth'     => 'Admin\Controller\AuthController',
+            'Admin\Controller\Admin'    => 'Admin\Controller\AdminController',
+            'Admin\Controller\User'     => 'Admin\Controller\UserController',
+            'Admin\Controller\Patient'  => 'Admin\Controller\PatientController',
+            'Admin\Controller\Asset'    => 'Admin\Controller\AssetController',
         ),
     ),
 
@@ -88,7 +90,36 @@ return [
                         'action' => 'all'
                     )
                 )
-            )
+            ),
+            'admin-patient' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/patient[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Patient',
+                        'action' => 'all'
+                    )
+                )
+            ),
+            'admin-asset' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/asset[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Asset',
+                        'action' => 'all'
+                    )
+                )
+            ),
+
         ),
     ),
 

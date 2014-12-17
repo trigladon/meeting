@@ -1,0 +1,73 @@
+.asset-view{
+    max-height: 200px;
+    max-width: 200px;
+}
+
+.asset-input-file{
+    cursor: pointer!important;
+    /*margin-left: 15px;*/
+}
+
+table.table tr td .btn{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.date-picker{
+    cursor: pointer!important;
+}
+
+div.asset-block {
+    width: 215px;
+    height: 220px;
+    padding: 7px;
+    margin: 7px;
+    border: 1px solid lightgrey;
+}
+
+div.asset-block .fileinput .thumbnail{
+    width: 199px;
+    height: 152px;
+    line-height: 0px!important;
+}
+div.asset-block .fileinput .thumbnail img{
+    vertical-align: middle;
+    display: inline;
+}
+
+div.asset-block span.btn-block{
+    margin-top: 85px;
+}
+
+div.asset-block  div.input-group input{
+    width: 132px;
+}
+
+div.image-block{
+    display: none;
+}
+
+div.video-block{
+    display: none;
+}
+
+div.form-group div.assets-blocks{
+    padding: 8px!important;
+}
+
+div.asset-block span.close{
+    margin-bottom: 3px;
+}
+
+.input-group input{
+    margin: 0;
+    padding: 0;
+}
+
+div.apper-close{
+    height: 12px;
+}
+
+div span.help-block{
+    display: none;
+}

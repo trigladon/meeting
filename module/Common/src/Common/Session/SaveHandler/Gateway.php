@@ -19,7 +19,7 @@ class Gateway implements SaveHandlerInterface
 
     protected $lifetime;
 
-    protected $tableName = 'o_o_session';
+    protected $tableName = 'session';
 
     /**
      * @param array $doctrineConnectionConfig
@@ -33,7 +33,7 @@ class Gateway implements SaveHandlerInterface
          * @var \Doctrine\DBAL\Connection
          */
         $this->connection = $doctrineConnectionConfig;
-        $this->tableName = $doctrineConfig['connection']['orm_default']['params']['tablePrefix'].$doctrineConfig['sessionDBOptions']['tableName'];
+        $this->tableName = $doctrineConfig['sessionDBOptions']['tableName'];
     }
 
     /**

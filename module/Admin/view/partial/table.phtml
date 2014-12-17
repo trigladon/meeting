@@ -16,6 +16,7 @@
             TableAjax.init({
                 src: $('#<?=$tableInfo['options']['id']?>'),
                 dataTable: {
+                    stateSave: true,
                     "ajax": {
                         "url": "<?=$tableInfo['options']['url']?>"
                     },

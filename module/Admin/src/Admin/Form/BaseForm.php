@@ -8,6 +8,8 @@ use Zend\Form\Form;
 class BaseForm extends Form
 {
 
+    protected $doctrineEntityManager = null;
+
     protected $serviceLocator = null;
 
     public function __construct(ServiceLocatorInterface $serviceLocator, $name = null)
@@ -37,5 +39,27 @@ class BaseForm extends Form
     }
 
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getDoctrineEntityManager()
+    {
+        if ($this->doctrineEntityManager === null) {
+            $this->doctrineEntityManager = $this->getServiceLocator()->get('Doctrine\ORM\EntityManager');
+        }
+        return $this->doctrineEntityManager;
+    }
+
+    /**
+     * @param null $doctrineEntityManager
+     *
+     * @return $this
+     */
+    protected function setDoctrineEntityManager($doctrineEntityManager)
+    {
+        $this->doctrineEntityManager = $doctrineEntityManager;
+
+        return $this;
+    }
 
 }

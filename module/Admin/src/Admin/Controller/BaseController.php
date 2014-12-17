@@ -2,6 +2,8 @@
 
 namespace Admin\Controller;
 
+use Common\Manager\BaseEntityManager;
+use Common\Manager\TableManager;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class BaseController extends AbstractActionController
@@ -98,6 +100,31 @@ class BaseController extends AbstractActionController
         return $this;
     }
 
+    /**
+     * @param BaseEntityManager $entityManager
+     * @param TableManager     $tableManager
+     *
+     * @return Array
+     * @throws \Exception
+     */
+    protected function getAjaxTableList(BaseEntityManager $entityManager, TableManager $tableManager)
+    {
+        $request = $this->getRequest();
+        try{
+
+            $page = (int)$request->getPost('start');
+            $limit = (int)$request->getPost('length');
+            $data = $entityManager->getListDataForTable($page, $limit);
+            $result = $tableManager->getDataContent($data['data']);
+            $result['recordsTotal'] = $data['count'];
+            $result['recordsFiltered'] = $data['count'];
+
+        }catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return $result;
+    }
 
 
 }
