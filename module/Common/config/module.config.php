@@ -61,6 +61,9 @@ return [
                 },
                 'Admin\Form\PatientForm' => function($sm) {
                     return new \Admin\Form\PatientForm($sm->getServiceLocator());
+                },
+                'Admin\Form\LanguageForm' => function($sm) {
+                    return new \Admin\Form\LanguageForm($sm->getServiceLocator());
                 }
 
 

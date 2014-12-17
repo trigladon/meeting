@@ -13,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Language extends BaseEntity
 {
 
+    const PUBLISHED = 'yes';
+    const UNPUBLISHED = 'no';
+
     /**
      * @var integer
      *
@@ -42,6 +45,13 @@ class Language extends BaseEntity
      * @ORM\Column(name="locale", type="string", length=7, nullable=false)
      */
     protected $locale;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="published", type="string", length=3, nullable=false)
+     */
+    protected $published;
 
     /**
      * @return int
@@ -119,6 +129,26 @@ class Language extends BaseEntity
     public function setPrefix($prefix)
     {
         $this->prefix = $prefix;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * @param string $published
+     *
+     * @return $this
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
 
         return $this;
     }

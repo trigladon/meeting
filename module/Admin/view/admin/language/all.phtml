@@ -1,0 +1,14 @@
+<div class="portlet box red-sunglo">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-users"></i>
+        </div>
+        <div class="actions">
+            <a href="<?=$this->url('admin-language', ['action' => 'add'])?>" class="btn purple">
+                <i class="fa fa-plus"></i> <?=$this->translate('Add') ?></a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <?=$this->render('\partial\table.phtml', array('tableInfo' => $tableInfo));?>
+    </div>
+</div>

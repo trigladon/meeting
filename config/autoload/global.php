@@ -148,7 +148,7 @@ return array(
             ],
             [
                 'label' => 'Pages',
-                'route' => 'admin-login',
+                'route' => 'admin-page',
                 'icon' => 'icon-docs',
             ],
             [
@@ -172,7 +172,27 @@ return array(
                     ]
                 ]
             ],
-
+            [
+                'label' => 'Languages',
+                'route' => 'admin-language',
+                'icon' => 'icon-flag',
+                'pages' => [
+                    [
+                        'label' => 'Add language',
+                        'route' => 'admin-language',
+                        'icon'  => 'icon-flag',
+                        'action' => 'add',
+                        'visible-in-menu' => false,
+                    ],
+                    [
+                        'label' => 'Edit language',
+                        'route' => 'admin-language',
+                        'icon'  => 'icon-flag',
+                        'action' => 'edit',
+                        'visible-in-menu' => false,
+                    ]
+                ]
+            ],
         ],
     ],
 

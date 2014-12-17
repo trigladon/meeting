@@ -8,6 +8,8 @@ return [
             'Admin\Controller\User'     => 'Admin\Controller\UserController',
             'Admin\Controller\Patient'  => 'Admin\Controller\PatientController',
             'Admin\Controller\Asset'    => 'Admin\Controller\AssetController',
+            'Admin\Controller\Page'     => 'Admin\Controller\PageController',
+            'Admin\Controller\Language' => 'Admin\Controller\LanguageController',
         ),
     ),
 
@@ -115,6 +117,36 @@ return [
                     ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Asset',
+                        'action' => 'all'
+                    )
+                )
+            ),
+
+            'admin-page' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/page[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Page',
+                        'action' => 'all'
+                    )
+                )
+            ),
+
+            'admin-language' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/language[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Language',
                         'action' => 'all'
                     )
                 )

@@ -1,0 +1,39 @@
+<?php /** @var $languageForm \Admin\Form\LanguageForm */?>
+<?php $languageForm->prepare(); ?>
+<?php $error = $this->formElementErrors($languageForm) ?>
+<?php if ($error): ?>
+    <div class="alert alert-danger display-show">
+        <button class="close" data-close="alert"></button>
+        <span><?=$error ?></span>
+    </div>
+<?php endif;?>
+<?=$this->form()->openTag($languageForm); ?>
+<div class="form-body">
+    <?=$this->formHidden($languageForm->get('id'));?>
+    <?=$this->formRow($languageForm->get('csrf')); ?>
+    <div class="form-group">
+        <?=$this->formLabel($languageForm->get('name'));?>
+        <div class="col-sm-4"><?=$this->formText($languageForm->get('name'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($languageForm->get('prefix'));?>
+        <div class="col-sm-4"><?=$this->formText($languageForm->get('prefix'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($languageForm->get('locale'));?>
+        <div class="col-sm-4"><?=$this->formText($languageForm->get('locale'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($languageForm->get('published')); ?>
+        <div class="col-sm-4"><?=$this->formCheckbox($languageForm->get('published')->setAttribute('checked', ($languageForm->getObject()->getPublished() === 'yes' ? 'checked' : '')))?></div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-9">
+                <button type="submit" class="btn purple"><i class="fa fa-check"></i> <?=$this->translate('Save')?></button>
+                <a href="<?=$this->url('admin-language', ['action' => 'all'])?>" type="button" class="btn default"><?=$this->translate('Back')?></a>
+            </div>
+        </div>
+    </div>
+</div>
+<?=$this->form()->closeTag(); ?>
