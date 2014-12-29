@@ -56,6 +56,8 @@ var AssetAdd = function()
         }
     };
 
+
+
     var checkLink = function() {
 
         var url = $(this).closest('div.input-group').find('input').val();
@@ -114,10 +116,11 @@ var AssetAdd = function()
 
         if (settings.hasOwnProperty(name)) {
             var block = $('.'+settings[name]).clone(true).removeClass(settings[name]);
-            var index = maxAssetsIndex();
+            index = index === null ?  maxAssetsIndex() : index;
             var template = block.html();
             block.html(template.replace(/___INDEX___/g, (index < 0 ? 0 : parseInt(index) + 1)));
             block.insertBefore($this.parent());
+            index++;
         }
     };
 
@@ -126,6 +129,8 @@ var AssetAdd = function()
         $('span[name=modal-action]').click(removeBlock);
         $(document).on('click', 'span.check-youtube-url', checkLink);
     };
+
+    var index = maxAssetsIndex();
 
     return {
         init: function(options){

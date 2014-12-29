@@ -3,13 +3,16 @@
 return [
     'controllers' => array(
         'invokables' => array(
-            'Admin\Controller\Auth'     => 'Admin\Controller\AuthController',
-            'Admin\Controller\Admin'    => 'Admin\Controller\AdminController',
-            'Admin\Controller\User'     => 'Admin\Controller\UserController',
-            'Admin\Controller\Patient'  => 'Admin\Controller\PatientController',
-            'Admin\Controller\Asset'    => 'Admin\Controller\AssetController',
-            'Admin\Controller\Page'     => 'Admin\Controller\PageController',
-            'Admin\Controller\Language' => 'Admin\Controller\LanguageController',
+            'Admin\Controller\Auth'         => 'Admin\Controller\AuthController',
+            'Admin\Controller\Admin'        => 'Admin\Controller\AdminController',
+            'Admin\Controller\User'         => 'Admin\Controller\UserController',
+            'Admin\Controller\Patient'      => 'Admin\Controller\PatientController',
+            'Admin\Controller\Asset'        => 'Admin\Controller\AssetController',
+            'Admin\Controller\Page'         => 'Admin\Controller\PageController',
+            'Admin\Controller\Language'     => 'Admin\Controller\LanguageController',
+            'Admin\Controller\Country'      => 'Admin\Controller\CountryController',
+            'Admin\Controller\News'         => 'Admin\Controller\NewsController',
+            'Admin\Controller\Advertising'  => 'Admin\Controller\AdvertisingController',
         ),
     ),
 
@@ -151,6 +154,96 @@ return [
                     )
                 )
             ),
+
+            'admin-country' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/country[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Country',
+                        'action' => 'all'
+                    )
+                )
+            ),
+
+            'admin-city' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/city[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Country',
+                        'action' => 'all-cities'
+                    )
+                )
+            ),
+
+            'admin-news' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/news[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\News',
+                        'action' => 'all'
+                    )
+                )
+            ),
+
+            'admin-category' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/category[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\News',
+                        'action' => 'all-category'
+                    )
+                )
+            ),
+
+            'admin-advertising' => [
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/advertising[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Advertising',
+                        'action' => 'all'
+                    )
+                )
+            ],
+
+            'admin-advertising-place' => [
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/advertising-place[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Advertising',
+                        'action' => 'all-places'
+                    )
+                )
+            ]
 
         ),
     ),

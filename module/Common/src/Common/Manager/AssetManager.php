@@ -12,6 +12,7 @@ class AssetManager extends BaseEntityManager
 
     protected $dao = null;
     protected $imagine = null;
+    protected $defaultFolder = 'default.asset.dir';
 
     protected $imageSize = [
         'profile' => [
@@ -123,7 +124,19 @@ class AssetManager extends BaseEntityManager
         return $asset;
     }
 
-
+    /**
+     * @param $offset
+     * @param $limit
+     *
+     * @return array
+     */
+    public function getListDataForTable($offset, $limit)
+    {
+        return [
+            'count' => $this->getDAO()->countAll(),
+            'data' => $this->getDAO()->findAllOffsetAndLimit($offset, $limit)
+        ];
+    }
 
     protected function youtubeId(Asset $asset)
     {

@@ -4,7 +4,7 @@
             <i class="fa fa-users"></i>
         </div>
         <div class="actions">
-            <a href="<?=$this->url('admin-user', ['action' => 'add'])?>" class="btn purple">
+            <a href="<?=$this->url($url['route'], $url['parameters'])?>" class="btn purple">
                 <i class="fa fa-plus"></i> <?=$this->translate('Add') ?></a>
         </div>
     </div>
@@ -12,4 +12,3 @@
         <?=$this->render('\partial\table.phtml', array('tableInfo' => $tableInfo));?>
     </div>
 </div>
-

@@ -15,8 +15,8 @@ class UserController extends BaseController {
 
     protected $defaultRoute = 'admin-user';
 
-    public function allAction() {
-
+    public function allAction()
+    {
         $userManager = new UserManager($this->getServiceLocator());
         $tableManager = new TableManager($this->getServiceLocator(), $userManager);
         $tableManager->setColumnsList($userManager->getUserTableInfo());
@@ -24,11 +24,19 @@ class UserController extends BaseController {
         if ($this->getRequest()->isXmlHttpRequest()) {
 
             return new JsonModel(
-                $this->getAjaxTableList($userManager, $tableManager)
+                $this->getAjaxTableList($userManager, $tableManager, 'getUserListDataForTable')
             );
         }
 
-        return ['tableInfo' => $tableManager->getTableInfo()];
+        $view = new ViewModel([
+            'tableInfo' => $tableManager->getTableInfo(),
+            'url' => [
+                'route' => 'admin-user',
+                'parameters' => ['action' => 'add']
+            ]
+        ]);
+
+        return $view->setTemplate('/common/all-page');
     }
 
     public function addAction()
@@ -59,10 +67,12 @@ class UserController extends BaseController {
             throw new \Exception($e->getMessage());
         }
 
+        $view = new ViewModel([
+            'template' => '/admin/user/_userForm.phtml',
+            'parameters' => ['userForm' => $userForm]
+        ]);
 
-        return [
-            'userForm' => $userForm
-        ];
+        return $view->setTemplate('/common/add-edit-page');
     }
 
     public function editAction()
@@ -98,8 +108,12 @@ class UserController extends BaseController {
             throw new \Exception($e->getMessage());
         }
 
-        $view = new ViewModel(['userForm' => $userForm]);
-        return $view->setTemplate('admin/user/add');
+        $view = new ViewModel([
+            'template' => '/admin/user/_userForm.phtml',
+            'parameters' => ['userForm' => $userForm]
+        ]);
+
+        return $view->setTemplate('/common/add-edit-page');
     }
 
     public function deleteAction()

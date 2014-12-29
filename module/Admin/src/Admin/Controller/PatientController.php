@@ -23,11 +23,19 @@ class PatientController extends BaseController
         if ($this->getRequest()->isXmlHttpRequest()) {
 
             return new JsonModel(
-                $this->getAjaxTableList($patientManager, $tableManager)
+                $this->getAjaxTableList($patientManager, $tableManager, 'getPatientListDataForTable')
             );
         }
 
-        return ['tableInfo' => $tableManager->getTableInfo()];
+        $view = new ViewModel([
+            'tableInfo' => $tableManager->getTableInfo(),
+            'url' => [
+                'route' => 'admin-patient',
+                'parameters' => ['action' => 'add']
+            ]
+        ]);
+
+        return $view->setTemplate('/common/all-page');
     }
 
     public function addAction()
@@ -57,10 +65,12 @@ class PatientController extends BaseController
             }
         }
 
+        $view = new ViewModel([
+            'template' => '/admin/patient/_patientForm.phtml',
+            'parameters' => ['patientForm' => $patientForm]
+        ]);
 
-        return [
-            'patientForm' => $patientForm
-        ];
+        return $view->setTemplate('/common/add-edit-page');
     }
 
     public function editAction()
@@ -95,10 +105,11 @@ class PatientController extends BaseController
             throw new \Exception($e->getMessage());
         }
         $view = new ViewModel([
-            'patientForm' => $patientForm
+            'template' => '/admin/patient/_patientForm.phtml',
+            'parameters' => ['patientForm' => $patientForm]
         ]);
 
-        return $view->setTemplate('admin/patient/add');
+        return $view->setTemplate('/common/add-edit-page');
     }
 
     public function deleteAction()

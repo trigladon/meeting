@@ -1,0 +1,54 @@
+<?php /** @var $pageForm \Admin\Form\PageForm */?>
+<?php $pageForm->prepare(); ?>
+<?php $error = $this->formElementErrors($pageForm) ?>
+<?php if (strlen($error)): ?>
+    <div class="alert alert-danger display-show">
+        <button class="close" data-close="alert"></button>
+        <span><?=$error ?></span>
+    </div>
+<?php endif;?>
+<?=$this->form()->openTag($pageForm); ?>
+    <div class="form-body">
+        <?php $translations = $pageForm->get('translations'); ?>
+        <?=$this->formRow($pageForm->get('csrf')); ?>
+        <?=$this->formRow($pageForm->get('id')); ?>
+        <?=$this->formElementCollection(array('fieldset' => 'language', 'fieldName' => 'prefix'), $translations)?>
+        <?=$this->formElementCollection(array('fieldset' => 'language', 'fieldName' => 'id'), $translations)?>
+        <div class="form-group">
+            <?=$this->formLabelCollection('title', $translations, '<span class="required">*</span>', \Admin\Helper\Form\FormLabelCollection::PREPEND);?>
+            <div class="col-sm-4"><?=$this->formElementCollection('title', $translations)?></div>
+        </div>
+        <div class="form-group">
+            <?=$this->formLabelCollection('description', $translations, '<span class="required">*</span>', \Admin\Helper\Form\FormLabelCollection::PREPEND);?>
+            <div class="col-sm-4"><?=$this->formElementCollection('description', $translations)?></div>
+        </div>
+        <div class="form-group">
+            <?=$this->formLabel($pageForm->get('url'), '<span class="required">*</span>', \Admin\Helper\Form\FormLabelCollection::PREPEND);?>
+            <div class="col-sm-4"><?=$this->formElement($pageForm->get('url'))?></div>
+        </div>
+        <div class="form-group">
+            <?=$this->formLabel($pageForm->get('published')); ?>
+            <div class="col-sm-4"><?=$this->formElement($pageForm->get('published')->setAttribute('checked', ($pageForm->getObject()->getPublished() === 'yes' ? 'checked' : '')))?></div>
+        </div>
+        <?php $assets = $pageForm->get('assets'); ?>
+        <?=$this->render('/common/_asset-form_block.phtml', ['assets' => $assets]); ?>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn purple"><i class="fa fa-check"></i> <?=$this->translate('Save')?></button>
+                    <a href="<?=$this->url('admin-page', ['action' => 'all'])?>" type="button" class="btn default"><?=$this->translate('Back')?></a>
+                </div>
+            </div>
+        </div>
+    </div>
+<?=$this->form()->closeTag(); ?>
+<?=$this->render('/common/_asset-add-block.phtml',
+    ['modalSettings' =>
+         [
+             'name' => '#basic-confirm',
+             'title' => 'Remove confirm',
+             'description' => 'Are you sure want remove it?',
+             'button' => 'Remove',
+             'color' => 'btn red-sunglo'
+         ]
+    ]);?>

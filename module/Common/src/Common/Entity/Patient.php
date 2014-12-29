@@ -124,7 +124,7 @@ class Patient extends BaseEntity
      */
     public function update()
     {
-        $this->setUpdated(new \DateTime());
+        $this->updated = new \DateTime();
     }
 
     /**
@@ -132,8 +132,8 @@ class Patient extends BaseEntity
      */
     public function insert()
     {
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
     }
 
     /**
@@ -150,18 +150,25 @@ class Patient extends BaseEntity
     }
 
     /**
-     * @param ArrayCollection $assets
+     * @param $assets
      *
      * @return $this
      */
-    public function addAssets(ArrayCollection $assets)
+    public function addAssets($assets)
     {
-        //$this->assets->clear();
-
-        foreach($assets as $asset){
-            $this->assets[] = $asset;
+        if (is_array($assets) || $assets instanceof Collection){
+            foreach($assets as $asset){
+                if (!($asset->getUser() instanceof User)) {
+                    $asset->setUser($this->getUser());
+                }
+                $this->assets[] = $asset;
+            }
+        } else {
+            if (!($assets->getUser() instanceof User)) {
+                $assets->setUser($this->getUser());
+            }
+            $this->assets[] = $assets;
         }
-
 
         return $this;
     }
@@ -170,7 +177,7 @@ class Patient extends BaseEntity
     {
         if (is_array($assets) || $assets instanceof Collection){
             foreach($assets as $asset){
-                $this->removeAssets($asset);
+                $this->assets->removeElement($asset);
             }
         }else {
             $this->assets->removeElement($assets);

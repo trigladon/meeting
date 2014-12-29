@@ -51,6 +51,21 @@ return [
                 'Admin\Form\Fieldset\AssetFieldset' => function($sm) {
                     return new \Admin\Form\Fieldset\AssetFieldset($sm->getServiceLocator());
                 },
+                'Admin\Form\Fieldset\PageTranslationsFieldset' => function($sm) {
+                    return new \Admin\Form\Fieldset\PageTranslationsFieldset($sm->getServiceLocator());
+                },
+                'Admin\Form\Fieldset\LanguageFieldset' => function($sm) {
+                    return new \Admin\Form\Fieldset\LanguageFieldset($sm->getServiceLocator());
+                },
+                'Admin\Form\Fieldset\NewsCategoryTranslationsFieldset' => function($sm) {
+                    return new \Admin\Form\Fieldset\NewsCategoryTranslationsFieldset($sm->getServiceLocator());
+                },
+                'Admin\Form\Fieldset\NewsTranslationsFieldset' => function($sm) {
+                    return new \Admin\Form\Fieldset\NewsTranslationsFieldset($sm->getServiceLocator());
+                },
+                'Admin\Form\Fieldset\AdvertisingTranslationsFieldset' => function($sm) {
+                    return new \Admin\Form\Fieldset\AdvertisingTranslationsFieldset($sm->getServiceLocator());
+                },
 
                 //form
                 'Admin\Form\UserForm' => function($sm) {
@@ -64,8 +79,28 @@ return [
                 },
                 'Admin\Form\LanguageForm' => function($sm) {
                     return new \Admin\Form\LanguageForm($sm->getServiceLocator());
-                }
-
+                },
+                'Admin\Form\PageForm' => function($sm) {
+                    return new \Admin\Form\PageForm($sm->getServiceLocator());
+                },
+                'Admin\Form\CountryForm' => function($sm) {
+                    return new \Admin\Form\CountryForm($sm->getServiceLocator());
+                },
+                'Admin\Form\CityForm' => function($sm) {
+                    return new \Admin\Form\CityForm($sm->getServiceLocator());
+                },
+                'Admin\Form\NewsCategoryForm' => function($sm) {
+                    return new \Admin\Form\NewsCategoryForm($sm->getServiceLocator());
+                },
+                'Admin\Form\NewsForm' => function($sm) {
+                    return new \Admin\Form\NewsForm($sm->getServiceLocator());
+                },
+                'Admin\Form\AdvertisingPlaceForm' => function($sm) {
+                    return new \Admin\Form\AdvertisingPlaceForm($sm->getServiceLocator());
+                },
+                'Admin\Form\AdvertisingForm' => function($sm) {
+                    return new \Admin\Form\AdvertisingForm($sm->getServiceLocator());
+                },
 
             //front
         )

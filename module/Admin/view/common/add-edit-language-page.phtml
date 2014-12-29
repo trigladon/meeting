@@ -1,0 +1,23 @@
+<div class="portlet box red-sunglo">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-user"></i> <?=$this->getPageTitle('admin-navigation')?>
+        </div>
+        <div class="actions">
+            <select class="bs-select form-control input-small language-select" data-style="btn-info">
+                <?php foreach($this->projectLanguages() as $language): ?>
+                    <option value="<?=$language->getPrefix(); ?>" <?=$language->getPrefix() === DEFAULT_LANGUAGE ? 'selected' : '' ?> ><?=$language->getName()?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <?=$this->render($template, $parameters);?>
+    </div>
+</div>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/scripts/collection.js"></script>
+<script>
+    jQuery(document).ready(function() {
+        Collection.init('select.language-select');
+    });
+</script>

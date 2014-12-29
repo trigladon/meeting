@@ -2,11 +2,14 @@
 
 namespace Common;
 
+use Admin\Helper\Languages;
 use Admin\Helper\YoutubeLink;
 use Application\Helper\FlashMessage;
 use Admin\Helper\AdminAssetPath;
 use Admin\Helper\ProjectData;
 use Admin\Helper\PageTitle;
+use Admin\Helper\Form\FormElementCollection;
+use Admin\Helper\Form\FormLabelCollection;
 
 class Module
 {
@@ -46,6 +49,15 @@ class Module
                 },
                 'getYoutubeLink' => function($sm) {
                     return new YoutubeLink();
+                },
+                'formElementCollection' => function($sm) {
+                    return new FormElementCollection();
+                },
+                'formLabelCollection' => function($sm) {
+                    return new FormLabelCollection();
+                },
+                'projectLanguages' => function($sm) {
+                    return new Languages($sm->getServiceLocator());
                 }
             )
         );

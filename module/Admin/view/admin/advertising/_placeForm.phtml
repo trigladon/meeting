@@ -1,0 +1,33 @@
+<?php /** @var $placeForm \Admin\Form\AdvertisingPlaceForm */?>
+<?php $placeForm->prepare(); ?>
+<?php $error = $this->formElementErrors($placeForm) ?>
+<?php if ($error): ?>
+    <div class="alert alert-danger display-show">
+        <button class="close" data-close="alert"></button>
+        <span><?=$error ?></span>
+    </div>
+<?php endif;?>
+<?=$this->form()->openTag($placeForm); ?>
+<div class="form-body">
+    <?=$this->formRow($placeForm->get('csrf')); ?>
+    <div class="form-group">
+        <?=$this->formLabel($placeForm->get('name'));?>
+        <div class="col-sm-4"><?=$this->formInput($placeForm->get('name'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($placeForm->get('description'));?>
+        <div class="col-sm-4"><?=$this->formTextArea($placeForm->get('description'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($placeForm->get('published')); ?>
+        <div class="col-sm-4"><?=$this->formElement($placeForm->get('published')->setAttribute('checked', ($placeForm->getObject()->getPublished() === 'yes' ? 'checked' : '')))?></div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-9">
+                <button type="submit" class="btn purple"><i class="fa fa-check"></i> <?=$this->translate('Save')?></button>
+                <a href="<?=$this->url('admin-advertising-place')?>" type="button" class="btn default"><?=$this->translate('Back')?></a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -28,7 +28,15 @@ class AssetController extends BaseController
             );
         }
 
-        return ['tableInfo' => $tableManager->getTableInfo()];
+        $view = new ViewModel([
+            'tableInfo' => $tableManager->getTableInfo(),
+            'url' => [
+                'route' => 'admin-asset',
+                'parameters' => ['action' => 'add']
+            ]
+        ]);
+
+        return $view->setTemplate('/common/all-page');
     }
 
 
@@ -57,9 +65,12 @@ class AssetController extends BaseController
             throw new \Exception($e->getMessage());
         }
 
-        return [
-            'assetForm' => $assetForm,
-        ];
+        $view = new ViewModel([
+            'template' => '/admin/asset/_assetForm.phtml',
+            'parameters' => ['assetForm' => $assetForm]
+        ]);
+
+        return $view->setTemplate('/common/add-edit-page');
     }
 
     public function editAction()
@@ -93,9 +104,12 @@ class AssetController extends BaseController
             throw new \Exception($e->getMessage());
         }
 
-        $view = new ViewModel(['assetForm' => $assetForm,]);
-        $view->setTemplate('admin/asset/add');
-        return $view;
+        $view = new ViewModel([
+            'template' => '/admin/asset/_assetForm.phtml',
+            'parameters' => ['assetForm' => $assetForm]
+        ]);
+
+        return $view->setTemplate('/common/add-edit-page');
     }
 
     public function deleteAction()

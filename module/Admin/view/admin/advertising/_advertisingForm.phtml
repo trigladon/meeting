@@ -1,0 +1,79 @@
+<?php /** @var $advertisingForm \Admin\Form\AdvertisingForm */?>
+<?php $advertisingForm->prepare(); ?>
+<?php $error = $this->formElementErrors($advertisingForm) ?>
+<?php if ($error): ?>
+    <div class="alert alert-danger display-show">
+        <button class="close" data-close="alert"></button>
+        <span><?=$error ?></span>
+    </div>
+<?php endif;?>
+<?=$this->form()->openTag($advertisingForm); ?>
+<div class="form-body">
+    <?=$this->formRow($advertisingForm->get('csrf')); ?>
+    <?php $translations = $advertisingForm->get('translations'); ?>
+    <?=$this->formElementCollection(array('fieldset' => 'language', 'fieldName' => 'prefix'), $translations)?>
+    <?=$this->formElementCollection(array('fieldset' => 'language', 'fieldName' => 'id'), $translations)?>
+    <div class="form-group">
+        <?=$this->formLabel($advertisingForm->get('place'));?>
+        <div class="col-sm-4"><?=$this->formSelect($advertisingForm->get('place'))?></div>
+    </div>
+    <div class="form-group">
+        <?php $assetImage = $advertisingForm->get('image'); ?>
+        <?=$this->formLabel($assetImage);?>
+        <div class="col-sm-4">
+            <?=$this->formHidden($assetImage->get('type')); ?>
+            <?=$this->formHidden($assetImage->get('name')); ?>
+            <div class="fileinput fileinput-new" data-provides="fileinput">
+                <div class="fileinput-new thumbnail asset-view">
+                    <?php if ($assetImage->getObject()->getName()): ?>
+                        <?php $imageUrl = '/img/'.$assetImage->getObject()->getDirectory().'/'.\Common\Entity\Asset::THUMB_PREFIX.$assetImage->getObject()->getName()?>
+                    <?php else: ?>
+                        <?php $imageUrl = '/img/no-image.gif' ?>
+                    <?php endif; ?>
+                    <img src="<?=$imageUrl?>" alt="">
+                </div>
+                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 10px;"></div>
+                <div>
+                    <span class="btn default btn-file">
+                        <span class="fileinput-new"><?=$this->translate('Select image')?> </span>
+                        <span class="fileinput-exists"><?=$this->translate('Change')?> </span>
+                        <?=$this->formFile($assetImage->get('upload'))?>
+                    </span>
+                    <a href="#" class="btn red fileinput-exists" data-dismiss="fileinput"><?=$this->translate('Remove')?> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabelCollection('title', $translations, '<span class="required">*</span>', \Admin\Helper\Form\FormLabelCollection::PREPEND);?>
+        <div class="col-sm-4"><?=$this->formElementCollection('title', $translations)?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabelCollection('description', $translations, '<span class="required">*</span>', \Admin\Helper\Form\FormLabelCollection::PREPEND);?>
+        <div class="col-sm-4"><?=$this->formElementCollection('description', $translations)?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($advertisingForm->get('published')); ?>
+        <div class="col-sm-4"><?=$this->formElement($advertisingForm->get('published')->setAttribute('checked', ($advertisingForm->getObject()->getPublished() === 'yes' ? 'checked' : '')))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($advertisingForm->get('count'));?>
+        <div class="col-sm-4"><?=$this->formElement($advertisingForm->get('count'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($advertisingForm->get('counter'));?>
+        <div class="col-sm-4"><?=$this->formElement($advertisingForm->get('counter'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($advertisingForm->get('url'));?>
+        <div class="col-sm-4"><?=$this->formElement($advertisingForm->get('url'))?></div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-9">
+                <button type="submit" class="btn purple"><i class="fa fa-check"></i> <?=$this->translate('Save')?></button>
+                <a href="<?=$this->url('admin-advertising')?>" type="button" class="btn default"><?=$this->translate('Back')?></a>
+            </div>
+        </div>
+    </div>
+</div>

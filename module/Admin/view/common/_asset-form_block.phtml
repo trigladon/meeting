@@ -1,0 +1,61 @@
+<div class="form-group">
+    <label class="col-sm-3 control-label"><?=$this->translate('Image')?></label>
+    <div class="col-sm-9 assets-blocks">
+        <?php if ($assets->count()): ?>
+            <?php foreach($assets as $asset): ?>
+                <?php if ($asset->getObject()->getType() === \Common\Entity\Asset::TYPE_IMAGE): ?>
+                    <div class="asset-block pull-left text-center">
+                        <?=$this->formHidden($asset->get('id'))?>
+                        <?=$this->formHidden($asset->get('name'))?>
+                        <?=$this->formHidden($asset->get('type'))?>
+                        <div class="apper-close"><span class="close" data-toggle="modal" href="#basic-confirm"></span></div>
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div class="fileinput-new thumbnail asset-view">
+                                <?php if ($asset->getObject()->getName()): ?>
+                                    <?php $imageUrl = '/img/'.$asset->getObject()->getDirectory().'/'.\Common\Entity\Asset::THUMB_PREFIX.$asset->getObject()->getName()?>
+                                <?php else: ?>
+                                    <?php $imageUrl = '/img/no-image.gif' ?>
+                                <?php endif; ?>
+                                <img src="<?=$imageUrl?>" alt="">
+                            </div>
+                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 10px;"></div>
+                            <div>
+                                <?=$this->formHidden($asset->get('upload'))?>
+                                <a href="#" class="btn red fileinput-exists" data-dismiss="fileinput"><?=$this->translate('Remove')?> </a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        <div class="asset-block pull-left text-center">
+            <span class="btn btn-success btn-block" name="image"><?=$this->translate('Add image')?></span>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-3 control-label"><?=$this->translate('Video')?></label>
+    <div class="col-sm-9 assets-blocks">
+        <?php if ($assets->count()): ?>
+            <?php foreach($assets as $asset): ?>
+                <?php if ($asset->getObject()->getType() === \Common\Entity\Asset::TYPE_VIDEO): ?>
+                    <div class="asset-block pull-left text-center">
+                        <?=$this->formHidden($asset->get('id'))?>
+                        <?=$this->formHidden($asset->get('name'))?>
+                        <?=$this->formHidden($asset->get('type'))?>
+                        <?=$this->formHidden($asset->get('url')->setValue($this->getYoutubeLink($asset->getObject()->getUrl())))?>
+                        <div class="apper-close"><span class="close" data-toggle="modal" href="#basic-confirm"></span></div>
+                        <div class="input-group" style="text-align:left">
+                            <div class="youtube-iframe">
+                                <iframe frameborder="0" width="199" height="150" src="<?=$this->getYoutubeLink($asset->getObject()->getUrl())?>" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php endif; ?>
+        <div class="asset-block pull-left text-center">
+            <span class="btn btn-success btn-block" name="video"><?=$this->translate('Add video')?></span>
+        </div>
+    </div>
+</div>

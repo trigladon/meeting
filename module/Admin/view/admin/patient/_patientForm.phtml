@@ -66,67 +66,7 @@
         <div class="col-sm-4"><?=$this->formCheckbox($patientForm->get('published')->setAttribute('checked', ($patientForm->getObject()->getPublished() === 'yes' ? 'checked' : '')))?></div>
     </div>
     <?php $assets = $patientForm->get('assets'); ?>
-    <div class="form-group">
-        <label class="col-sm-3 control-label"><?=$this->translate('Image')?></label>
-        <div class="col-sm-9 assets-blocks">
-            <?php if ($assets->count()): ?>
-                <?php foreach($assets as $asset): ?>
-                    <?php if ($asset->getObject()->getType() === \Common\Entity\Asset::TYPE_IMAGE): ?>
-                        <div class="asset-block pull-left text-center">
-                            <?=$this->formHidden($asset->get('id'))?>
-                            <?=$this->formHidden($asset->get('name'))?>
-                            <?=$this->formHidden($asset->get('type'))?>
-                            <div class="apper-close"><span class="close" data-toggle="modal" href="#basic-confirm"></span></div>
-                            <div class="fileinput fileinput-new" data-provides="fileinput">
-                                <div class="fileinput-new thumbnail asset-view">
-                                    <?php if ($asset->getObject()->getName()): ?>
-                                        <?php $imageUrl = '/img/'.$asset->getObject()->getDirectory().'/'.\Common\Entity\Asset::THUMB_PREFIX.$asset->getObject()->getName()?>
-                                    <?php else: ?>
-                                        <?php $imageUrl = '/img/no-image.gif' ?>
-                                    <?php endif; ?>
-                                    <img src="<?=$imageUrl?>" alt="">
-                                </div>
-                                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 10px;"></div>
-                                <div>
-                                    <?=$this->formHidden($asset->get('upload'))?>
-                                    <a href="#" class="btn red fileinput-exists" data-dismiss="fileinput"><?=$this->translate('Remove')?> </a>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
-            <div class="asset-block pull-left text-center">
-                <span class="btn btn-success btn-block" name="image"><?=$this->translate('Add image')?></span>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label"><?=$this->translate('Video')?></label>
-        <div class="col-sm-9 assets-blocks">
-            <?php if ($assets->count()): ?>
-                <?php foreach($assets as $asset): ?>
-                    <?php if ($asset->getObject()->getType() === \Common\Entity\Asset::TYPE_VIDEO): ?>
-                        <div class="asset-block pull-left text-center">
-                            <?=$this->formHidden($asset->get('id'))?>
-                            <?=$this->formHidden($asset->get('name'))?>
-                            <?=$this->formHidden($asset->get('type'))?>
-                            <?=$this->formHidden($asset->get('url')->setValue($this->getYoutubeLink($asset->getObject()->getUrl())))?>
-                            <div class="apper-close"><span class="close" data-toggle="modal" href="#basic-confirm"></span></div>
-                            <div class="input-group" style="text-align:left">
-                                <div class="youtube-iframe">
-                                    <iframe frameborder="0" width="199" height="150" src="<?=$this->getYoutubeLink($asset->getObject()->getUrl())?>" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
-            <div class="asset-block pull-left text-center">
-                <span class="btn btn-success btn-block" name="video"><?=$this->translate('Add video')?></span>
-            </div>
-        </div>
-    </div>
+    <?=$this->render('/common/_asset-form_block.phtml', ['assets' => $assets]); ?>
     <div class="form-actions">
         <div class="row">
             <div class="col-md-offset-3 col-md-9">
@@ -137,54 +77,13 @@
     </div>
 </div>
 <?=$this->form()->closeTag(); ?>
-<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/scripts/asset.js"></script>
-<script>
-    jQuery(document).ready(function() {
-        AssetAdd.init();
-        Modal.init({
-            name: '#basic-confirm',
-            title: 'Remove confirm',
-            description: 'Are you sure want remove it?',
-            button: "Remove",
-            color: 'btn red-sunglo'
-        });
-    })
-</script>
-<div class="asset-block pull-left text-center video-block">
-    <input name="assets[___INDEX___][id]" type="hidden" class="asset-id" value="">
-    <input name="assets[___INDEX___][name]" type="hidden" value="">
-    <input type="hidden" name="assets[___INDEX___][type]" value="video">
-    <div class="apper-close"><span class="close" data-toggle="modal" href="#basic-confirm"></span></div>
-    <div class="input-group" style="text-align:left">
-        <div class="youtube-iframe"></div>
-        <div>
-            <span class="help-block"><?=$this->translate("Invalid youtube url");?></span>
-            <input type="url" name="assets[___INDEX___][url]" class="form-control input-youtube-url" maxlength="255" placeholder="Url" value="">
-            <span class="input-group-btn">
-                <span class="btn btn-info check-youtube-url"><?=$this->translate('Check')?></span>
-            </span>
-        </div>
-    </div>
-</div>
-
-<div class="asset-block pull-left text-center image-block">
-    <input name="assets[___INDEX___][id]" type="hidden" class="asset-id" value="">
-    <input name="assets[___INDEX___][name]" type="hidden" value="">
-    <input type="hidden" name="assets[___INDEX___][type]" value="image">
-    <div class="apper-close"><span class="close" data-toggle="modal" href="#basic-confirm"></span></div>
-    <div class="fileinput fileinput-new" data-provides="fileinput">
-        <div class="fileinput-new thumbnail asset-view">
-            <img src="/img/no-image.gif" alt="">
-        </div>
-        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 10px;"></div>
-        <div>
-                        <span class="btn default btn-file">
-                            <span class="fileinput-new"><?=$this->translate('Select image')?> </span>
-                            <span class="fileinput-exists"><?=$this->translate('Change')?> </span>
-                            <input type="file" name="assets[___INDEX___][upload]">
-                        </span>
-            <a href="#" class="btn red fileinput-exists" data-dismiss="fileinput"><?=$this->translate('Remove')?> </a>
-        </div>
-    </div>
-</div>
-<?=$this->render('\partial\modal-confirm.phtml');?>
+<?=$this->render('/common/_asset-add-block.phtml',
+    ['modalSettings' =>
+         [
+             'name' => '#basic-confirm',
+             'title' => 'Remove confirm',
+             'description' => 'Are you sure want remove it?',
+             'button' => 'Remove',
+             'color' => 'btn red-sunglo'
+         ]
+    ]);?>

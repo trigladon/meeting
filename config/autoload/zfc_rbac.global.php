@@ -70,11 +70,29 @@ return [
          * Supported options depend of the role provider, so please refer to the official documentation
          */
         'role_provider' => [
-            'ZfcRbac\Role\ObjectRepositoryRoleProvider' => [
-                'object_manager'     => 'doctrine.entitymanager.orm_default',
-                'class_name'         => 'Common\Entity\Role',
-                'role_name_property' => 'name',
-            ],
+            'ZfcRbac\Role\InMemoryRoleProvider' => [
+                Role::ROLE_GOD_MODE => [
+                    'children'    => [Role::ROLE_ADMIN],
+                ],
+                Role::ROLE_ADMIN => [
+                    'children'    => [Role::ROLE_MANAGER],
+                ],
+                Role::ROLE_MANAGER => [
+                    'children'    => [Role::ROLE_USER],
+                ],
+                Role::ROLE_USER => [
+                    'children'    => [Role::ROLE_GUEST],
+                ],
+                Role::ROLE_GUEST => [
+
+                ]
+            ]
+
+//            'ZfcRbac\Role\ObjectRepositoryRoleProvider' => [
+//                'object_manager'     => 'doctrine.entitymanager.orm_default',
+//                'class_name'         => 'Common\Entity\Role',
+//                'role_name_property' => 'name',
+//            ],
         ],
 
         /**

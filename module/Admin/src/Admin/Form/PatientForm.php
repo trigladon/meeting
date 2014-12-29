@@ -18,11 +18,12 @@ class PatientForm extends BaseForm
             'class' => 'form-horizontal form-bordered'
         ]);
 
-        $this->setInputFilter(new PatientFormFilter($this->getServiceLocator()))->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))->setObject(new Patient());
+        $this->setInputFilter(new PatientFormFilter($this->getServiceLocator()))
+            ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))
+            ->setObject(new Patient());
 
 
         $userManager = new UserManager($this->getServiceLocator());
-        $patientManager = new PatientManager($this->getServiceLocator());
 
         $this->add([
             'name' => 'user',

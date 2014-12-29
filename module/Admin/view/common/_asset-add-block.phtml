@@ -1,0 +1,45 @@
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/scripts/asset.js"></script>
+<script>
+    jQuery(document).ready(function() {
+        AssetAdd.init();
+        Modal.init(<?=json_encode($modalSettings)?>);
+    })
+</script>
+<div class="asset-block pull-left text-center video-block">
+    <input name="assets[___INDEX___][id]" type="hidden" class="asset-id" value="">
+    <input name="assets[___INDEX___][name]" type="hidden" value="">
+    <input type="hidden" name="assets[___INDEX___][type]" value="video">
+    <div class="apper-close"><span class="close" data-toggle="modal" href="#basic-confirm"></span></div>
+    <div class="input-group" style="text-align:left">
+        <div class="youtube-iframe"></div>
+        <div>
+            <span class="help-block"><?=$this->translate("Invalid youtube url");?></span>
+            <input type="url" name="assets[___INDEX___][url]" class="form-control input-youtube-url" maxlength="255" placeholder="Url" value="">
+            <span class="input-group-btn">
+                <span class="btn btn-info check-youtube-url"><?=$this->translate('Check')?></span>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="asset-block pull-left text-center image-block">
+    <input name="assets[___INDEX___][id]" type="hidden" class="asset-id" value="">
+    <input name="assets[___INDEX___][name]" type="hidden" value="">
+    <input type="hidden" name="assets[___INDEX___][type]" value="image">
+    <div class="apper-close"><span class="close" data-toggle="modal" href="#basic-confirm"></span></div>
+    <div class="fileinput fileinput-new" data-provides="fileinput">
+        <div class="fileinput-new thumbnail asset-view">
+            <img src="/img/no-image.gif" alt="">
+        </div>
+        <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 10px;"></div>
+        <div>
+                        <span class="btn default btn-file">
+                            <span class="fileinput-new"><?=$this->translate('Select image')?> </span>
+                            <span class="fileinput-exists"><?=$this->translate('Change')?> </span>
+                            <input type="file" name="assets[___INDEX___][upload]">
+                        </span>
+            <a href="#" class="btn red fileinput-exists" data-dismiss="fileinput"><?=$this->translate('Remove')?> </a>
+        </div>
+    </div>
+</div>
+<?=$this->render('\partial\modal-confirm.phtml');?>

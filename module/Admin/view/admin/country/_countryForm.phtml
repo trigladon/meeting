@@ -1,0 +1,38 @@
+<?php /** @var $countryForm \Admin\Form\CountryForm */?>
+<?php $countryForm->prepare(); ?>
+<?php $error = $this->formElementErrors($countryForm) ?>
+<?php if ($error): ?>
+    <div class="alert alert-danger display-show">
+        <button class="close" data-close="alert"></button>
+        <span><?=$error ?></span>
+    </div>
+<?php endif;?>
+<?=$this->form()->openTag($countryForm); ?>
+<div class="form-body">
+    <?=$this->formRow($countryForm->get('csrf')); ?>
+    <div class="form-group">
+        <?=$this->formLabel($countryForm->get('name'));?>
+        <div class="col-sm-4"><?=$this->formText($countryForm->get('name'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($countryForm->get('englishName'));?>
+        <div class="col-sm-4"><?=$this->formText($countryForm->get('englishName'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($countryForm->get('shortName'));?>
+        <div class="col-sm-4"><?=$this->formText($countryForm->get('shortName'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($countryForm->get('published')); ?>
+        <div class="col-sm-4"><?=$this->formCheckbox($countryForm->get('published')->setAttribute('checked', ($countryForm->getObject()->getPublished() === 'yes' ? 'checked' : '')))?></div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-9">
+                <button type="submit" class="btn purple"><i class="fa fa-check"></i> <?=$this->translate('Save')?></button>
+                <a href="<?=$this->url('admin-country', ['action' => 'all'])?>" type="button" class="btn default"><?=$this->translate('Back')?></a>
+            </div>
+        </div>
+    </div>
+</div>
+<?=$this->form()->closeTag(); ?>

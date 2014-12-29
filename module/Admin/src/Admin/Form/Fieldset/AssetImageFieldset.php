@@ -26,7 +26,7 @@ class AssetImageFieldset extends BaseFieldset implements  InputFilterProviderInt
             'name' => 'type',
             'type' => 'hidden',
             'attributes' => [
-                'value' => 'Image'
+                'value' => 'image'
             ]
         ]);
 

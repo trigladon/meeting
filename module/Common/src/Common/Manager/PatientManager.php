@@ -78,27 +78,31 @@ class PatientManager extends BaseEntityManager
 
     public function savePatient(Patient $patient)
     {
-        $assets = $patient->getAssets();
         $assetManager = new AssetManager($this->getServiceLocator());
 
-
-        // TODO need refactoring
-        /** @var $asset Asset */
-        foreach($assets as $asset){
-            if (!$asset->getUser()){
-                $asset->setUser($patient->getUser());
-            }
-        }
-
-        foreach($assets as $asset){
+        foreach($patient->getAssets() as $asset){
             $assetManager->saveAsset($asset);
         }
 
-        $patient->setCheck(($patient->getCheck() === '0' ? 'no' : 'yes'));
-        $patient->setPublished(($patient->getPublished() === '0' ? 'no' : 'yes'));
+        $patient->setCheck($this->getEnumName($patient, 'check'));
+        $patient->setPublished($this->getEntityPublishedName($patient));
         $assetManager->saveAsset($patient->getImage()->setUser($patient->getUser()));
 
         $this->getDAO()->save($patient);
+    }
+
+    /**
+     * @param $offset
+     * @param $limit
+     *
+     * @return array
+     */
+    public function getPatientListDataForTable($offset, $limit)
+    {
+        return [
+            'count' => $this->getDAO()->countAll(),
+            'data' => $this->getDAO()->findAllJoinOffsetAndLimit($offset, $limit)
+        ];
     }
 
     public function patientTable()

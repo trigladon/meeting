@@ -267,7 +267,7 @@ class TableManager extends BaseManager
             ],
             'unpublish' => [
                 'name' => 'Unpublish',
-                'class' => 'btn yellow'
+                'class' => 'btn red-sunglo'
             ],
             'publish' => [
                 'name' => 'Publish',

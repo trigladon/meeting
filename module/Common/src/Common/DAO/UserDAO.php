@@ -49,6 +49,22 @@ class UserDAO extends BaseDAO
 		return $qb->getQuery()->useResultCache($useCache, null)->getResult($hydrationMode);
 	}
 
+	/**
+	 * @param      $offset
+	 * @param      $limit
+	 * @param int  $hydrationMode
+	 * @param bool $useCache
+	 *
+	 * @return ArrayCollection
+	 */
+	public function findAllJoinOffsetAndLimit($offset, $limit, $hydrationMode = AbstractQuery::HYDRATE_OBJECT, $useCache = true)
+	{
+		$qb = $this->findAllQ();
+		$qb->leftJoin('u.code', 'uc')->addSelect('uc')
+			->setFirstResult($offset)
+			->setMaxResults($limit);
 
+		return $qb->getQuery()->useResultCache($useCache)->getResult($hydrationMode);
+	}
 
 }

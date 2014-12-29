@@ -2,6 +2,8 @@
 
 namespace Admin\Form;
 
+use Common\Entity\BaseEntity;
+use Common\Manager\LanguageManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Form\Form;
 
@@ -60,6 +62,41 @@ class BaseForm extends Form
         $this->doctrineEntityManager = $doctrineEntityManager;
 
         return $this;
+    }
+
+    /**
+     * Method create new translation for new language
+     *
+     * @param BaseEntity $entity
+     *
+     * @return BaseEntity
+     * @throws \Exception
+     */
+    public function extractLanguage(BaseEntity $entity)
+    {
+        if (!is_callable(array($entity, 'getTranslations'))){
+            throw new \Exception('Method "getTranslations" not found');
+        }
+
+        $translationClassName = get_class($entity).'Translations';
+        $translations = $entity->getTranslations();
+        $languageManager = new LanguageManager($this->getServiceLocator());
+
+        foreach($languageManager->getDAO()->findAll() as $language){
+            $create = true;
+            foreach($translations as $translationEntity){
+                 if ($translationEntity !== null && $translationEntity->getLanguage()->getPrefix() === $language->getPrefix()){
+                    $create = false;
+                }
+            }
+
+            if ($create) {
+                $entityTranslation = new $translationClassName();
+                $entity->addTranslations($entityTranslation->setLanguage($language));
+            }
+        }
+
+        return $entity;
     }
 
 }

@@ -71,3 +71,11 @@ div.apper-close{
 div span.help-block{
     display: none;
 }
+
+.language{
+    display: none;
+}
+
+.language-en{
+    display: block;
+}

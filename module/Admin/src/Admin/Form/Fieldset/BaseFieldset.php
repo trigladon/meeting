@@ -23,11 +23,15 @@ abstract class BaseFieldset extends Fieldset implements ServiceLocatorAwareInter
      */
     protected $hydratorClass = null;
 
-    public function __construct(ServiceLocatorInterface $serviceLocator, BaseEntity $entity, $name = null)
+    public function __construct(ServiceLocatorInterface $serviceLocator, BaseEntity $entity = null, $name = null)
     {
         parent::__construct($name);
         $this->serviceLocator = $serviceLocator;
-        $this->setHydrator($this->getHydratorClass())->setObject($entity);
+        $this->setHydrator($this->getHydratorClass());
+
+        if ($entity !== null) {
+            $this->setObject($entity);
+        }
     }
 
     /**

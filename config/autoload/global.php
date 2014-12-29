@@ -1,11 +1,11 @@
 <?php
-
+defined('DEFAULT_LANGUAGE') || define('DEFAULT_LANGUAGE', 'en');
 return array(
 
     'projectData' => [
         'siteName' => 'Meeting',
-        'defaultLanguage' => 'en',
-        'defaultLanguageId' => 1,
+        'defaultLanguage' => DEFAULT_LANGUAGE,
+        'defaultLanguageId' => 2,
         'defaultLanguageLocale' => 'en_EN',
 
         'emailSend' => 'help@meeting.com',
@@ -76,14 +76,14 @@ return array(
                             [
                                 'label' => 'Add user',
                                 'route' => 'admin-user',
-                                'icon'  => 'fa-user',
+                                'icon'  => 'icon-user-follow',
                                 'action' => 'add',
                                 'visible-in-menu' => false,
                             ],
                             [
                                 'label' => 'Edit user',
                                 'route' => 'admin-user',
-                                'icon'  => 'fa-user',
+                                'icon'  => 'icon-user',
                                 'action' => 'edit',
                                 'visible-in-menu' => false,
                             ]
@@ -143,13 +143,175 @@ return array(
             ],
             [
                 'label' => 'Advertising',
-                'route' => 'admin-login',
+                'route' => 'admin-advertising-place',
                 'icon' => 'icon-fire',
+                'pages' => [
+                    [
+                        'label' => 'Place',
+                        'route' => 'admin-advertising-place',
+                        'icon'  => 'icon-energy',
+                        'pages' => [
+                            [
+                                'label' => 'Add place',
+                                'route' => 'admin-advertising-place',
+                                'icon'  => 'icon-energy',
+                                'action' => 'add-place',
+                                'visible-in-menu' => false,
+                            ],
+                            [
+                                'label' => 'Edit place',
+                                'route' => 'admin-advertising-place',
+                                'icon'  => 'icon-energy',
+                                'action' => 'edit-place',
+                                'visible-in-menu' => false,
+                            ]
+                        ]
+                    ],
+                    [
+                        'label' => 'Advertising',
+                        'route' => 'admin-advertising',
+                        'icon'  => 'icon-fire',
+                        'action'=> 'all',
+                        'pages' => [
+                            [
+                                'label' => 'Add advertising',
+                                'route' => 'admin-advertising',
+                                'icon'  => 'icon-fire',
+                                'action' => 'add',
+                                'visible-in-menu' => false,
+                            ],
+                            [
+                                'label' => 'Edit advertising',
+                                'route' => 'admin-advertising',
+                                'icon'  => 'icon-fire',
+                                'action' => 'edit',
+                                'visible-in-menu' => false,
+                            ]
+                        ]
+                    ]
+                ]
             ],
             [
                 'label' => 'Pages',
                 'route' => 'admin-page',
                 'icon' => 'icon-docs',
+                'pages' => [
+                    [
+                        'label' => 'Add page',
+                        'route' => 'admin-page',
+                        'icon'  => 'icon-docs',
+                        'action' => 'add',
+                        'visible-in-menu' => false,
+                    ],
+                    [
+                        'label' => 'Edit page',
+                        'route' => 'admin-page',
+                        'icon'  => 'icon-docs',
+                        'action' => 'edit',
+                        'visible-in-menu' => false,
+                    ]
+                ]
+            ],
+            [
+                'label' => 'News',
+                'route' => 'admin-category',
+                'icon' => 'icon-book-open',
+                'pages' => [
+                    [
+                        'label' => 'Categories',
+                        'route' => 'admin-category',
+                        'icon'  => 'icon-layers',
+                        'pages' => [
+                            [
+                                'label' => 'Add category',
+                                'route' => 'admin-category',
+                                'icon'  => 'icon-note',
+                                'action' => 'add-category',
+                                'visible-in-menu' => false,
+                            ],
+                            [
+                                'label' => 'Edit category',
+                                'route' => 'admin-category',
+                                'icon'  => 'icon-note',
+                                'action' => 'edit-category',
+                                'visible-in-menu' => false,
+                            ]
+                        ]
+                    ],
+                    [
+                        'label' => 'News',
+                        'route' => 'admin-news',
+                        'icon'  => 'icon-doc',
+                        'action'=> 'all',
+                        'pages' => [
+                            [
+                                'label' => 'Add news',
+                                'route' => 'admin-news',
+                                'icon'  => 'icon-note',
+                                'action' => 'add',
+                                'visible-in-menu' => false,
+                            ],
+                            [
+                                'label' => 'Edit news',
+                                'route' => 'admin-news',
+                                'icon'  => 'icon-note',
+                                'action' => 'edit',
+                                'visible-in-menu' => false,
+                            ]
+                        ]
+                    ]
+                ]
+            ],
+            [
+                'label' => 'Countries',
+                'route' => 'admin-country',
+                'icon' => 'icon-globe',
+                'pages' => [
+                    [
+                        'label' => 'Country',
+                        'route' => 'admin-country',
+                        'icon'  => 'icon-globe-alt',
+                        'action' => 'all',
+                        'pages' => [
+                            [
+                                'label' => 'Add country',
+                                'route' => 'admin-country',
+                                'icon'  => 'icon-globe-alt',
+                                'action' => 'add',
+                                'visible-in-menu' => false,
+                            ],
+                            [
+                                'label' => 'Edit country',
+                                'route' => 'admin-country',
+                                'icon'  => 'icon-globe-alt',
+                                'action' => 'edit',
+                                'visible-in-menu' => false,
+                            ]
+                        ]
+                    ],
+                    [
+                        'label' => 'City',
+                        'route' => 'admin-city',
+                        'icon'  => 'icon-map',
+                        'action'=> 'all-cities',
+                        'pages' => [
+                            [
+                                'label' => 'Add City',
+                                'route' => 'admin-city',
+                                'icon'  => 'icon-map',
+                                'action' => 'add-city',
+                                'visible-in-menu' => false,
+                            ],
+                            [
+                                'label' => 'Edit city',
+                                'route' => 'admin-city',
+                                'icon'  => 'icon-map',
+                                'action' => 'edit-city',
+                                'visible-in-menu' => false,
+                            ]
+                        ]
+                    ]
+                ]
             ],
             [
                 'label' => 'Assets',

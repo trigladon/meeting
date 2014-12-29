@@ -64,6 +64,25 @@ class LanguageManager extends BaseEntityManager
         $this->getDAO()->save($language);
     }
 
+    public function getLanguageForSelect()
+    {
+        $result = array();
+
+        $defaultLanguage = $this->getServiceLocator()->get('config')['projectData']['defaultLanguage'];
+
+        /** @var $language Language */
+        foreach($this->getDAO()->findAll() as $language)
+        {
+            $result[] = [
+                'value' => $language->getPrefix(),
+                'label' => $language->getName(),
+                'selected' => ($defaultLanguage == $language->getPrefix() ? true : false),
+            ];
+        }
+
+        return $result;
+    }
+
 
     public function languageTable()
     {

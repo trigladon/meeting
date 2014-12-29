@@ -26,4 +26,23 @@ class PatientDAO extends BaseDAO
         return $qb->getQuery()->useResultCache($useCache, null)->getOneOrNullResult($hydrationMode);
     }
 
+    /**
+     * @param      $offset
+     * @param      $limit
+     * @param int  $hydrationMode
+     * @param bool $useCache
+     *
+     * @return ArrayCollection
+     */
+    public function findAllJoinOffsetAndLimit($offset, $limit, $hydrationMode = AbstractQuery::HYDRATE_OBJECT, $useCache = true)
+    {
+        $qb = $this->findAllQ();
+        $qb->leftJoin('u.user', 'uu')->addSelect('uu')
+            ->leftJoin('uu.code', 'uuc')->addSelect('uuc')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        return $qb->getQuery()->useResultCache($useCache)->getResult($hydrationMode);
+    }
+
 }

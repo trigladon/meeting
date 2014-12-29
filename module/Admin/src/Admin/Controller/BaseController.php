@@ -102,19 +102,24 @@ class BaseController extends AbstractActionController
 
     /**
      * @param BaseEntityManager $entityManager
-     * @param TableManager     $tableManager
+     * @param TableManager      $tableManager
+     * @param string            $funcListData
      *
      * @return Array
      * @throws \Exception
      */
-    protected function getAjaxTableList(BaseEntityManager $entityManager, TableManager $tableManager)
+    protected function getAjaxTableList(BaseEntityManager $entityManager, TableManager $tableManager, $funcListData = 'getListDataForTable')
     {
+        if (!is_callable(array($entityManager, $funcListData))){
+            throw new \Exception('Method "'.$funcListData.'()" not found in '.get_class($entityManager));
+        }
+
         $request = $this->getRequest();
         try{
 
-            $page = (int)$request->getPost('start');
-            $limit = (int)$request->getPost('length');
-            $data = $entityManager->getListDataForTable($page, $limit);
+            $page = (int)$request->getPost('start', 0);
+            $limit = (int)$request->getPost('length', 10);
+            $data = $entityManager->{$funcListData}($page, $limit);
             $result = $tableManager->getDataContent($data['data']);
             $result['recordsTotal'] = $data['count'];
             $result['recordsFiltered'] = $data['count'];

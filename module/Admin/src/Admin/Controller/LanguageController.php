@@ -26,7 +26,15 @@ class LanguageController extends BaseController
             );
         }
 
-        return ['tableInfo' => $tableManager->getTableInfo()];
+        $view = new ViewModel([
+            'tableInfo' => $tableManager->getTableInfo(),
+            'url' => [
+                'route' => 'admin-language',
+                'parameters' => ['action' => 'add']
+            ]
+        ]);
+
+        return $view->setTemplate('/common/all-page');
     }
 
     public function addAction()
@@ -57,12 +65,14 @@ class LanguageController extends BaseController
                 throw new \Exception($e->getMessage());
             }
 
-
         }
 
-        return [
-            'languageForm' => $languageForm
-        ];
+        $view = new ViewModel([
+            'template' => '/admin/language/_languageForm.phtml',
+            'parameters' => ['languageForm' => $languageForm]
+        ]);
+
+        return $view->setTemplate('/common/add-edit-page');
     }
 
     public function editAction()
@@ -103,8 +113,12 @@ class LanguageController extends BaseController
         }
 
 
-        $view = new ViewModel(['languageForm' => $languageForm]);
-        return $view->setTemplate('admin/language/add');
+        $view = new ViewModel([
+            'template' => '/admin/language/_languageForm.phtml',
+            'parameters' => ['languageForm' => $languageForm]
+        ]);
+
+        return $view->setTemplate('/common/add-edit-page');
     }
 
     public function publishAction()

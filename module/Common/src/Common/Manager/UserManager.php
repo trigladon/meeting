@@ -87,6 +87,20 @@ class UserManager extends BaseEntityManager
         ];
     }
 
+    /**
+     * @param $offset
+     * @param $limit
+     *
+     * @return array
+     */
+    public function getUserListDataForTable($offset, $limit)
+    {
+        return [
+            'count' => $this->getDAO()->countAll(),
+            'data' => $this->getDAO()->findAllJoinOffsetAndLimit($offset, $limit)
+        ];
+    }
+
     public function getTypeNameByIdType($idType)
     {
         $selectData = $this->getTypesForSelect();
