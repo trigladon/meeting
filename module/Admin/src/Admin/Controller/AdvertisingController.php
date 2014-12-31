@@ -75,7 +75,7 @@ class AdvertisingController extends BaseController
                     $advertisingManager = new AdvertisingManager($this->getServiceLocator());
                     $advertisingManager->savePlace($placeForm->getObject());
 
-                    $this->setSuccessMessage('Advertising place add success');
+                    $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising place add success'));
                     return $this->toRoute('admin-advertising-place');
 
                 }
@@ -100,7 +100,7 @@ class AdvertisingController extends BaseController
             $place = $advertisingManager->getDAOPlace()->findById($this->params()->fromRoute('id', 0));
 
             if ($place === null) {
-                $this->setErrorMessage('Advertising place not found');
+                $this->setErrorMessage($advertisingManager->getTranslatorManager()->translate('Advertising place not found'));
                 return $this->toRoute('admin-advertising-place');
             }
             /** @var $placeForm \Admin\Form\AdvertisingPlaceForm */
@@ -117,7 +117,7 @@ class AdvertisingController extends BaseController
                     $advertisingManager = new AdvertisingManager($this->getServiceLocator());
                     $advertisingManager->savePlace($placeForm->getObject());
 
-                    $this->setSuccessMessage('Advertising place save success');
+                    $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising place save success'));
                     return $this->toRoute('admin-advertising-place');
                 }
             }
@@ -142,7 +142,7 @@ class AdvertisingController extends BaseController
             $advertisingManager = new AdvertisingManager($this->getServiceLocator());
             $place = $advertisingManager->getDAOPlace()->findById($this->params()->fromRoute('id', 0));
             if ($place === null) {
-                $this->setErrorMessage('Advertising place not found');
+                $this->setErrorMessage($advertisingManager->getTranslatorManager()->translate('Advertising place not found'));
                 return $this->toRoute('admin-advertising-place');
             }
 
@@ -152,7 +152,7 @@ class AdvertisingController extends BaseController
             throw new \Exception($e->getMessage());
         }
 
-        $this->setSuccessMessage('Advertising place delete success');
+        $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising place delete success'));
         return $this->toRoute('admin-advertising-place');
     }
 
@@ -174,7 +174,7 @@ class AdvertisingController extends BaseController
                     $advertisingManager = new AdvertisingManager($this->getServiceLocator());
                     $advertisingManager->saveAdvertising($advertisingForm->getObject());
 
-                    $this->setSuccessMessage('Advertising add success');
+                    $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising add success'));
                     return $this->toDefaultRoute();
 
                 }
@@ -196,10 +196,10 @@ class AdvertisingController extends BaseController
     {
         try{
             $advertisingManager = new AdvertisingManager($this->getServiceLocator());
-            $advertising = $advertisingManager->getDAO()->findById($this->params()->fromRoute('id', 0));
+            $advertising = $advertisingManager->getDAO()->findByIdJoin($this->params()->fromRoute('id', 0));
 
             if ($advertising === null) {
-                $this->setErrorMessage('Advertising not found');
+                $this->setErrorMessage($advertisingManager->getTranslatorManager()->translate('Advertising not found'));
                 return $this->toDefaultRoute();
             }
             /** @var $advertisingForm \Admin\Form\AdvertisingForm */
@@ -216,7 +216,7 @@ class AdvertisingController extends BaseController
                     $advertisingManager = new AdvertisingManager($this->getServiceLocator());
                     $advertisingManager->saveAdvertising($advertisingForm->getObject());
 
-                    $this->setSuccessMessage('Advertising save success');
+                    $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising save success'));
                     return $this->toDefaultRoute();
                 }
             }
@@ -238,9 +238,9 @@ class AdvertisingController extends BaseController
         try{
 
             $advertisingManager = new AdvertisingManager($this->getServiceLocator());
-            $advertising = $advertisingManager->getDAO()->findById($this->params()->fromRoute('id', 0));
+            $advertising = $advertisingManager->getDAO()->findByIdJoin($this->params()->fromRoute('id', 0));
             if ($advertising === null) {
-                $this->setErrorMessage('Advertising not found');
+                $this->setErrorMessage($advertisingManager->getTranslatorManager()->translate('Advertising not found'));
                 return $this->toDefaultRoute();
             }
 
@@ -250,7 +250,7 @@ class AdvertisingController extends BaseController
             throw new \Exception($e->getMessage());
         }
 
-        $this->setSuccessMessage('Advertising delete success');
+        $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising delete success'));
         return $this->toDefaultRoute();
     }
 

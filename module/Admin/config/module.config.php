@@ -13,6 +13,7 @@ return [
             'Admin\Controller\Country'      => 'Admin\Controller\CountryController',
             'Admin\Controller\News'         => 'Admin\Controller\NewsController',
             'Admin\Controller\Advertising'  => 'Admin\Controller\AdvertisingController',
+            'Admin\Controller\Feedback'     => 'Admin\Controller\FeedbackController',
         ),
     ),
 
@@ -241,6 +242,35 @@ return [
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Advertising',
                         'action' => 'all-places'
+                    )
+                )
+            ],
+
+            'admin-feedback' => [
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/feedback[/:action[/:id]]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Feedback',
+                        'action' => 'all'
+                    )
+                )
+            ],
+            'admin-feedback-answer' => [
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/adminomaniya/feedback/read/:id/answer/:idAnswer',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                        'idAnswer'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Feedback',
+                        'action' => 'answer'
                     )
                 )
             ]

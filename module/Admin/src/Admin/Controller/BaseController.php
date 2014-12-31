@@ -131,5 +131,10 @@ class BaseController extends AbstractActionController
         return $result;
     }
 
+    protected function getForm($name)
+    {
+        return $this->getServiceLocator()->get('FormElementManager')->get($name);
+    }
+
 
 }

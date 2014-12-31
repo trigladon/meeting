@@ -3,6 +3,7 @@
 namespace Common;
 
 use Admin\Helper\Languages;
+use Admin\Helper\MenuRender;
 use Admin\Helper\YoutubeLink;
 use Application\Helper\FlashMessage;
 use Admin\Helper\AdminAssetPath;
@@ -58,6 +59,9 @@ class Module
                 },
                 'projectLanguages' => function($sm) {
                     return new Languages($sm->getServiceLocator());
+                },
+                'menuRender' => function($sm){
+                    return new MenuRender($sm->getServiceLocator());
                 }
             )
         );

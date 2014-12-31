@@ -1,0 +1,18 @@
+<div class="portlet light">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-paper-plane font-yellow-casablanca"></i><?=$this->translate('Letter')?>
+        </div>
+        <div class="tools">
+            <a href="<?=$this->url('admin-feedback', ['action' => 'read', 'id' => $feedback->getId()  ])?>" class="btn btn-xs default" style="height: 21px"><i class="fa glyphicon glyphicon-chevron-left"></i> <?=$this->translate('Back')?></a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <?php foreach($answerData as $label => $value): ?>
+            <div class="row">
+                <label class="col-sm-4 control-label"><strong><?=$this->translate($label)?></strong></label>
+                <div class="col-sm-5"><?=$value?></div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

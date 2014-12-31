@@ -138,8 +138,32 @@ return array(
             ],
             [
                 'label' => 'Feedback',
-                'route' => 'admin-login',
-                'icon' => 'icon-envelope-letter'
+                'route' => 'admin-feedback',
+                'icon' => 'icon-envelope-letter',
+                'pages' => [
+                    [
+                        'label' => 'Read',
+                        'route' => 'admin-feedback',
+                        'icon'  => 'icon-envelope-letter',
+                        'action' => 'read',
+                        'visible-in-menu' => false,
+                        'pages' => [
+                            [
+                                'label' => 'View answer',
+                                'route' => 'admin-feedback-answer',
+                                'icon'  => 'icon-envelope-letter',
+                                'visible-in-menu' => false,
+                            ],
+                        ],
+                    ],
+//                    [
+//                        'label' => 'View answer',
+//                        'route' => 'admin-feedback-answer',
+//                        'icon'  => 'icon-envelope-letter',
+//                        'visible-in-menu' => false,
+//                    ],
+                ]
+
             ],
             [
                 'label' => 'Advertising',

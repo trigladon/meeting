@@ -27,4 +27,20 @@ class AdvertisingDAO extends BaseDAO
         return $qb->getQuery()->useResultCache($useCache)->getResult($hydrationMode);
 
     }
+
+    public function findByIdJoin($id, $hydrationMode = AbstractQuery::HYDRATE_OBJECT, $useCache = true)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('em')
+            ->from($this->getRepositoryName(), 'em')
+            ->innerJoin('em.translations', 'emt')->addSelect('emt')
+            ->innerJoin('emt.language', 'emtl')->addSelect('emtl')
+            ->leftJoin('em.image', 'emi')->addSelect('emi')
+            ->where($qb->expr()->eq('em.id', ':id'))
+            ->setParameter('id', $id);
+
+        return $qb->getQuery()->useResultCache($useCache, null)->getOneOrNullResult($hydrationMode);
+
+    }
+
 }

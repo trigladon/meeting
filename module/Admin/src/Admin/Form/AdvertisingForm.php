@@ -57,7 +57,7 @@ class AdvertisingForm extends BaseForm
             'name' => 'image',
             'type' => 'Admin\Form\Fieldset\AssetImageFieldset',
             'options' => [
-                'label' => 'Patient photo',
+                'label' => 'Image',
                 'label_attributes' => [
                     'class' => 'col-sm-3 control-label',
                 ]

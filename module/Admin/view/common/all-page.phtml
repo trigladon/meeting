@@ -3,10 +3,12 @@
         <div class="caption">
             <i class="fa fa-users"></i>
         </div>
+        <?php if ($url): ?>
         <div class="actions">
             <a href="<?=$this->url($url['route'], $url['parameters'])?>" class="btn purple">
                 <i class="fa fa-plus"></i> <?=$this->translate('Add') ?></a>
         </div>
+        <?php endif; ?>
     </div>
     <div class="portlet-body">
         <?=$this->render('\partial\table.phtml', array('tableInfo' => $tableInfo));?>

@@ -1,0 +1,56 @@
+<?php /** @var $feedbackData */ ?>
+<link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/jquery-nestable/jquery.nestable.css"/>
+<div class="portlet light">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="icon-paper-plane font-yellow-casablanca"></i><?=$this->translate('Letter')?>
+        </div>
+        <div class="tools">
+            <a href="<?=$this->url('admin-feedback')?>" class="btn btn-xs default" style="height: 21px"><i class="fa glyphicon glyphicon-chevron-left"></i> <?=$this->translate('Back')?></a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <?php foreach($feedbackData as $label => $value): ?>
+            <div class="row">
+                <label class="col-sm-4 control-label"><strong><?=$this->translate($label)?></strong></label>
+                <div class="col-sm-5">
+                    <?php if ($value instanceof \Doctrine\Common\Collections\Collection && $value->count()): ?>
+                        <div class="dd" id="feedback-answers">
+                            <ol class="dd-list">
+                                <?php /** @var $answer \Common\Entity\FeedbackAnswer */ ?>
+                                <?php foreach($value as $answer): ?>
+                                    <li class="dd-item" data-id="1">
+                                        <div  class="dd-handle" style="height: 34px">
+                                            <div class="col-sm-6 text-left">
+                                                <a href="<?=$this->url('admin-feedback-answer', ['id' => $feedback->getId(), 'idAnswer' => $answer->getId()])?>">#<?=$answer->getUser()->getId().' '.$answer->getUser()->getFullName()?> <?=$answer->getCreated()->format($this->getProjectData()['options']['dateTimeFormat'])?></a>
+                                            </div>
+                                            <div class="col-sm-6 text-right">
+                                                <a href="<?=$this->url('admin-feedback-answer', ['id' => $feedback->getId(), 'idAnswer' => $answer->getId()])?>" class="btn btn-xs btn-success text-right" style="height: 21px"><?=$this->translate('Read')?></a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ol>
+                        </div>
+                    <?php else: ?>
+                        <?=$value?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+<div class="portlet box red-sunglo">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa glyphicon glyphicon-pencil"></i><?=$this->translate('Write answer')?>
+        </div>
+        <div class="tools">
+            <a href="javascript:;" class="collapse">
+            </a>
+        </div>
+    </div>
+    <div class="portlet-body form">
+        <?=$this->render('/admin/feedback/_answerForm.phtml', ['answerForm' => $answerForm])?>
+    </div>
+</div>

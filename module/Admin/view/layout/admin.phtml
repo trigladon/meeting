@@ -7,10 +7,10 @@
 <!-- BEGIN HEAD -->
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <?php $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0')->appendHttpEquiv('X-UA-Compatible', 'IE=edge'); ?>
-    <?php $this->headMeta("test description text", "description"); ?>
-    <?php $this->headMeta($this->getProjectData()['siteName'], "author"); ?>
-    <?php echo $this->headMeta(); ?>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="<?='test description text'?>" name="description">
+    <meta content="<?=$this->getProjectData()['siteName']?>" name="author">
     <?php $title = $this->getPageTitle('admin-navigation') ?>
     <?php echo $this->headTitle($this->translate($title).' - '.$this->translate($this->getProjectData()['siteName']))->setSeparator(' - ')->setAutoEscape(false); ?>
 
@@ -50,40 +50,31 @@
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 <body class="page-header-fixed page-container-bg-solid page-sidebar-closed-hide-logo page-header-fixed-mobile page-footer-fixed1">
-<?php echo $this->headScript()
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/excanvas.min.js', 'text/javascript', array('conditional' => 'lt IE 9'))
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-1.11.0.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-migrate-1.2.1.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap/js/bootstrap.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery-slimscroll/jquery.slimscroll.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery.blockui.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/jquery.cokie.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/uniform/jquery.uniform.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-switch/js/bootstrap-switch.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/select2/select2.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/datatables/media/js/jquery.dataTables.min.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/metronic.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/layout.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/demo.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/global/datatable.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/table-ajax.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/scripts/modal.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', 'text/javascript')
-    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-fileinput/bootstrap-fileinput.js', 'text/javascript')
-//    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js', 'text/javascript')
-//    ->appendFile($this->getAdminAssetsPath(). '/plugins/clockface/js/clockface.js', 'text/javascript')
-//    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-daterangepicker/moment.min.js', 'text/javascript')
-//    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-daterangepicker/daterangepicker.js', 'text/javascript')
-//    ->appendFile($this->getAdminAssetsPath(). '/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js', 'text/javascript')
-//    ->appendFile($this->getAdminAssetsPath(). '/scripts/components-pickers.js', 'text/javascript')
-
-;
-?>
-
+<!--[if lt IE 9]>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/respond.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/excanvas.min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/jquery.blockui.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/jquery.cokie.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/uniform/jquery.uniform.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/select2/select2.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/datatables/media/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/scripts/metronic.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/scripts/layout.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/scripts/demo.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/scripts/global/datatable.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/scripts/table-ajax.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/scripts/modal.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
 <script>
     jQuery(document).ready(function() {
         Modal.init({

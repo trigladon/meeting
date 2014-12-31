@@ -101,6 +101,9 @@ return [
                 'Admin\Form\AdvertisingForm' => function($sm) {
                     return new \Admin\Form\AdvertisingForm($sm->getServiceLocator());
                 },
+                'Admin\Form\FeedbackAnswerForm' => function($sm) {
+                    return new \Admin\Form\FeedbackAnswerForm($sm->getServiceLocator());
+                },
 
             //front
         )

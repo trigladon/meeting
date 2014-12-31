@@ -79,3 +79,18 @@ div span.help-block{
 .language-en{
     display: block;
 }
+
+div#feedback-answers ol li div.dd-handle{
+    cursor: default!important;
+}
+div#feedback-answers ol li div.dd-handle a{
+    cursor: pointer!important;
+}
+div#feedback-answers ol li div.dd-handle a:hover{
+    text-decoration: none;
+}
+
+div#feedback-answers ol li div.dd-handle div.col-sm-6{
+    margin: 0;
+    padding: 0;
+}
