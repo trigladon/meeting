@@ -10,14 +10,14 @@ class FeedbackAnswerForm extends BaseForm
 
     public function init()
     {
+        $this->setInputFilter(new FeedbackAnswerFormFilter($this->getServiceLocator()))
+            ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))
+            ->setObject(new FeedbackAnswer());
+
         $this->setAttributes([
             'method' => 'post',
             'class' => 'form-horizontal form-bordered'
         ]);
-
-        $this->setInputFilter(new FeedbackAnswerFormFilter($this->getServiceLocator()))
-            ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))
-            ->setObject(new FeedbackAnswer());
 
         $this->add([
             'name' => 'title',

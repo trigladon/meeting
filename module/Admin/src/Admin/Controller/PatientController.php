@@ -2,22 +2,18 @@
 
 namespace Admin\Controller;
 
-use Common\Manager\TableManager;
 use Common\Manager\PatientManager;
 use Common\Stdlib\ArrayLib;
-use Doctrine\Common\Collections\ArrayCollection;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Element\Collection;
 
 class PatientController extends BaseController
 {
-    protected $defaultRoute = 'admin-patient';
 
     public function allAction()
     {
         $patientManager = new PatientManager($this->getServiceLocator());
-        $tableManager = new TableManager($this->getServiceLocator(), $patientManager);
+        $tableManager = new \Common\Manager\TableManager($this->getServiceLocator(), $patientManager);
         $tableManager->setColumnsList($patientManager->patientTable());
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -30,19 +26,19 @@ class PatientController extends BaseController
         $view = new ViewModel([
             'tableInfo' => $tableManager->getTableInfo(),
             'url' => [
-                'route' => 'admin-patient',
-                'parameters' => ['action' => 'add']
+                'route' => 'admin/default',
+                'parameters' => ['controller' => 'user', 'action' => 'add']
             ]
         ]);
 
-        return $view->setTemplate('/common/all-page');
+        return $view->setTemplate('common/all-page');
     }
 
     public function addAction()
     {
 
         /** @var $patientForm \Admin\Form\PatientForm */
-        $patientForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\PatientForm');
+        $patientForm = $this->getForm('Admin\Form\PatientForm');
 
         $request = $this->getRequest();
 
@@ -57,7 +53,7 @@ class PatientController extends BaseController
                     $patientManager->savePatient($patientForm->getObject());
 
                     $this->setSuccessMessage($patientManager->getTranslatorManager()->translate('New patient added success'));
-                    return $this->toDefaultRoute();
+                    return $this->toRoute("admin/default", ["controller" => "user"]);
                 }
 
             } catch (\Exception $e) {
@@ -66,11 +62,11 @@ class PatientController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/patient/_patientForm.phtml',
+            'template' => 'admin/patient/_patientForm',
             'parameters' => ['patientForm' => $patientForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
     }
 
     public function editAction()
@@ -81,23 +77,23 @@ class PatientController extends BaseController
 
             if ($patient === null) {
                 $this->setErrorMessage('Patient not found');
-                return $this->toDefaultRoute();
+                return $this->toRoute("admin/default", ["controller" => "user"]);
             }
 
             /** @var $patientForm \Admin\Form\PatientForm */
-            $patientForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\PatientForm');
-            $patientForm->bind($patient);
+            $patientForm = $this->getForm('Admin\Form\PatientForm')->bind($patient);
 
             $request = $this->getRequest();
-            if ($request->isPost()) {
-
+            if ($request->isPost())
+            {
                 $patientForm->setData(ArrayLib::merge($request->getPost()->toArray(), $request->getFiles()->toArray(), true));
 
                 if ($patientForm->isValid()) {
 
                     $patientManager->savePatient($patientForm->getObject());
+
                     $this->setSuccessMessage($patientManager->getTranslatorManager()->translate('Patient save success'));
-                    return $this->toDefaultRoute();
+                    return $this->toRoute("admin/default", ["controller" => "user"]);
                 }
             }
 
@@ -105,11 +101,11 @@ class PatientController extends BaseController
             throw new \Exception($e->getMessage());
         }
         $view = new ViewModel([
-            'template' => '/admin/patient/_patientForm.phtml',
+            'template' => 'admin/patient/_patientForm',
             'parameters' => ['patientForm' => $patientForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
     }
 
     public function deleteAction()
@@ -120,16 +116,17 @@ class PatientController extends BaseController
 
             if ($patient === null) {
                 $this->setErrorMessage('Patient not found');
-                return $this->toDefaultRoute();
+                return $this->toRoute("admin/default", ["controller" => "user"]);
             }
 
             $patientManager->getDAO()->remove($patient);
-            $this->setSuccessMessage($patientManager->getTranslatorManager()->translate('Patient remove success'));
+
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
-        return $this->toDefaultRoute();
+        $this->setSuccessMessage($patientManager->getTranslatorManager()->translate('Patient remove success'));
+        return $this->toRoute("admin/default", ["controller" => "user"]);
     }
 
 }

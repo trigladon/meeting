@@ -94,3 +94,16 @@ div#feedback-answers ol li div.dd-handle div.col-sm-6{
     margin: 0;
     padding: 0;
 }
+
+div.button-youtube span.check-youtube-url{
+    margin-top: 5px;
+}
+
+.form_datetime input{
+    padding: 6px 12px;
+    cursor: pointer!important;
+}
+
+.button-youtube input {
+    padding: 6px 12px;
+}

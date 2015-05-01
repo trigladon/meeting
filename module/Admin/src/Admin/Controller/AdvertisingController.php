@@ -4,7 +4,6 @@ namespace Admin\Controller;
 
 use Common\Entity\Advertising;
 use Common\Manager\AdvertisingManager;
-use Common\Manager\TableManager;
 use Common\Stdlib\ArrayLib;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -12,12 +11,10 @@ use Zend\View\Model\ViewModel;
 class AdvertisingController extends BaseController
 {
 
-    protected $defaultRoute = 'admin-advertising';
-
     public function allAction()
     {
         $advertisingManager = new AdvertisingManager($this->getServiceLocator());
-        $tableManager = new TableManager($this->getServiceLocator(), $advertisingManager);
+        $tableManager = new \Common\Manager\TableManager($this->getServiceLocator(), $advertisingManager);
         $tableManager->setColumnsList($advertisingManager->advertisingTable());
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -30,18 +27,21 @@ class AdvertisingController extends BaseController
         $view = new ViewModel([
             'tableInfo' => $tableManager->getTableInfo(),
             'url' => [
-                'route' => 'admin-advertising',
-                'parameters' => ['action' => 'add']
+                'route' => 'admin/default',
+                'parameters' => [
+                    "controller" => "advertising",
+                    'action' => 'add'
+                ]
             ]
         ]);
 
-        return $view->setTemplate('/common/all-page');
+        return $view->setTemplate('common/all-page');
     }
 
     public function allPlacesAction()
     {
         $advertisingManager = new AdvertisingManager($this->getServiceLocator());
-        $tableManager = new TableManager($this->getServiceLocator(), $advertisingManager);
+        $tableManager = new \Common\Manager\TableManager($this->getServiceLocator(), $advertisingManager);
         $tableManager->setColumnsList($advertisingManager->placeTable());
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -51,18 +51,21 @@ class AdvertisingController extends BaseController
         $view = new ViewModel([
             'tableInfo' => $tableManager->getTableInfo(),
             'url' => [
-                'route' => 'admin-advertising-place',
-                'parameters' => ['action' => 'add-place']
+                'route' => 'admin/default',
+                'parameters' => [
+                    "controller" => "advertising",
+                    'action' => 'add-place'
+                ]
             ]
         ]);
 
-        return $view->setTemplate('/common/all-page');
+        return $view->setTemplate('common/all-page');
     }
 
     public function addPlaceAction()
     {
         /** @var $placeForm \Admin\Form\AdvertisingPlaceForm */
-        $placeForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\AdvertisingPlaceForm');
+        $placeForm = $this->getForm('Admin\Form\AdvertisingPlaceForm');
         $request = $this->getRequest();
 
         if ($request->isPost()){
@@ -76,7 +79,10 @@ class AdvertisingController extends BaseController
                     $advertisingManager->savePlace($placeForm->getObject());
 
                     $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising place add success'));
-                    return $this->toRoute('admin-advertising-place');
+                    return $this->toRoute('admin/default', [
+                        "controller" => "advertising",
+                        "action" => "all-places",
+                    ]);
 
                 }
 
@@ -86,11 +92,11 @@ class AdvertisingController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/advertising/_placeForm.phtml',
+            'template' => 'admin/advertising/_placeForm',
             'parameters' => ['placeForm' => $placeForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
     }
 
     public function editPlaceAction()
@@ -101,11 +107,13 @@ class AdvertisingController extends BaseController
 
             if ($place === null) {
                 $this->setErrorMessage($advertisingManager->getTranslatorManager()->translate('Advertising place not found'));
-                return $this->toRoute('admin-advertising-place');
+                return $this->toRoute('admin/default', [
+                    "controller" => "advertising",
+                    "action" => "all-places",
+                ]);
             }
             /** @var $placeForm \Admin\Form\AdvertisingPlaceForm */
-            $placeForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\AdvertisingPlaceForm');
-            $placeForm->bind($place);
+            $placeForm = $this->getForm('Admin\Form\AdvertisingPlaceForm')->bind($place);
             $request = $this->getRequest();
 
             if ($request->isPost()) {
@@ -118,7 +126,10 @@ class AdvertisingController extends BaseController
                     $advertisingManager->savePlace($placeForm->getObject());
 
                     $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising place save success'));
-                    return $this->toRoute('admin-advertising-place');
+                    return $this->toRoute('admin/default', [
+                        "controller" => "advertising",
+                        "action" => "all-places",
+                    ]);
                 }
             }
 
@@ -127,11 +138,11 @@ class AdvertisingController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/advertising/_placeForm.phtml',
+            'template' => 'admin/advertising/_placeForm',
             'parameters' => ['placeForm' => $placeForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
      }
 
 
@@ -143,7 +154,10 @@ class AdvertisingController extends BaseController
             $place = $advertisingManager->getDAOPlace()->findById($this->params()->fromRoute('id', 0));
             if ($place === null) {
                 $this->setErrorMessage($advertisingManager->getTranslatorManager()->translate('Advertising place not found'));
-                return $this->toRoute('admin-advertising-place');
+                return $this->toRoute('admin/default', [
+                    "controller" => "advertising",
+                    "action" => "all-places",
+                ]);
             }
 
             $advertisingManager->getDAOPlace()->remove($place);
@@ -153,13 +167,16 @@ class AdvertisingController extends BaseController
         }
 
         $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising place delete success'));
-        return $this->toRoute('admin-advertising-place');
+        return $this->toRoute('admin/default', [
+            "controller" => "advertising",
+            "action" => "all-places",
+        ]);
     }
 
     public function addAction()
     {
         /** @var $advertisingForm \Admin\Form\AdvertisingForm */
-        $advertisingForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\AdvertisingForm');
+        $advertisingForm = $this->getForm('Admin\Form\AdvertisingForm');
         $advertisingForm->bind($advertisingForm->extractLanguage(new Advertising()));
         $request = $this->getRequest();
 
@@ -175,7 +192,10 @@ class AdvertisingController extends BaseController
                     $advertisingManager->saveAdvertising($advertisingForm->getObject());
 
                     $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising add success'));
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', [
+                        "controller" => "advertising",
+                        "action" => "all",
+                    ]);
 
                 }
 
@@ -185,11 +205,11 @@ class AdvertisingController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/advertising/_advertisingForm.phtml',
+            'template' => 'admin/advertising/_advertisingForm',
             'parameters' => ['advertisingForm' => $advertisingForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-language-page');
+        return $view->setTemplate('common/add-edit-language-page');
     }
 
     public function editAction()
@@ -200,11 +220,11 @@ class AdvertisingController extends BaseController
 
             if ($advertising === null) {
                 $this->setErrorMessage($advertisingManager->getTranslatorManager()->translate('Advertising not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ["controller" => "advertising",]);
             }
             /** @var $advertisingForm \Admin\Form\AdvertisingForm */
-            $advertisingForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\AdvertisingForm');
-            $advertisingForm->bind($advertising);
+            $advertisingForm = $this->getForm('Admin\Form\AdvertisingForm');
+            $advertisingForm->bind($advertisingForm->extractLanguage($advertising));
             $request = $this->getRequest();
 
             if ($request->isPost()) {
@@ -217,7 +237,7 @@ class AdvertisingController extends BaseController
                     $advertisingManager->saveAdvertising($advertisingForm->getObject());
 
                     $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising save success'));
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', ["controller" => "advertising",]);
                 }
             }
 
@@ -226,22 +246,24 @@ class AdvertisingController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/advertising/_advertisingForm.phtml',
+            'template' => 'admin/advertising/_advertisingForm',
             'parameters' => ['advertisingForm' => $advertisingForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-language-page');
+        return $view->setTemplate('common/add-edit-language-page');
     }
 
     public function deleteAction()
     {
         try{
-
             $advertisingManager = new AdvertisingManager($this->getServiceLocator());
             $advertising = $advertisingManager->getDAO()->findByIdJoin($this->params()->fromRoute('id', 0));
             if ($advertising === null) {
                 $this->setErrorMessage($advertisingManager->getTranslatorManager()->translate('Advertising not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', [
+                    "controller" => "advertising",
+                    "action" => "all",
+                ]);
             }
 
             $advertisingManager->getDAO()->remove($advertising);
@@ -251,7 +273,7 @@ class AdvertisingController extends BaseController
         }
 
         $this->setSuccessMessage($advertisingManager->getTranslatorManager()->translate('Advertising delete success'));
-        return $this->toDefaultRoute();
+        return $this->toRoute('admin/default', ["controller" => "advertising",]);
     }
 
 }

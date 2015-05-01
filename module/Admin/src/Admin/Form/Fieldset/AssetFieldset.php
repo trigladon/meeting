@@ -3,7 +3,6 @@
 namespace Admin\Form\Fieldset;
 
 use Common\Entity\Asset;
-use Common\Entity\User;
 use Common\Manager\AssetManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Validator\InArray;

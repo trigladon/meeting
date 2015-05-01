@@ -4,19 +4,16 @@ namespace Admin\Controller;
 
 
 use Common\Manager\LanguageManager;
-use Common\Manager\TableManager;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class LanguageController extends BaseController
 {
 
-    protected $defaultRoute = 'admin-language';
-
     public function allAction()
     {
         $languageManager = new LanguageManager($this->getServiceLocator());
-        $tableManager = new TableManager($this->getServiceLocator(), $languageManager);
+        $tableManager = new \Common\Manager\TableManager($this->getServiceLocator(), $languageManager);
         $tableManager->setColumnsList($languageManager->languageTable());
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -29,18 +26,18 @@ class LanguageController extends BaseController
         $view = new ViewModel([
             'tableInfo' => $tableManager->getTableInfo(),
             'url' => [
-                'route' => 'admin-language',
-                'parameters' => ['action' => 'add']
+                'route' => 'admin/default',
+                'parameters' => ['controller' => 'language', 'action' => 'add']
             ]
         ]);
 
-        return $view->setTemplate('/common/all-page');
+        return $view->setTemplate('common/all-page');
     }
 
     public function addAction()
     {
         /** @var $languageForm \Admin\Form\LanguageForm */
-        $languageForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\LanguageForm');
+        $languageForm = $this->getForm('Admin\Form\LanguageForm');
 
         $request = $this->getRequest();
 
@@ -57,7 +54,7 @@ class LanguageController extends BaseController
                     $languageManager->saveLanguage($languageForm->getObject());
 
                     $this->setSuccessMessage('Language add success');
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', ['controller' => 'all']);
 
                 }
 
@@ -68,11 +65,11 @@ class LanguageController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/language/_languageForm.phtml',
+            'template' => 'admin/language/_languageForm',
             'parameters' => ['languageForm' => $languageForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
     }
 
     public function editAction()
@@ -85,11 +82,11 @@ class LanguageController extends BaseController
 
             if ($language === null) {
                 $this->setErrorMessage($languageManager->getTranslatorManager()->translate('Language not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => 'all']);
             }
 
             /** @var $languageForm \Admin\Form\LanguageForm */
-            $languageForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\LanguageForm');
+            $languageForm = $this->getForm('Admin\Form\LanguageForm');
             $languageForm->bind($language);
             $request = $this->getRequest();
 
@@ -103,7 +100,7 @@ class LanguageController extends BaseController
                     $languageManager->saveLanguage($languageForm->getObject());
 
                     $this->setSuccessMessage('Language save success');
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', ['controller' => 'all']);
                 }
 
             }
@@ -114,11 +111,11 @@ class LanguageController extends BaseController
 
 
         $view = new ViewModel([
-            'template' => '/admin/language/_languageForm.phtml',
+            'template' => 'admin/language/_languageForm',
             'parameters' => ['languageForm' => $languageForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
     }
 
     public function publishAction()
@@ -130,17 +127,17 @@ class LanguageController extends BaseController
 
             if ($language === null) {
                 $this->setErrorMessage($languageManager->getTranslatorManager()->translate('Language not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => 'all']);
             }
 
             $languageManager->revertVisibleLanguage($language);
-            $this->setSuccessMessage($languageManager->getTranslatorManager()->translate('Language save success'));
-            return $this->toDefaultRoute();
 
         }catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
+        $this->setSuccessMessage($languageManager->getTranslatorManager()->translate('Language save success'));
+        return $this->toRoute('admin/default', ['controller' => 'all']);
     }
 
 }

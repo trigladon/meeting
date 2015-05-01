@@ -2,6 +2,7 @@
 
 namespace Admin\Controller;
 
+use Zend\View\Model\ViewModel;
 
 class AdminController extends BaseController
 {
@@ -10,7 +11,12 @@ class AdminController extends BaseController
 	{
 
 
-		return [];
+		return new ViewModel([
+            "template" => "",
+            "parameters" => [
+                ""
+            ]
+        ]);
 	}
 
 

@@ -1,0 +1,17 @@
+<div class="portlet box red-sunglo">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-user"></i> <?=$this->getPageTitle('admin-navigation')?>
+        </div>
+        <?php if ($auctionForm->getObject()->getId()): ?>
+            <div class="actions">
+                <a href="<?=$this->url('admin/default', ['controller' => 'auction', 'action' => 'comment', 'id' => $auctionForm->getObject()->getId()])?>" type="button" class="btn blue-hoki"><?=$this->translate('Comments')?></a>
+                <a href="<?=$this->url('admin/default', ['controller' => 'auction','action' => 'rate', 'id' => $auctionForm->getObject()->getId()])?>" type="button" class="btn green-meadow"><?=$this->translate('Rates')?></a>
+                <a href="<?=$this->url('admin/default', ['controller' => 'auction'])?>" type="button" class="btn default"><?=$this->translate('Back')?></a>
+            </div>
+        <?php endif; ?>
+    </div>
+    <div class="portlet-body form">
+        <?=$this->render('admin/auction/_auctionForm', ['auctionForm' => $auctionForm]);?>
+    </div>
+</div>

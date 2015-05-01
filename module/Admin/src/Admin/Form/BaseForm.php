@@ -75,7 +75,7 @@ class BaseForm extends Form
     public function extractLanguage(BaseEntity $entity)
     {
         if (!is_callable(array($entity, 'getTranslations'))){
-            throw new \Exception('Method "getTranslations" not found');
+            throw new \Exception('Method "getTranslations" not found in'.get_class($entity));
         }
 
         $translationClassName = get_class($entity).'Translations';
@@ -84,8 +84,9 @@ class BaseForm extends Form
 
         foreach($languageManager->getDAO()->findAll() as $language){
             $create = true;
+
             foreach($translations as $translationEntity){
-                 if ($translationEntity !== null && $translationEntity->getLanguage()->getPrefix() === $language->getPrefix()){
+                 if ($translationEntity && $translationEntity->getLanguage()->getPrefix() === $language->getPrefix()){
                     $create = false;
                 }
             }

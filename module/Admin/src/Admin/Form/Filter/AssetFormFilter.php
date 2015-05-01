@@ -2,10 +2,6 @@
 
 namespace Admin\Form\Filter;
 
-use Zend\Validator\File\IsImage;
-use Zend\Validator\File\Size;
-use Zend\Validator\File\MimeType;
-
 class AssetFormFilter extends BaseInputFilter
 {
 

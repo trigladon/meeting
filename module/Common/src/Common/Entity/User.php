@@ -6,8 +6,6 @@ use ZfcRbac\Identity\IdentityInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Zend\Crypt\Password\Bcrypt;
-use Zend\Math\Rand;
 use Rbac\Role\RoleInterface;
 
 /**
@@ -15,7 +13,7 @@ use Rbac\Role\RoleInterface;
  *
  * TODO add profile image
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="users")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
@@ -55,6 +53,8 @@ class User extends BaseEntity implements IdentityInterface
      * @ORM\Column(name="password", type="string", length=50, nullable=false)
      */
     protected $password;
+
+    protected $confirmPassword;
 
     /**
      * @var string
@@ -216,7 +216,7 @@ class User extends BaseEntity implements IdentityInterface
      */
     public function getRoles()
     {
-        return $this->roles;
+        return $this->roles->toArray();
     }
 
     /**
@@ -267,7 +267,7 @@ class User extends BaseEntity implements IdentityInterface
     }
 
     /**
-     * @param RoleInterface $role
+     * @param Array|Collection $role
      *
      * @return $this
      */
@@ -284,8 +284,9 @@ class User extends BaseEntity implements IdentityInterface
         return $this;
     }
 
+
     /**
-     * @param RoleInterface $role
+     * @param Array|Collection $role
      *
      * @return $this
      */
@@ -323,47 +324,7 @@ class User extends BaseEntity implements IdentityInterface
     }
 
     /**
-     * @return UserBanned
-     */
-    public function getAdminBan()
-    {
-        return $this->adminBan;
-    }
-
-    /**
-     * @param UserBanned $adminBan
-     *
-     * @return $this
-     */
-    public function setAdminBan($adminBan)
-    {
-        $this->adminBan = $adminBan;
-
-        return $this;
-    }
-
-    /**
-     * @return UserBanned
-     */
-    public function getBanned()
-    {
-        return $this->banned;
-    }
-
-    /**
-     * @param UserBanned $banned
-     *
-     * @return $this
-     */
-    public function setBanned($banned)
-    {
-        $this->banned = $banned;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
+     * @return UserCode
      */
     public function getCode()
     {
@@ -682,6 +643,8 @@ class User extends BaseEntity implements IdentityInterface
 
         return $this;
     }
+
+
 
     public function getFullName()
     {

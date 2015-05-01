@@ -67,4 +67,24 @@ class UserDAO extends BaseDAO
 		return $qb->getQuery()->useResultCache($useCache)->getResult($hydrationMode);
 	}
 
+    /**
+     * @param $code
+     * @param int $hydrationMode
+     * @param bool $useCache
+     * @return mixed|User
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByCode($code, $hydrationMode = AbstractQuery::HYDRATE_OBJECT, $useCache = true)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('em, uc')
+            ->from($this->getRepositoryName(), 'em')
+            ->leftJoin('em.code', 'uc')
+            ->where($qb->expr()->eq('uc.code', ':code'))
+            ->setParameters(['code' => $code]);
+        ;
+
+        return $qb->getQuery()->useResultCache($useCache)->getOneOrNullResult($hydrationMode);
+    }
+
 }

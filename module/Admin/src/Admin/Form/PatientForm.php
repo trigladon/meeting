@@ -4,7 +4,6 @@ namespace Admin\Form;
 
 use Admin\Form\Filter\PatientFormFilter;
 use Common\Entity\Patient;
-use Common\Manager\PatientManager;
 use Common\Manager\UserManager;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
 
@@ -13,10 +12,6 @@ class PatientForm extends BaseForm
 
     public function init()
     {
-        $this->setAttributes([
-            'method' => 'post',
-            'class' => 'form-horizontal form-bordered'
-        ]);
 
         $this->setInputFilter(new PatientFormFilter($this->getServiceLocator()))
             ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))
@@ -24,6 +19,12 @@ class PatientForm extends BaseForm
 
 
         $userManager = new UserManager($this->getServiceLocator());
+
+
+        $this->setAttributes([
+            'method' => 'post',
+            'class' => 'form-horizontal form-bordered'
+        ]);
 
         $this->add([
             'name' => 'user',

@@ -11,17 +11,18 @@ class AdvertisingForm extends BaseForm
 
     public function init()
     {
-        $this->setAttributes([
-            'method' => 'post',
-            'class' => 'form-horizontal form-bordered'
-        ]);
+
+        $advertisingManager = new AdvertisingManager($this->getServiceLocator());
 
         $this->setInputFilter(new AdvertisingFormFilter($this->getServiceLocator()))
             ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))
             ->setObject(new Advertising())
         ;
 
-        $advertisingManager = new AdvertisingManager($this->getServiceLocator());
+        $this->setAttributes([
+            'method' => 'post',
+            'class' => 'form-horizontal form-bordered'
+        ]);
 
         $this->add([
             'name' => 'translations',

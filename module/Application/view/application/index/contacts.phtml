@@ -1,0 +1,68 @@
+<?php /** @var $page Common\Entity\PageTranslations */ ?>
+<section class="hero-slider large-image short-header">
+    <ul class="slides">
+        <li>
+            <div class="background-image-holder background-parallax">
+                <img alt="Slide Background" class="background-image" src="img/hero25.jpg">
+            </div>
+
+            <div class="container vertical-align">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <h1 class="text-white"><?=$page->getTitle() ?></h1>
+                    </div>
+                </div>
+            </div><!--end of container-->
+        </li>
+    </ul>
+</section>
+
+<section class="contact-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-6">
+                <div class="text-block">
+                    <div class="detail-line"></div>
+                    <h5><?=$page->getTitle() ?></h5>
+                    <h4>Get in touch today</h4>
+                    <p><?=$page->getDescription()?></p>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6">
+                <div class="contact-method">
+                    <i class="icon pe-7s-phone"></i>
+                    <span>+614 3742 389</span>
+                </div>
+
+                <div class="contact-method">
+                    <i class="icon pe-7s-mail-open-file"></i>
+                    <span>hello@machine.net</span>
+                </div>
+
+                <div class="contact-method">
+                    <i class="icon pe-7s-map-marker"></i>
+                    <span>300 Collins St<br> Melbourne, 3000</span>
+                </div>
+            </div>
+
+            <div class="col-md-5 col-sm-12">
+                <form class="email-form">
+
+                    <input class="input-standard validate-required" type="text" name="name" placeholder="Your Name">
+                    <input class="input-standard validate-email validate-required" type="text" name="email" placeholder="Email Address">
+                    <textarea class="input-standard validate-required" name="message" placeholder="Your Message" rows="4"></textarea>
+
+                    <input type="submit" class="btn btn-sm" value="Send Message">
+                    <div class="form-success">
+                        <span class="text-white">Message sent - Thanks for your enquiry</span>
+                    </div>
+                    <div class="form-error">
+                        <span class="text-white">Please complete all fields correctly</span>
+                    </div>
+                </form>
+            </div>
+
+        </div><!--end of row-->
+    </div><!--end of container-->
+</section>

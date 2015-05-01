@@ -1,0 +1,27 @@
+<div class="col-sm-4">
+    <?=$this->formHidden($assetVideo->get('type')); ?>
+    <?php $youtubeId = $this->getYoutubeLink($assetVideo->get('url')->getValue());?>
+    <div class="input-group" style="text-align:left">
+        <div class="youtube-iframe"><?php if ($youtubeId): ?><iframe frameborder="0" width="320" height="220" src="<?=$youtubeId?>" allowfullscreen=""></iframe><?php endif; ?></div>
+        <div class="button-youtube">
+            <span class="help-block"><?=$this->translate("Invalid youtube url");?></span><br/>
+            <?=$this->formElement($assetVideo->get('url')->setValue($youtubeId))?><br/>
+            <span class="btn btn-info check-youtube-url"><?=$this->translate('Check')?></span>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    if (!window.AssetAdd) {
+        document.write("<script type='text/javascript' src='<?=$this->getAdminAssetsPath()?>/scripts/asset.js'><\/script>");
+        jQuery(document).ready(function() {
+            AssetAdd.init({
+                youtube: {
+                    width: 320,
+                    height: 220,
+                    allowfullscreen: true
+                }
+            });
+        })
+    }
+</script>
+

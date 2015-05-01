@@ -3,9 +3,7 @@
 namespace Admin\Form;
 
 use Common\Entity\User;
-use Common\Manager\BaseEntityManager;
 use Common\Manager\UserManager;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Admin\Form\Filter\UserFormFilter;
 use Common\Stdlib\Hydrator\UserHydrator;
 
@@ -14,10 +12,6 @@ class UserForm extends BaseForm
 
     public function init()
     {
-        $this->setAttributes([
-                'method' => 'post',
-                'class' => 'form-horizontal form-bordered'
-            ]);
 
         $this->setInputFilter(new UserFormFilter($this->getServiceLocator()))
             ->setHydrator(new UserHydrator($this->getDoctrineEntityManager()))
@@ -25,6 +19,11 @@ class UserForm extends BaseForm
         ;
 
         $userManager = new UserManager($this->getServiceLocator());
+
+        $this->setAttributes([
+                'method' => 'post',
+                'class' => 'form-horizontal form-bordered'
+            ]);
 
         $this->add([
                 'name' => 'email',

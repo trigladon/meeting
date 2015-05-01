@@ -2,7 +2,6 @@
 
 namespace Common\Manager;
 
-use Common\DAO\LanguageDAO;
 use Common\DAO\PageDAO;
 use Common\DAO\PageTranslations;
 use Common\Entity\Page;
@@ -80,14 +79,19 @@ class PageManager extends BaseEntityManager
         $this->getDAO()->save($page);
     }
 
+    public function getPage($url, $locale)
+    {
+        return $this->getDAO()->findByUrlAndLocale($url, $locale);
+    }
+
     public function pageTable()
     {
         return [
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-page',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ['controller' => 'page'],
                 ],
                 'tableId' => 'admin-list-all-page',
             ],
@@ -139,8 +143,12 @@ class PageManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-page',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'page',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit'
@@ -157,8 +165,12 @@ class PageManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-page',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'page',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete',

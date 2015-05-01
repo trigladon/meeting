@@ -6,10 +6,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\InputFilter\InputFilter;
 use Admin\Form\Validator\UserStatus;
 
-class LoginFormFilter extends InputFilter
+class LoginFormFilter extends BaseInputFilter
 {
 
-    public function __construct(ServiceLocatorInterface $serviceLocator)
+    public function init()
     {
         $this->add([
                 'name' => 'email',
@@ -33,7 +33,7 @@ class LoginFormFilter extends InputFilter
                     [
                         'name' => 'Admin\Form\Validator\UserStatus',
                         'options' => [
-                            'object_repository' => $serviceLocator->get('doctrine.entitymanager.orm_default')->getRepository('Common\Entity\User'),
+                            'object_repository' => $this->getServiceLocator()->get('doctrine.entitymanager.orm_default')->getRepository('Common\Entity\User'),
                             'fields' => 'email',
                             'messages' => [
                                 UserStatus::ERROR_STATUS_NO_ACTIVE => 'Your account is not active',
@@ -58,10 +58,35 @@ class LoginFormFilter extends InputFilter
                             'encoding' => 'UTF-8',
                             'min'      => 4,
                             'max'      => 15,
+                            'messages' => [
+                                \Zend\Validator\StringLength::TOO_LONG => "The password is more than %max% characters long.",
+                                \Zend\Validator\StringLength::TOO_SHORT => 'The password is less than %min% characters long.',
+                            ]
                         ],
+                        'break_chain_on_failure' => true
                     ],
                 ]
             ]);
+
+        $this->add([
+            'name' => 'csrf',
+            'required' => true,
+            'filters' => [
+                ['name' => 'Zend\Filter\StringTrim'],
+            ],
+            'validators' => [
+                [
+                    'name' => 'Zend\Validator\Csrf',
+                    'options' => [
+                        'timeout' => $this->getServiceLocator()->get('config')['projectData']['csrf']['timeout'],
+                        'messages' => [
+                            \Zend\Validator\Csrf::NOT_SAME => 'The form submitted did not originate from the expected site'
+                        ],
+                    ],
+                    'break_chain_on_failure' => true,
+                ]
+            ]
+        ]);
 
         $this->add([
                 'name' => 'remember',

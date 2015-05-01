@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+//error_reporting(E_ALL);
 //ini_set("display_errors", 1);
 
 /**
@@ -17,5 +17,13 @@ if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['RE
 // Setup autoloading
 require 'init_autoloader.php';
 
-// Run the application!
-Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+//try{
+    Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+//}catch (\Exception $e)
+//{
+//    $errorLogger = new \Common\Service\ErrorLogger();
+//    $errorLogger->logException($e);
+//
+//    header('Location: ' . '/work.html', 302);
+//    exit();
+//}

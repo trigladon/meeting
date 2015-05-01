@@ -128,8 +128,8 @@ class FeedbackManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-feedback',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ['controller' => 'feedback'],
                 ],
                 'tableId' => 'admin-list-all-feedback',
             ],
@@ -171,8 +171,12 @@ class FeedbackManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-feedback',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'feedback',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'read'
@@ -190,8 +194,12 @@ class FeedbackManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-feedback',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'feedback',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete',

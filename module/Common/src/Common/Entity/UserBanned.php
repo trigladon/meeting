@@ -7,7 +7,7 @@ use \Doctrine\ORM\Mapping as ORM;
 /**
  * Class UserBanned
  *
- * @ORM\Table(name="user_banned")
+ * @ORM\Table(name="users_banned")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */
@@ -69,26 +69,6 @@ class UserBanned extends BaseEntity
     }
 
     /**
-     * @return User
-     */
-    public function getAdmin()
-    {
-        return $this->admin;
-    }
-
-    /**
-     * @param User $admin
-     *
-     * @return $this
-     */
-    public function setAdmin($admin)
-    {
-        $this->admin = $admin;
-
-        return $this;
-    }
-
-    /**
      * @return \DateTime
      */
     public function getCreated()
@@ -144,26 +124,6 @@ class UserBanned extends BaseEntity
     public function setType($type)
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return User
-     */
-    public function getUserBanned()
-    {
-        return $this->userBanned;
-    }
-
-    /**
-     * @param User $userBanned
-     *
-     * @return $this
-     */
-    public function setUserBanned($userBanned)
-    {
-        $this->userBanned = $userBanned;
 
         return $this;
     }

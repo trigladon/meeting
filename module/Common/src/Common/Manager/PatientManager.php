@@ -3,8 +3,6 @@
 namespace Common\Manager;
 
 use Common\DAO\PatientDAO;
-use Common\DAO\UserDAO;
-use Common\Entity\Asset;
 use Common\Entity\Patient;
 use Common\Entity\User;
 
@@ -75,7 +73,6 @@ class PatientManager extends BaseEntityManager
         ];
     }
 
-
     public function savePatient(Patient $patient)
     {
         $assetManager = new AssetManager($this->getServiceLocator());
@@ -90,6 +87,22 @@ class PatientManager extends BaseEntityManager
 
         $this->getDAO()->save($patient);
     }
+
+    public function getPatientForSelect()
+    {
+        $result = [];
+
+        $stringLength = 15;
+
+        /** @var $patient \Common\Entity\Patient */
+        foreach($this->getDAO()->findAll() as $patient) {
+            $result[$patient->getId()] = '#'.$patient->getId().' '.(strlen($patient->getTitle()) > $stringLength ? substr($patient->getTitle(), 0, $stringLength).'..' : $patient->getTitle());
+        }
+
+        return $result;
+    }
+
+
 
     /**
      * @param $offset
@@ -111,8 +124,8 @@ class PatientManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-patient',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ["controller" => 'patient'],
                 ],
                 'tableId' => 'admin-list-all-patient',
             ],
@@ -172,8 +185,12 @@ class PatientManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-patient',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'patient'
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit'
@@ -190,8 +207,12 @@ class PatientManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-patient',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'patient'
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete',

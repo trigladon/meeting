@@ -99,8 +99,8 @@ class CountryManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-country',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ['controller' => 'country'],
                 ],
                 'tableId' => 'admin-list-all-counties',
             ],
@@ -142,8 +142,12 @@ class CountryManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-country',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'country',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit'
@@ -160,8 +164,12 @@ class CountryManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-country',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'country',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete',
@@ -207,8 +215,8 @@ class CountryManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-city',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ['controller' => 'city'],
                 ],
                 'tableId' => 'admin-list-all-cities',
             ],
@@ -253,8 +261,12 @@ class CountryManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-city',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'city',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit-city'
@@ -271,8 +283,12 @@ class CountryManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-city',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'city',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete-city',

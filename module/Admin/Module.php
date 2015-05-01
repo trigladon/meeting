@@ -2,13 +2,8 @@
 
 namespace Admin;
 
-use Admin\Form\Fieldset\TestFieldset;
-use Admin\Form\Fieldset\UserRoleFieldset;
-use Admin\Form\UserForm;
-use Common\Manager\UserManager;
 use Zend\ModuleManager\ModuleManager;
 use Zend\Mvc\MvcEvent;
-use Zend\ModuleManager\Feature\FormElementProviderInterface;
 
 class Module
 {
@@ -35,12 +30,16 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/config/autoload_classmap.php',
+            ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
-            ),
+            )
         );
+
     }
 
 }

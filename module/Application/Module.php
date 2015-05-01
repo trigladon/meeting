@@ -9,19 +9,10 @@
 
 namespace Application;
 
-use Zend\Mvc\MvcEvent;
-use Zend\Session\Container;
+
 
 class Module
 {
-
-    public function onBootstrap(MvcEvent $e)
-    {
-        Container::setDefaultManager(
-            $e->getApplication()->getServiceManager()->get('Zend\Session\SessionManager')
-        );
-    }
-
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -31,10 +22,8 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
+            'Zend\Loader\ClassMapAutoloader' => array(
+                __DIR__ . '/config/autoload_classmap.php',
             ),
         );
     }

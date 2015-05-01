@@ -1,0 +1,11 @@
+<?php /** @var $user Common\Entity\User */ ?>
+<div>
+    <h1><?=$this->translate('Registration in')?> <?=$this->getProjectData()['siteName']?></h1>
+    <div>
+        <p><?=$this->translate('Hello')?> <?=$user->getFullName()?></p>
+        <p>
+            <?php $url = $this->url("sign-up-activation", ['code'=>$user->getCode()->getCode()], ['force_canonical' => true]) ?>
+            <?=$this->translate('Link for confirmation account')?> <a href="<?=$url?>" target="_blank"><?=$url?></a>
+        </p>
+    </div>
+</div>

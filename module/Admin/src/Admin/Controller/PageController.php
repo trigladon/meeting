@@ -4,7 +4,6 @@ namespace Admin\Controller;
 
 use Common\Entity\Page;
 use Common\Manager\PageManager;
-use Common\Manager\TableManager;
 use Common\Stdlib\ArrayLib;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
@@ -12,12 +11,10 @@ use Zend\View\Model\ViewModel;
 class PageController extends BaseController
 {
 
-    protected $defaultRoute = 'admin-page';
-
     public function allAction()
     {
         $pageManager = new PageManager($this->getServiceLocator());
-        $tableManager = new TableManager($this->getServiceLocator(), $pageManager);
+        $tableManager = new \Common\Manager\TableManager($this->getServiceLocator(), $pageManager);
         $tableManager->setColumnsList($pageManager->pageTable());
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -27,17 +24,15 @@ class PageController extends BaseController
             );
         }
 
-
-
         $view = new ViewModel([
             'tableInfo' => $tableManager->getTableInfo(),
             'url' => [
-                'route' => 'admin-page',
-                'parameters' => ['action' => 'add']
+                'route' => 'admin/default',
+                'parameters' => ["controller" => 'page', 'action' => 'add']
             ]
         ]);
 
-        return $view->setTemplate('/common/all-page');
+        return $view->setTemplate('common/all-page');
     }
 
     public function addAction()
@@ -45,11 +40,12 @@ class PageController extends BaseController
         try{
 
             /** @var $pageForm \Admin\Form\PageForm */
-            $pageForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\PageForm');
+            $pageForm = $this->getForm('Admin\Form\PageForm');
             $pageForm->bind($pageForm->extractLanguage(new Page()));
             $request = $this->getRequest();
 
-            if ($request->isPost()) {
+            if ($request->isPost())
+            {
                 $pageForm->getObject()->setUser($this->identity());
                 $pageForm->setData(ArrayLib::merge($request->getPost()->toArray(), $request->getFiles()->toArray(), true));
 
@@ -57,8 +53,9 @@ class PageController extends BaseController
 
                     $pageManager = new PageManager($this->getServiceLocator());
                     $pageManager->savePage($pageForm->getObject());
+
                     $this->setSuccessMessage($pageManager->getTranslatorManager()->translate('Page add success'));
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', ['controller' => 'page']);
                 }
             }
 
@@ -67,11 +64,11 @@ class PageController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/page/_pageForm.phtml',
+            'template' => 'admin/page/_pageForm',
             'parameters' => ['pageForm' => $pageForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-language-page');
+        return $view->setTemplate('common/add-edit-language-page');
     }
 
     public function editAction()
@@ -82,11 +79,11 @@ class PageController extends BaseController
             $page = $pageManager->getDAO()->findByIdJoin($this->params('id', 0));
             if ($page === null) {
                 $this->setErrorMessage('Page not found');
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => 'page']);
             }
 
             /** @var $pageForm \Admin\Form\PageForm */
-            $pageForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\PageForm');
+            $pageForm = $this->getForm('Admin\Form\PageForm');
             $pageForm->bind($pageForm->extractLanguage($page));
             $request = $this->getRequest();
 
@@ -97,8 +94,9 @@ class PageController extends BaseController
                 if ($pageForm->isValid()){
 
                     $pageManager->savePage($pageForm->getObject());
+
                     $this->setSuccessMessage($pageManager->getTranslatorManager()->translate('Page save success'));
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', ['controller' => 'page']);
                 }
             }
 
@@ -108,11 +106,11 @@ class PageController extends BaseController
 
 
         $view = new ViewModel([
-            'template' => '/admin/page/_pageForm.phtml',
+            'template' => 'admin/page/_pageForm',
             'parameters' => ['pageForm' => $pageForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-language-page');
+        return $view->setTemplate('common/add-edit-language-page');
     }
 
     public function deleteAction()
@@ -123,7 +121,7 @@ class PageController extends BaseController
             $page = $pageManager->getDAO()->findByIdJoin($this->params('id', 0));
             if ($page === null) {
                 $this->setErrorMessage('Page not found');
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => 'page']);
             }
 
             $pageManager->getDAO()->remove($page);
@@ -133,7 +131,7 @@ class PageController extends BaseController
         }
 
         $this->setSuccessMessage($pageManager->getTranslatorManager()->translate('Page delete success'));
-        return $this->toDefaultRoute();
+        return $this->toRoute('admin/default', ['controller' => 'page']);
     }
 
 

@@ -2,8 +2,6 @@
 
 namespace Admin\Form\Filter;
 
-use DoctrineModule\Validator\NoObjectExists;
-
 class PageFormFilter extends BaseInputFilter
 {
 
@@ -16,7 +14,7 @@ class PageFormFilter extends BaseInputFilter
             'filters' => [
                 ['name' => 'StripTags'],
                 ['name' => 'StringTrim'],
-                ['name' => 'Alpha'],
+                ['name' => 'Alpha']
             ],
             'validators' => [
                 [

@@ -15,7 +15,7 @@ class NoObjectExists extends DoctrineObjectExists {
      * @var array Message templates
      */
     protected $messageTemplates = array(
-        self::ERROR_OBJECT_FOUND    => "An object matching '%value%' was found",
+        self::ERROR_OBJECT_FOUND    => "An object matching '%value%' was found"
     );
 
     /**
@@ -27,7 +27,7 @@ class NoObjectExists extends DoctrineObjectExists {
         $value = $this->cleanSearchValue($value);
         $match = $this->objectRepository->findOneBy($value);
 
-        if (is_object($match) && $match->getId() != $content['id']) {
+        if (is_object($match) && $match->getId() !== $content['id']) {
             $this->error(self::ERROR_OBJECT_FOUND, $value);
 
             return false;

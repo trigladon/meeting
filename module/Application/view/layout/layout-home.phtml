@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Machine Multi-Purpose HTML Template</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="/css/lightbox.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="/css/elegant-icons.min.css" rel="stylesheet" type="text/css" media="all"/>
+    <!--    <link href="css/pe-icon-7-stroke.min.css" rel="stylesheet" type="text/css" media="all"/>-->
+        <link href="/css/theme-emerald.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="http://fonts.googleapis.com/css?family=Roboto:100,400,300,700,400italic,500%7CMontserrat:400,700" rel="stylesheet" type="text/css">
+        <link href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic" rel="stylesheet" type="text/css">
+        <link href="/css/font-helvetica.css" rel="stylesheet" type="text/css">
+        <script src="/js/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <div class="nav-container">
+            <nav class="nav-1 nav-light">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <a href="#" class="home-link">
+                                <img alt="Logo" class="logo" src="/img/logo-square-dark.png">
+                            </a>
+                            <ul class="menu">
+                                <?php $route = $this->getRouteName();?>
+                                <li><a <?=($route==="home"?"class='active'":"")?> href="<?=$this->url('home')?>"><?=$this->translate('Home')?></a></li>
+                                <li><a <?=($route==="about"?"class='active'":"")?> href="<?=$this->url("about")?>"><?=$this->translate('About')?></a></li>
+                                <li><a <?=($route==="contacts"?"class='active'":"")?> href="<?=$this->url("contacts")?>"><?=$this->translate('Contact')?></a></li>
+                                <?php if (!$this->getAuthService()->hasIdentity()): ?>
+                                    <li><a <?=($route==="sign-in"?"class='active'":"")?> href="<?=$this->url("sign-in")?>"><?=$this->translate('Sign in')?></a></li>
+                                    <li><a <?=(in_array($route, ['sign-up', 'sign-up-success'])?"class='active'":"")?> href="<?=$this->url("sign-up")?>"><?=$this->translate('Sign up')?></a></li>
+                                <?php else: ?>
+                                    <li><a href="<?=$this->url("sign-out")?>"><?=$this->translate('Sign out')?></a></li>
+                                <?php endif; ?>
+                            </ul>
+
+                        </div>
+                    </div><!--end of row-->
+                </div><!--end of container-->
+
+                <div class="mobile-toggle">
+                    <div class="bar-1"></div>
+                    <div class="bar-2"></div>
+                </div>
+            </nav>
+
+        </div>
+        <div class="main-container">
+
+            <?=$this->content?>
+
+
+            <footer class="footer-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <a href="index.html" class="home-link">
+                                <img alt="Logo" class="logo" src="/img/logo-square-light.png">
+                            </a>
+                        </div>
+                    </div><!--end of row-->
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <span class="text-white">© Copyright 2014 Medium Rare, All Rights Reserved</span>
+                        </div>
+
+                        <div class="col-sm-6 text-right">
+                            <ul>
+                                <li><a href="#" class="text-link">@mrareweb <i class="icon arrow_right"></i></a></li>
+                                <li><a href="#" class="text-link">job openings <i class="icon arrow_right"></i></a></li>
+                                <li><a href="#" class="text-link">contact us <i class="icon arrow_right"></i></a></li>
+                            </ul>
+                        </div>
+                    </div><!--end of row-->
+                </div><!--end of container-->
+            </footer>
+        </div>
+
+
+
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/lightbox.min.js"></script>
+<!--        <script src="js/skrollr.min.js"></script>-->
+        <script src="/js/smooth-scroll.min.js"></script>
+<!--        <script src="js/scripts.js"></script>-->
+    </body>
+</html>
+

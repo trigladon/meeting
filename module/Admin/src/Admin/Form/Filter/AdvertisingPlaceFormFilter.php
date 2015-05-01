@@ -12,8 +12,8 @@ class AdvertisingPlaceFormFilter extends BaseInputFilter
             'required' => true,
             'filters' => [
                 ['name' => 'StripTags'],
-                ['name' => 'StringTrim'],
-            ],
+                ['name' => 'StringTrim']
+            ]
 
         ]);
 

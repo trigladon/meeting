@@ -3,14 +3,12 @@
 namespace Admin\Form\Fieldset;
 
 use Common\Entity\Asset;
-use Common\Entity\User;
 use Common\Manager\AssetManager;
-use Zend\InputFilter\InputFilterProviderInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodHydrator;
 use Zend\Validator\InArray;
 
-class AssetImageFieldset extends BaseFieldset implements  InputFilterProviderInterface
+class AssetImageFieldset extends BaseFieldset
 {
 
     public function __construct(ServiceLocatorInterface $sm)

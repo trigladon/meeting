@@ -46,7 +46,7 @@ class FormLabelCollection extends AbstractHelper
             $options['label_attributes']['class'] = $options['label_attributes']['class'].' language language-'.$fieldset->getObject()->getLanguage()->getPrefix();
             $element->setOptions($options);
 
-            $result .= $this->invoke($element, ($fieldset->getObject()->getLanguage()->getPrefix() == DEFAULT_LANGUAGE ? $labelContent : null), $position);
+            $result .= $this->invoke($element, ($fieldset->getObject()->getLanguage()->getPrefix() === DEFAULT_LANGUAGE ? $labelContent : null), $position);
         }
 
         return $result;

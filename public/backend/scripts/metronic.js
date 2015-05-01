@@ -11,7 +11,7 @@ var Metronic = function() {
 
     var resizeHandlers = [];
 
-    var assetsPath = '../../backend/';
+    var assetsPath = '../../../backend/';
 
     var globalImgPath = assetsPath + 'img/';
 

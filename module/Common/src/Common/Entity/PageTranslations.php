@@ -3,7 +3,6 @@
 namespace Common\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use DoctrineModule\Paginator\Adapter\Collection;
 
 /**
  * Class PageTranslations

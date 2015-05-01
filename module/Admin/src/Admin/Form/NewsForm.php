@@ -11,6 +11,10 @@ class NewsForm extends BaseForm
 
     public function init()
     {
+        $this->setInputFilter(new NewsFormFilter($this->getServiceLocator()))
+            ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()));
+
+        $newsManager = new NewsManager($this->getServiceLocator());
 
         $this->setAttributes(
             [
@@ -18,11 +22,6 @@ class NewsForm extends BaseForm
                 'class'  => 'form-horizontal form-bordered'
             ]
         );
-
-        $this->setInputFilter(new NewsFormFilter($this->getServiceLocator()))
-            ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()));
-
-        $newsManager = new NewsManager($this->getServiceLocator());
 
         $this->add(
             [

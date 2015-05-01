@@ -1,0 +1,31 @@
+<?php
+/** @var $form \Application\Form\RegistrationForm */
+$form->prepare();
+?>
+<?php echo $this->form()->openTag($form); ?>
+<?php echo $this->formElementErrors($form); ?>
+<?php echo $this->formRow($form->get('csrf'));?>
+<div class="form-group">
+    <?php echo $this->formLabel($form->get('firstName')); ?>
+    <?php echo $this->formInput($form->get('firstName')); ?>
+</div>
+<div class="form-group">
+    <?php echo $this->formLabel($form->get('lastName')); ?>
+    <?php echo $this->formInput($form->get('lastName')); ?>
+</div>
+<div class="form-group">
+    <?php echo $this->formLabel($form->get('email')); ?>
+    <?php echo $this->formInput($form->get('email')); ?>
+</div>
+<div class="form-group">
+    <?php echo $this->formLabel($form->get('password')); ?>
+    <?php echo $this->formInput($form->get('password')); ?>
+</div>
+<div class="form-group">
+    <?php echo $this->formLabel($form->get('confirmPassword')); ?>
+    <?php echo $this->formInput($form->get('confirmPassword')); ?>
+</div>
+<div class="form-group">
+    <?php echo $this->formSubmit($form->get('submit')); ?>
+</div>
+<?php echo $this->form()->closeTag(); ?>

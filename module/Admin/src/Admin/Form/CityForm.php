@@ -12,23 +12,23 @@ class CityForm extends BaseForm
 
     public function init()
     {
-
-        $this->setAttributes([
-            'method' => 'post',
-            'class' => 'form-horizontal form-bordered'
-        ]);
-
         $this->setInputFilter(new CityFormFilter($this->getServiceLocator()))
             ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))
             ->setObject(new City());
 
         $countryManager = new CountryManager($this->getServiceLocator());
 
+        $this->setAttributes([
+            'method' => 'post',
+            'class' => 'form-horizontal form-bordered'
+        ]);
+
+
         $this->add([
             'name' => 'country',
             'type' => 'Select',
             'attributes' => [
-                'class' => 'form-control input-large select2me',
+                'class' => 'form-control input-large select2me'
             ],
             'options' => [
                 'label' => 'Country',
@@ -46,7 +46,7 @@ class CityForm extends BaseForm
             'attributes' => [
                 'class' => 'form-control input-large',
                 'maxlength' => 255,
-                'placeholder' => 'Name',
+                'placeholder' => 'Name'
             ],
             'options' => [
                 'label' => 'Name',
@@ -63,7 +63,7 @@ class CityForm extends BaseForm
             'attributes' => [
                 'class' => 'form-control input-large',
                 'maxlength' => 255,
-                'placeholder' => 'English city name',
+                'placeholder' => 'English city name'
             ],
             'options' => [
                 'label' => 'English city name',

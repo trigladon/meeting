@@ -26,6 +26,11 @@ abstract class BaseDAO
     protected $serviceManager = null;
 
     /**
+     * @var Array
+     */
+    protected $cacheOption = null;
+
+    /**
      * @return string
      */
     abstract function getRepositoryName();
@@ -44,7 +49,7 @@ abstract class BaseDAO
     public function getEntityManager()
     {
         if ($this->entityManager === null) {
-            $this->entityManager = $this->serviceManager->get('doctrine.entitymanager.orm_default');
+            $this->entityManager = $this->serviceManager->get('EntityManagerDoctrine');
         }
 
         return $this->entityManager;
@@ -81,6 +86,19 @@ abstract class BaseDAO
     }
 
     /**
+     * Cache options
+     *
+     * @return array
+     */
+    protected function getCacheOptions()
+    {
+        if ($this->cacheOption === null) {
+            $this->cacheOption = $this->getServiceManager()->get('config')['cache'];
+        }
+        return $this->cacheOption;
+    }
+
+    /**
      * @param $id
      * @param int $hydrationMode
      * @param bool $useCache
@@ -94,8 +112,20 @@ abstract class BaseDAO
             ->where($qb->expr()->eq('em.id', ':id'))
             ->setParameter('id', $id);
 
-        return $qb->getQuery()->useResultCache($useCache, null)->getOneOrNullResult($hydrationMode);
+//        var_dump($qb->getQuery()); die();
+        return $qb->getQuery()->useResultCache($useCache, $this->getCacheOptions()['cacheLifeTime'], md5($this->getRepositoryName().$id))->getOneOrNullResult($hydrationMode);
 
+    }
+
+    public function findByLocale($locale, $hydrationMode = AbstractQuery::HYDRATE_OBJECT, $useCache = true)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('em')
+            ->from($this->getRepositoryName(), 'em')
+            ->where($qb->expr()->eq('em.locale', ':locale'))
+            ->setParameter('locale', $locale);
+
+        return $qb->getQuery()->useResultCache($useCache, $this->getCacheOptions()['cacheLifeTime'], md5($this->getRepositoryName().$locale))->getOneOrNullResult($hydrationMode);
     }
 
     /**
@@ -109,7 +139,7 @@ abstract class BaseDAO
         $qb->select('em')
             ->from($this->getRepositoryName(), 'em');
 
-        return $qb->getQuery()->useResultCache($useCache, null)->getResult($hydrationMode);
+        return $qb->getQuery()->useResultCache($useCache, $this->getCacheOptions()['cacheLifeTime'], md5($this->getRepositoryName()))->getResult($hydrationMode);
     }
 
 
@@ -176,7 +206,7 @@ abstract class BaseDAO
         $qb->setFirstResult($offset)
             ->setMaxResults($limit);
 
-        return $qb->getQuery()->useResultCache($useCache)->getResult($hydrationMode);
+        return $qb->getQuery()->useResultCache($useCache, $this->getCacheOptions()['cacheLifeTime'], md5($this->getRepositoryName().$offset.$limit))->getResult($hydrationMode);
     }
 
     /**
@@ -197,8 +227,7 @@ abstract class BaseDAO
     public function countAll($useCache = true)
     {
         $qb = $this->countQ();
-        //var_dump($qb->getQuery()->getSQL()); die();
-        return $qb->getQuery()->useResultCache($useCache)->getSingleScalarResult();
+        return $qb->getQuery()->useResultCache($useCache, $this->getCacheOptions()['cacheLifeTime'], md5($this->getRepositoryName().'countAll'))->getSingleScalarResult();
     }
 
 

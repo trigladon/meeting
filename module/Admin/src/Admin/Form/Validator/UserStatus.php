@@ -48,7 +48,7 @@ class UserStatus extends ObjectExists
     {
         $value = $this->cleanSearchValue($value);
         /** @var $match \Common\Entity\User */
-        $match      = $this->objectRepository->findOneBy($value);
+        $match = $this->objectRepository->findOneBy($value);
         if ($match === null || $match->getDeleted() === User::DELETED_YES) {
             $this->error(self::ERROR_USER_NOT_FOUND);
             return false;

@@ -13,7 +13,7 @@ class ImageFile extends AbstractValidator
 
     protected $messageTemplates = [
         self::ERROR_FILE_MIME_TYPE => 'Bad file type. File must be image',
-        self::ERROR_FILE_REQUIRED => 'File can\'t be empty is required',
+        self::ERROR_FILE_REQUIRED => 'File can\'t be empty is required'
     ];
 
     protected $options = [
@@ -50,7 +50,7 @@ class ImageFile extends AbstractValidator
             return false;
         }
 
-        if ($this->check($value, 'type') && array_search($value['type'], $this->getMimeTypes()) === false){
+        if ($this->check($value, 'type') && !in_array($value['type'], $this->getMimeTypes())){
             $this->error(self::ERROR_FILE_MIME_TYPE);
             return false;
         }

@@ -3,7 +3,6 @@
 namespace Common\DAO;
 
 use Common\Entity\User;
-use Common\Entity\UserCode;
 use Doctrine\ORM\AbstractQuery;
 
 class UserCodeDAO extends BaseDAO

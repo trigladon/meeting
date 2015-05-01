@@ -3,22 +3,19 @@
 namespace Admin\Controller;
 
 use Admin\Form\AssetForm;
-use Common\Entity\Asset;
+use Common\Stdlib\ArrayLib;
 use Common\Manager\AssetManager;
-use Common\Manager\TableManager;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class AssetController extends BaseController
 {
 
-    protected $defaultRoute = 'admin-asset';
-
     public function allAction()
     {
 
         $assetManager = new AssetManager($this->getServiceLocator());
-        $tableManager = new TableManager($this->getServiceLocator(), $assetManager);
+        $tableManager = new \Common\Manager\TableManager($this->getServiceLocator(), $assetManager);
         $tableManager->setColumnsList($assetManager->assetTable());
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -31,33 +28,32 @@ class AssetController extends BaseController
         $view = new ViewModel([
             'tableInfo' => $tableManager->getTableInfo(),
             'url' => [
-                'route' => 'admin-asset',
-                'parameters' => ['action' => 'add']
+                'route' => 'admin/default',
+                'parameters' => ['controller' => 'asset', 'action' => 'add']
             ]
         ]);
 
-        return $view->setTemplate('/common/all-page');
+        return $view->setTemplate('common/all-page');
     }
-
 
     public function addAction()
     {
         try{
 
             /** @var $assetForm AssetForm */
-            $assetForm = $this->getServiceLocator()->get('formElementManager')->get('Admin\Form\AssetForm');
+            $assetForm = $this->getForm('Admin\Form\AssetForm');
 
             $request = $this->getRequest();
 
             if ($request->isPost())
             {
-                $assetForm->setData(array_merge_recursive($request->getPost()->toArray(), $request->getFiles()->toArray()));
+                $assetForm->setData(ArrayLib::merge($request->getPost()->toArray(), $request->getFiles()->toArray(), true));
 
                 if ($assetForm->isValid()) {
                     $assetManager = new AssetManager($this->getServiceLocator());
                     $assetManager->saveAsset($assetForm->getObject());
                     $this->setSuccessMessage('Asset create success');
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', ['controller' => "asset"]);
                 }
             }
 
@@ -66,11 +62,11 @@ class AssetController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/asset/_assetForm.phtml',
+            'template' => 'admin/asset/_assetForm',
             'parameters' => ['assetForm' => $assetForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
     }
 
     public function editAction()
@@ -78,25 +74,25 @@ class AssetController extends BaseController
         try{
             $assetManager = new AssetManager($this->getServiceLocator());
             $asset = $assetManager->getDAO()->findById((int)$this->params()->fromRoute('id', 0));
+
             if ($asset === null) {
                 $this->setErrorMessage('Asset not found');
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => "asset"]);
             }
 
             /** @var $assetForm AssetForm */
-            $assetForm = $this->getServiceLocator()->get('formElementManager')->get('Admin\Form\AssetForm');
-            $assetForm->bind($asset);
+            $assetForm = $this->getForm('Admin\Form\AssetForm')->bind($asset);
 
             $request = $this->getRequest();
             if ($request->isPost()) {
 
-                $assetForm->setData(array_merge_recursive($request->getPost()->toArray(), $request->getFiles()->toArray()));
+                $assetForm->setData(ArrayLib::merge($request->getPost()->toArray(), $request->getFiles()->toArray(), true));
 
                 if ($assetForm->isValid()) {
 
                     $assetManager->saveAsset($assetForm->getObject());
                     $this->setSuccessMessage('Asset save success');
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', ['controller' => "asset"]);
                 }
             }
 
@@ -105,11 +101,11 @@ class AssetController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/asset/_assetForm.phtml',
+            'template' => 'admin/asset/_assetForm',
             'parameters' => ['assetForm' => $assetForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
     }
 
     public function deleteAction()
@@ -117,9 +113,10 @@ class AssetController extends BaseController
         try{
             $assetManager = new AssetManager($this->getServiceLocator());
             $asset = $assetManager->getDAO()->findById((int)$this->params()->fromRoute('id', 0));
+
             if ($asset === null) {
                 $this->setErrorMessage('Asset not found');
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => "asset"]);
             }
 
             $assetManager->getDAO()->remove($asset);
@@ -129,7 +126,7 @@ class AssetController extends BaseController
             throw new \Exception($e->getMessage());
         }
 
-        return $this->toDefaultRoute();
+        return $this->toRoute('admin/default', ['controller' => "asset"]);
     }
 
 }

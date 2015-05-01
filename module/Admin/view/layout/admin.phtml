@@ -15,7 +15,7 @@
     <?php echo $this->headTitle($this->translate($title).' - '.$this->translate($this->getProjectData()['siteName']))->setSeparator(' - ')->setAutoEscape(false); ?>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&amp;subset=all" rel="stylesheet" type="text/css">
     <link href="<?=$this->getAdminAssetsPath()?>/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link href="<?=$this->getAdminAssetsPath()?>/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css">
     <link href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -264,7 +264,7 @@
                     </div>
                 </div>
                 <!-- END PAGE CONTENT-->
-                <?=$this->render('\partial\modal.phtml');?>
+                <?=$this->render('partial/modal');?>
             </div>
         </div>
     </div>

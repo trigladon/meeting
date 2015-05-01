@@ -17,7 +17,7 @@ abstract class BaseEntity
                 if (!in_array($k, $this->_notExchangeFields)) {
                     $name = str_replace('_', '', strtolower($k));
                     foreach ($reflMethods as $reflMethod) {
-                        if (strtolower('set' . $name) == strtolower($reflMethod->getName()) && $reflMethod->isPublic()) {
+                        if (strtolower('set' . $name) === strtolower($reflMethod->getName()) && $reflMethod->isPublic()) {
                             $this->{$reflMethod->getName()}($v);
                             break;
                         }

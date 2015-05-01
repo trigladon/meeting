@@ -1,4 +1,4 @@
-<?php if (!empty($this->messages)):?>
+<?php if ($this->messages):?>
     <?php foreach($this->messages as $type => $arrayMessages):  ?>
         <?php foreach($arrayMessages as $message): ?>
             <div class="<?=$this->classes[$type]?>">

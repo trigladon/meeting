@@ -10,14 +10,13 @@ class NewsCategoryForm extends BaseForm
 
     public function init()
     {
+        $this->setInputFilter(new NewsCategoryFormFilter($this->getServiceLocator()))
+            ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()));
 
         $this->setAttributes([
             'method' => 'post',
             'class' => 'form-horizontal form-bordered'
         ]);
-
-        $this->setInputFilter(new NewsCategoryFormFilter($this->getServiceLocator()))
-            ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()));
 
         $this->add([
             'name' => 'id',

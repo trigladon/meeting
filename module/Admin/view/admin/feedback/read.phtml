@@ -6,7 +6,7 @@
             <i class="icon-paper-plane font-yellow-casablanca"></i><?=$this->translate('Letter')?>
         </div>
         <div class="tools">
-            <a href="<?=$this->url('admin-feedback')?>" class="btn btn-xs default" style="height: 21px"><i class="fa glyphicon glyphicon-chevron-left"></i> <?=$this->translate('Back')?></a>
+            <a href="<?=$this->url('admin/default', ['controller' => 'feedback'])?>" class="btn btn-xs default" style="height: 21px"><i class="fa glyphicon glyphicon-chevron-left"></i> <?=$this->translate('Back')?></a>
         </div>
     </div>
     <div class="portlet-body">
@@ -22,10 +22,10 @@
                                     <li class="dd-item" data-id="1">
                                         <div  class="dd-handle" style="height: 34px">
                                             <div class="col-sm-6 text-left">
-                                                <a href="<?=$this->url('admin-feedback-answer', ['id' => $feedback->getId(), 'idAnswer' => $answer->getId()])?>">#<?=$answer->getUser()->getId().' '.$answer->getUser()->getFullName()?> <?=$answer->getCreated()->format($this->getProjectData()['options']['dateTimeFormat'])?></a>
+                                                <a href="<?=$this->url('admin/default-answer', ['controller' => 'feedback', 'action' => 'answer', 'id' => $feedback->getId(), 'idAnswer' => $answer->getId()])?>">#<?=$answer->getUser()->getId().' '.$answer->getUser()->getFullName()?> <?=$answer->getCreated()->format($this->getProjectData()['options']['dateTimeFormat'])?></a>
                                             </div>
                                             <div class="col-sm-6 text-right">
-                                                <a href="<?=$this->url('admin-feedback-answer', ['id' => $feedback->getId(), 'idAnswer' => $answer->getId()])?>" class="btn btn-xs btn-success text-right" style="height: 21px"><?=$this->translate('Read')?></a>
+                                                <a href="<?=$this->url('admin/default-answer', ['controller' => 'feedback', 'action' => 'answer', 'id' => $feedback->getId(), 'idAnswer' => $answer->getId()])?>" class="btn btn-xs btn-success text-right" style="height: 21px"><?=$this->translate('Read')?></a>
                                             </div>
                                         </div>
                                     </li>
@@ -51,6 +51,6 @@
         </div>
     </div>
     <div class="portlet-body form">
-        <?=$this->render('/admin/feedback/_answerForm.phtml', ['answerForm' => $answerForm])?>
+        <?=$this->render('admin/feedback/_answerForm', ['answerForm' => $answerForm])?>
     </div>
 </div>

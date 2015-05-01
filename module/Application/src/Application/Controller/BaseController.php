@@ -100,5 +100,35 @@ class BaseController extends AbstractActionController
     }
 
 
+    protected function getLocale()
+    {
+        $locale = $this->getTranslator()->getLocale();
+        return $locale;
+    }
+
+    /**
+     * @return \Zend\I18n\Translator\Translator
+     */
+    protected function getTranslator()
+    {
+        return $this->getServiceLocator()->get('translator');
+    }
+
+    /**
+     * @param $message
+     * @param string $textDomain
+     * @param null $locale
+     * @return string
+     */
+    public function translate($message, $textDomain = 'default', $locale = null)
+    {
+        return $this->getTranslator()->translate($message, $textDomain, $locale);
+    }
+
+    protected function getForm($name)
+    {
+        return $this->getServiceLocator()->get('FormElementManager')->get($name);
+    }
+
 
 }

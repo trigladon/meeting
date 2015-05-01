@@ -22,9 +22,8 @@ class Gateway implements SaveHandlerInterface
     protected $tableName = 'session';
 
     /**
-     * @param array $doctrineConnectionConfig
-     *
-     * @throws \Exception
+     * @param       $doctrineConnectionConfig
+     * @param array $doctrineConfig
      */
     public function __construct($doctrineConnectionConfig, Array $doctrineConfig)
     {
@@ -33,7 +32,7 @@ class Gateway implements SaveHandlerInterface
          * @var \Doctrine\DBAL\Connection
          */
         $this->connection = $doctrineConnectionConfig;
-        $this->tableName = $doctrineConfig['sessionDBOptions']['tableName'];
+        $this->tableName = (!isset($doctrineConfig['sessionDBOptions']['tableName']) ? $this->tableName :$doctrineConfig['sessionDBOptions']['tableName']);
     }
 
     /**

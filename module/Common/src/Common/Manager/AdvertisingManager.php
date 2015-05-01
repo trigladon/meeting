@@ -131,8 +131,8 @@ class AdvertisingManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-advertising',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ["controller" => "advertising", "action" => "all"],
                 ],
                 'tableId' => 'admin-list-all-advertising',
             ],
@@ -188,8 +188,12 @@ class AdvertisingManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-advertising',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    "name" => "controller",
+                                    "value" => "advertising"
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit'
@@ -206,8 +210,12 @@ class AdvertisingManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-advertising',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    "name" => "controller",
+                                    "value" => "advertising"
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete',
@@ -243,8 +251,11 @@ class AdvertisingManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-advertising-place',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => [
+                        "controller" => "advertising",
+                        "action" => "all-places"
+                    ],
                 ],
                 'tableId' => 'admin-list-all-advertising',
             ],
@@ -286,8 +297,12 @@ class AdvertisingManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-advertising-place',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    "name" => "controller",
+                                    "value" => "advertising"
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit-place'
@@ -304,8 +319,12 @@ class AdvertisingManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-advertising-place',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    "name" => "controller",
+                                    "value" => "advertising"
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete-place',

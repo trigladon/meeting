@@ -4,15 +4,17 @@ return array(
     'doctrine' => array(
         'connection' => array(
             'orm_default' => array(
-                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOPgSql\Driver',
                 'doctrine_type_mappings' => array(
                     'enum' => 'string'
                 ),
                 'params' => array(
                     'host' => 'localhost',
-                    'port' => 3306,
-                    'user' => 'root',
-                    'password' => 'root',
+                    'port' => 5432,
+                    // 'user' => 'postgresql',                    
+                    // 'password' => 'postgresql',
+                    'user' => 'postgres',                    
+                    'password' => 'root',                    
                     'dbname' => 'meet',
                     'tablePrefix' => 'o_o_',
                     'driverOptions' => array(

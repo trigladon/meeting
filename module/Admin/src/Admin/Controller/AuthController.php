@@ -18,6 +18,8 @@ class AuthController extends BaseController
     {
         $authManager = new AuthManager($this->getServiceLocator());
         $translatorManager = new TranslatorManager($this->getServiceLocator());
+        $errorMessage = null;
+        $loginForm = null;
 
 	    try{
 	        if ($authManager->hasIdentity()){
@@ -38,21 +40,30 @@ class AuthController extends BaseController
 
 	                if ($result->isValid()){
                         $loginForm->unsetSessionLoginCount();
-	                    return $this->toHome();
+						if ($this->isGranted('Admin')) {
+							return $this->toHome();
+						} else {
+							return $this->toRoute('home');
+						}
+
 	                } else {
+                        $errorMessage = $translatorManager->translate($authManager->getAuthenticationMessage($result));
 		                $loginForm->updateSessionLoginContainer();
 		                $this->setErrorMessage($translatorManager->translate($authManager->getAuthenticationMessage($result)));
 	                }
-	            }
+	            }else{
+					$loginForm->updateSessionLoginContainer();
+				}
 	        }
 	    }catch (\Exception $e){
-            throw new \Exception($e->getMessage());
-			//TODO view exception or redirect and log error
+//            throw new \Exception($e->getMessage());
 	    }
-
-        return [
-            'loginForm' => $loginForm,
-        ];
+		$viewModel = new ViewModel([
+			'loginForm' => $loginForm,
+            'errorMessage' => $errorMessage,
+		]);
+        $viewModel->setTemplate('admin/auth/login');
+        return $viewModel;
     }
 
 	public function recoveryPasswordAction()
@@ -84,20 +95,20 @@ class AuthController extends BaseController
 
 		}catch (\Exception $e){
             throw new \Exception($e->getMessage());
-			//TODO view exception or redirect and log error
 		}
 
-		return [
+		$viewModel = new ViewModel([
 			'recoveryForm' => $recoveryForm,
-		];
+		]);
+
+		return $viewModel->setTemplate('admin/auth/recovery-password');
 	}
 
 
 	public function refreshCaptchaAction()
 	{
 		if (!$this->getRequest()->isXmlHttpRequest()){
-			$this->getResponse()->setStatusCode(404);
-			return;
+			return $this->getResponse()->setStatusCode(404);
 		}
 
 		$loginForm = new LoginForm($this->getServiceLocator());

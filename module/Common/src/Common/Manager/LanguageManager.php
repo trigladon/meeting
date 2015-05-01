@@ -76,7 +76,7 @@ class LanguageManager extends BaseEntityManager
             $result[] = [
                 'value' => $language->getPrefix(),
                 'label' => $language->getName(),
-                'selected' => ($defaultLanguage == $language->getPrefix() ? true : false),
+                'selected' => ($defaultLanguage === $language->getPrefix() ? true : false),
             ];
         }
 
@@ -90,8 +90,8 @@ class LanguageManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-language',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ['controller' => 'language'],
                 ],
                 'tableId' => 'admin-list-all-language',
             ],
@@ -133,8 +133,12 @@ class LanguageManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-language',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'value' => 'language',
+                                    'name' => 'controller',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit'
@@ -155,8 +159,12 @@ class LanguageManager extends BaseEntityManager
                         TableManager::BUTTON_TYPE_FROM_VALUE => [
                             'no' => [
                                 'url' => [
-                                    'route' => 'admin-language',
+                                    'route' => 'admin/default',
                                     'parameters' => [
+                                        [
+                                            'value' => 'language',
+                                            'name' => 'controller',
+                                        ],
                                         [
                                             'name' => 'action',
                                             'value' => 'publish',
@@ -178,8 +186,12 @@ class LanguageManager extends BaseEntityManager
                             ],
                             'yes' => [
                                 'url' => [
-                                    'route' => 'admin-language',
+                                    'route' => 'admin/default',
                                     'parameters' => [
+                                        [
+                                            'value' => 'language',
+                                            'name' => 'controller',
+                                        ],
                                         [
                                             'name' => 'action',
                                             'value' => 'publish',

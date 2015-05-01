@@ -96,7 +96,7 @@ class TableManager extends BaseManager
     protected function createParametersForUrl($array, BaseEntity $entity)
     {
         $result = array();
-        if (is_array($array) && !empty($array)){
+        if (is_array($array) && $array){
 
             foreach($array as $parameter) {
                 $result[$parameter['name']] = (isset($parameter['property']) ? $this->getDefaultColumn($entity, $parameter['property']) : $parameter['value']);
@@ -118,7 +118,7 @@ class TableManager extends BaseManager
      */
     public function getDataContent(Array $collection)
     {
-        if (empty($this->columnsList)) {
+        if (!$this->columnsList) {
             throw new \Exception('Method "getColumnsList" can\'t return empty array');
         }
 
@@ -282,7 +282,7 @@ class TableManager extends BaseManager
 
     public function getTableInfo()
     {
-        if (empty($this->columnsList)) {
+        if (!$this->columnsList) {
             throw new \Exception('Method "getColumnList" can\'t be empty');
         }
 

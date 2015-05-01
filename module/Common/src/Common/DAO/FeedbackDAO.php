@@ -26,8 +26,6 @@ class FeedbackDAO extends BaseDAO
         $qb = $this->findAllQ();
         $qb->setFirstResult($offset)
             ->setMaxResults($limit)
-            ->groupBy('u.status')
-            ->addGroupBy('u.created')
         ;
 
         return $qb->getQuery()->useResultCache($useCache)->getResult($hydrationMode);

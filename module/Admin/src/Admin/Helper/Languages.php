@@ -15,7 +15,8 @@ class Languages extends AbstractHelper
 
     protected $languages = null;
 
-    public function __construct(ServiceLocatorInterface $serviceLocatorInterface) {
+    public function __construct(ServiceLocatorInterface $serviceLocatorInterface)
+    {
         $this->serviceLocator = $serviceLocatorInterface;
     }
 

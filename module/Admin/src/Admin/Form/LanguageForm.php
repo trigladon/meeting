@@ -10,12 +10,12 @@ class LanguageForm extends BaseForm
 
     public function init()
     {
+        $this->setInputFilter(new LanguageFormFilter($this->getServiceLocator()))->setObject(new Language());
+
         $this->setAttributes([
             'method' => 'post',
             'class' => 'form-horizontal form-bordered'
         ]);
-
-        $this->setInputFilter(new LanguageFormFilter($this->getServiceLocator()))->setObject(new Language());
 
         $this->add([
             'name' => 'id',
@@ -82,7 +82,7 @@ class LanguageForm extends BaseForm
                 'data-size' => 'normal',
                 'data-on-text' => 'Yes',
                 'data-off-text' => 'No',
-                'data-on-color' => 'success',
+                'data-on-color' => 'success'
             ],
             'options' => [
                 'label' => 'Is Published',

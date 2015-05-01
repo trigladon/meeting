@@ -13,21 +13,24 @@ class AssetForm extends BaseForm
 
     public function init()
     {
+
+        $this->setInputFilter(new AssetFormFilter($this->getServiceLocator()))
+            ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))
+            ->setObject(new Asset());
+
+        $assetManager = new AssetManager($this->serviceLocator);
+        $userManager = new UserManager($this->serviceLocator);
+
         $this->setAttributes([
                 'method' => 'post',
                 'class' => 'form-horizontal form-bordered'
             ]);
 
-        $this->setInputFilter(new AssetFormFilter($this->getServiceLocator()))->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))->setObject(new Asset());
-
-        $assetManager = new AssetManager($this->serviceLocator);
-        $userManager = new UserManager($this->serviceLocator);
-
         $this->add([
                 'name' => 'user',
                 'type' => 'Zend\Form\Element\Select',
                 'attributes' => [
-                    'class' => 'form-control input-large select2me',
+                    'class' => 'form-control input-large select2me'
                 ],
                 'options' => [
                     'label' => 'User',
@@ -46,7 +49,7 @@ class AssetForm extends BaseForm
                 'attributes' => [
                     'class' => 'form-control input-large',
                     'maxlength' => 255,
-                    'placeholder' => 'Title',
+                    'placeholder' => 'Title'
                 ],
                 'options' => [
                     'label' => 'Title',
@@ -76,18 +79,18 @@ class AssetForm extends BaseForm
                 'name' => 'type',
                 'type' => 'Radio',
                 'attributes' => [
-                    'value' => Asset::TYPE_IMAGE,
+                    'value' => Asset::TYPE_IMAGE
                 ],
                 'options' => [
                     'label' => 'Type',
-                    'value_options' => $assetManager->getTypesForSelect(),
-                ],
+                    'value_options' => $assetManager->getTypesForSelect()
+                ]
             ]);
 
         $this->add([
             'name' => 'name',
             'attributes' => [
-                'type' => 'hidden',
+                'type' => 'hidden'
             ]
         ]);
 
@@ -108,9 +111,9 @@ class AssetForm extends BaseForm
                 'name' => 'url',
                 'type' => 'url',
                 'attributes' => [
-                    'class' => 'form-control input-large',
+                    'class' => 'form-control input-large input-youtube-url',
                     'maxlength' => 255,
-                    'placeholder' => 'Url',
+                    'placeholder' => 'Url'
                 ],
                 'options' => [
                     'label' => 'Url',

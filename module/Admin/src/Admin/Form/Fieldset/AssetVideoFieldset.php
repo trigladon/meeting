@@ -24,20 +24,15 @@ class AssetVideoFieldset extends BaseFieldset
                 'name' => 'type',
                 'type' => 'hidden',
                 'attributes' => [
-                    'value' => 'Video'
+                    'value' => 'video'
                 ]
-            ]);
-
-        $this->add([
-                'name' => 'name',
-                'type' => 'hidden'
             ]);
 
         $this->add([
                 'name' => 'url',
                 'type' => 'Url',
                 'attributes' => [
-                    'class' => 'form-control input-large',
+                    'class' => 'form-control input-large input-youtube-url',
                     'maxlength' => 255,
                     'placeholder' => 'Url',
                 ],
@@ -58,8 +53,8 @@ class AssetVideoFieldset extends BaseFieldset
         $assetManager = new AssetManager($this->getServiceLocator());
         return [
             [
-                'required' => false,
-                'name' => 'name',
+                'required' => true,
+                'name' => 'type',
                 'filters' => [
                     ['name' => 'StripTags'],
                     ['name' => 'StringTrim'],
@@ -72,9 +67,9 @@ class AssetVideoFieldset extends BaseFieldset
                     array(
                         'name' => 'InArray',
                         'options' => array(
-                            'haystack' => $assetManager->getTypesForSelect(),
+                            'haystack' => $assetManager->getTypes(),
                             'messages' => array(
-                                InArray::NOT_IN_ARRAY => 'Image type select error.',
+                                InArray::NOT_IN_ARRAY => 'Video type select error.',
                             )
                         )
                     )

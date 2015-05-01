@@ -10,7 +10,7 @@ class LanguageFormFilter extends BaseInputFilter
 
         $this->add([
             'name' => 'id',
-            'required' => false,
+            'required' => false
         ]);
 
         $this->add([

@@ -1,0 +1,16 @@
+<div class="portlet light">
+    <div class="portlet-title">
+        <div class="caption">
+            <div class="caption font-red-sunglo">
+                <i class="icon-speech font-red-sunglo"></i>
+                <span class="caption-subject bold uppercase"> <?=$this->getPageTitle('admin-navigation')?></span>
+            </div>
+        </div>
+        <div class="actions">
+            <a href="<?=$this->url('admin/default', ['controller' => 'auction', 'action' => 'edit', 'id' => $auction->getId()])?>" class="btn btn-default"><?=$this->translate('Back')?></a>
+        </div>
+    </div>
+    <div class="portlet-body">
+        <?=$this->render('partial/table', array('tableInfo' => $tableInfo));?>
+    </div>
+</div>

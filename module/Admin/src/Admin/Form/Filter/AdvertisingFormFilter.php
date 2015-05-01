@@ -9,7 +9,7 @@ class AdvertisingFormFilter extends BaseInputFilter
     {
         $this->add([
             'name' => 'place',
-            'required' => false,
+            'required' => false
         ]);
 
         $this->add([

@@ -20,26 +20,89 @@ return array(
                     ),
                 ),
             ),
-            'login' => array(
+            'refresh-captcha' => [
                 'type' => 'Literal',
                 'options' => array(
-                    'route' => '/login',
+                    'route' => '/refresh-captcha',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Auth',
-                        'action' => 'login',
+                        'action' => 'refresh-captcha'
+                    )
+                )
+            ],
+
+            'about' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/about',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action' => 'about'
                     )
                 )
             ),
-            'logout' => array(
+            'contacts' => array(
                 'type' => 'Literal',
                 'options' => array(
-                    'route' => '/logout',
+                    'route' => '/contacts',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action' => 'contacts'
+                    )
+                )
+            ),
+            'sign-in' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/sign-in',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action' => 'login'
+                    )
+                )
+            ),
+            'sign-up' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/sign-up',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action' => 'registration'
+                    )
+                )
+            ),
+            'sign-up-success' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/sign-up/success',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action' => 'registration-success'
+                    )
+                )
+            ),
+            'sign-up-activation' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/sign-up/activation/:code',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action' => 'activation',
+                        'code' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    )
+                )
+            ),
+            'sign-out' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/sign-out',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Auth',
                         'action' => 'logout'
                     )
                 )
             ),
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -79,14 +142,6 @@ return array(
         'doctype'                  => 'HTML5',
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
-        'template_map' => array(
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
-        ),
-        'template_path_stack' => array(
-            __DIR__ . '/../view',
-        ),
+        'template_map' => require __DIR__  .'/template_map.php',
     ),
 );

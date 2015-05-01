@@ -70,29 +70,11 @@ return [
          * Supported options depend of the role provider, so please refer to the official documentation
          */
         'role_provider' => [
-            'ZfcRbac\Role\InMemoryRoleProvider' => [
-                Role::ROLE_GOD_MODE => [
-                    'children'    => [Role::ROLE_ADMIN],
-                ],
-                Role::ROLE_ADMIN => [
-                    'children'    => [Role::ROLE_MANAGER],
-                ],
-                Role::ROLE_MANAGER => [
-                    'children'    => [Role::ROLE_USER],
-                ],
-                Role::ROLE_USER => [
-                    'children'    => [Role::ROLE_GUEST],
-                ],
-                Role::ROLE_GUEST => [
-
-                ]
-            ]
-
-//            'ZfcRbac\Role\ObjectRepositoryRoleProvider' => [
-//                'object_manager'     => 'doctrine.entitymanager.orm_default',
-//                'class_name'         => 'Common\Entity\Role',
-//                'role_name_property' => 'name',
-//            ],
+            'ZfcRbac\Role\ObjectRepositoryRoleProvider' => [
+                'object_manager'     => 'doctrine.entitymanager.orm_default',
+                'class_name'         => 'Common\Entity\Role',
+                'role_name_property' => 'name',
+            ],
         ],
 
         /**
@@ -113,29 +95,29 @@ return [
             /**
              * Enable redirection when the user is connected
              */
-            // 'redirect_when_connected' => true,
+            'redirect_when_connected' => true,
 
             /**
              * Set the route to redirect when user is connected (of course, it must exist!)
              */
-            // 'redirect_to_route_connected' => 'home',
+            'redirect_to_route_connected' => 'home',
 
             /**
              * Set the route to redirect when user is disconnected (of course, it must exist!)
              */
-            // 'redirect_to_route_disconnected' => 'login',
+            'redirect_to_route_disconnected' => 'home',
 
             /**
              * If a user is unauthorized and redirected to another route (login, for instance), should we
              * append the previous URI (the one that was unauthorized) in the query params?
              */
-            // 'append_previous_uri' => true,
+             'append_previous_uri' => true,
 
             /**
              * If append_previous_uri option is set to true, this option set the query key to use when
              * the previous uri is appended
              */
-            // 'previous_uri_query_key' => 'redirectTo'
+             'previous_uri_query_key' => 'redirectTo'
         ],
 
         /**

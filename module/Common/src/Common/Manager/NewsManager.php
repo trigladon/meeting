@@ -6,7 +6,6 @@ use Common\DAO\NewsCategoryDAO;
 use Common\DAO\NewsCategoryTranslationsDAO;
 use Common\DAO\NewsDAO;
 use Common\DAO\NewsTranslationsDAO;
-use Common\Entity\BaseEntity;
 use Common\Entity\News;
 use Common\Entity\NewsCategory;
 
@@ -160,8 +159,8 @@ class NewsManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-category',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ['controller' => 'news', 'action' => 'all-category'],
                 ],
                 'tableId' => 'admin-list-all-news-category',
             ],
@@ -215,8 +214,12 @@ class NewsManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-category',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'news'
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit-category'
@@ -233,8 +236,12 @@ class NewsManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-category',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'news'
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete-category',
@@ -270,8 +277,8 @@ class NewsManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-news',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ['controller' => 'news'],
                 ],
                 'tableId' => 'admin-list-all-news',
             ],
@@ -325,8 +332,12 @@ class NewsManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-news',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'news',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit'
@@ -343,8 +354,12 @@ class NewsManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-news',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'news',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete',

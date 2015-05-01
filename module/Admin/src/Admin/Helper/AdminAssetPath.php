@@ -2,15 +2,21 @@
 
 namespace Admin\Helper;
 
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Helper\AbstractHelper;
 
 class AdminAssetPath extends AbstractHelper
 {
-    const ADMIN_ASSETS_FOLDER = "/backend";
+    protected $adminAssetFolder  = null;
+
+    public function __construct(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->adminAssetFolder = $serviceLocator->get('config')['paths']['assetFolder'];
+    }
 
     public function __invoke()
     {
-        return self::ADMIN_ASSETS_FOLDER;
+        return $this->adminAssetFolder;
     }
 
 

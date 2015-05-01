@@ -92,7 +92,7 @@ class FlashMessage extends AbstractHelper
             FlashMessenger::NAMESPACE_SUCCESS => 'alert alert-success alert-dismissable',
         );
 
-        if (!empty($messages)) {
+        if ($messages) {
 
             $view = new ViewModel();
             $view->setTerminal(true)

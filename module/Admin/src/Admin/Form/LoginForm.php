@@ -11,9 +11,9 @@ use Zend\Captcha\Image;
 class LoginForm extends Form
 {
 
-    const SESSION_LOGIN_COUNT = 'login-count';
-    const SESSION_LOGIN_NAMESPACE = 'login';
-    const COUNT_FAILED_LOGIN_TO_VIEW_CAPTCHA = 2;
+    private $sessionLoginCount = 'login-count';
+    private $sessionLoginNamespace = 'login';
+    private $countFailedLoginToViewCaptcha = 2;
 
     protected $captchaOptions = [
         'dirData' => 'data/captcha',
@@ -28,10 +28,9 @@ class LoginForm extends Form
 
     public function __construct(ServiceLocatorInterface $serviceLocator, $options = [])
     {
-
 	    $loginCount = 0;
-	    if ($this->getSessionContainer()->offsetExists(self::SESSION_LOGIN_COUNT)){
-		    $loginCount = $this->getSessionContainer()->offsetGet(self::SESSION_LOGIN_COUNT);
+	    if ($this->getSessionContainer()->offsetExists($this->sessionLoginCount)){
+		    $loginCount = $this->getSessionContainer()->offsetGet($this->sessionLoginCount);
 	    }
 
         parent::__construct(__CLASS__, $options);
@@ -82,20 +81,15 @@ class LoginForm extends Form
 	            ],
                 'options' => [
                     'label' => 'Remember me'
-                ],
+                ]
             ]);
 
         $this->add([
                 'type' => 'Zend\Form\Element\Csrf',
                 'name' => 'csrf',
-                'options' => [
-                    'csrf_options' => [
-                        'timeout' => 1200
-                    ]
-                ]
             ]);
 
-	    if ($loginCount >= self::COUNT_FAILED_LOGIN_TO_VIEW_CAPTCHA) {
+	    if ($loginCount >= $this->countFailedLoginToViewCaptcha) {
 			$this->addCaptcha();
 	    }
 
@@ -145,8 +139,8 @@ class LoginForm extends Form
      */
     public function unsetSessionLoginCount()
     {
-        if ($this->getSessionContainer()->offsetExists(self::SESSION_LOGIN_COUNT)){
-            $this->getSessionContainer()->offsetUnset(self::SESSION_LOGIN_COUNT);
+        if ($this->getSessionContainer()->offsetExists($this->sessionLoginCount)){
+            $this->getSessionContainer()->offsetUnset($this->sessionLoginCount);
         }
     }
 
@@ -154,14 +148,14 @@ class LoginForm extends Form
      */
     public function updateSessionLoginContainer()
     {
-        if ($this->getSessionContainer()->offsetExists(self::SESSION_LOGIN_COUNT)){
-            $countTemp = $this->getSessionContainer()->offsetGet(self::SESSION_LOGIN_COUNT) + 1;
-            $this->getSessionContainer()->offsetSet(self::SESSION_LOGIN_COUNT, $countTemp);
+        if ($this->getSessionContainer()->offsetExists($this->sessionLoginCount)){
+            $countTemp = $this->getSessionContainer()->offsetGet($this->sessionLoginCount) + 1;
+            $this->getSessionContainer()->offsetSet($this->sessionLoginCount, $countTemp);
             if ($countTemp >= 2 && !$this->has('captcha')) {
                 $this->addCaptcha();
             }
         } else {
-            $this->getSessionContainer()->offsetSet(self::SESSION_LOGIN_COUNT, 0);
+            $this->getSessionContainer()->offsetSet($this->sessionLoginCount, 0);
         }
     }
 
@@ -171,7 +165,7 @@ class LoginForm extends Form
     protected function getSessionContainer()
     {
         if ($this->sessionContainer === null) {
-            $this->sessionContainer = new Container(self::SESSION_LOGIN_NAMESPACE);
+            $this->sessionContainer = new Container($this->sessionLoginNamespace);
         }
 
         return $this->sessionContainer;

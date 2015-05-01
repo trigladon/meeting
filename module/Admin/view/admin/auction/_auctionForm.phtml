@@ -1,0 +1,88 @@
+<link rel="stylesheet" type="text/css" href="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-datetimepicker/css/datetimepicker.css"/>
+<?php /** @var $auctionForm \Admin\Form\AuctionForm */?>
+<?php $auctionForm->prepare(); ?>
+<?php $error = $this->formElementErrors($auctionForm) ?>
+<?php if ($error): ?>
+    <div class="alert alert-danger display-show">
+        <button class="close" data-close="alert"></button>
+        <span><?=$error ?></span>
+    </div>
+<?php endif;?>
+<?=$this->form()->openTag($auctionForm); ?>
+<div class="form-body">
+    <?=$this->formRow($auctionForm->get('csrf')); ?>
+    <div class="form-group">
+        <?=$this->formLabel($auctionForm->get('user'));?>
+        <div class="col-sm-4"><?=$this->formSelect($auctionForm->get('user'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($auctionForm->get('patient'));?>
+        <div class="col-sm-4"><?=$this->formSelect($auctionForm->get('patient'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($auctionForm->get('image'));?>
+        <?=$this->render('common/_asset-image-block', ['assetImage' => $auctionForm->get('image')])?>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($auctionForm->get('video'));?>
+        <?=$this->render('common/_asset-video-block', ['assetVideo' => $auctionForm->get('video')])?>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($auctionForm->get('title'));?>
+        <div class="col-sm-4"><?=$this->formElement($auctionForm->get('title'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($auctionForm->get('about'));?>
+        <div class="col-sm-4"><?=$this->formElement($auctionForm->get('about'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($auctionForm->get('status'));?>
+        <div class="col-sm-4"><?=$this->formElement($auctionForm->get('status'))?></div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($auctionForm->get('startDate'));?>
+        <?php $value = ($auctionForm->getObject()->getStartDate() === null ? '' : $auctionForm->getObject()->getStartDate()->format($this->getProjectData()['options']['dateTimeFormat'])) ?>
+        <div class="col-md-3">
+            <div class="input-group date form_datetime">
+                <?=$this->formElement($auctionForm->get('startDate')->setValue($value))?>
+                <span class="input-group-btn"><button class="btn default date-set" type="button"><i class="fa fa-calendar"></i></button></span>
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group">
+        <?=$this->formLabel($auctionForm->has('lengthDate') ? $auctionForm->get('lengthDate') : $auctionForm->get('endDate'));?>
+        <?php if ($auctionForm->has('lengthDate')): ?>
+            <div class="col-sm-9"><?=$this->formSelect($auctionForm->get('lengthDate'))?></div>
+        <?php else: ?>
+            <?php $value = ($auctionForm->getObject()->getEndDate() === null ? '' : $auctionForm->getObject()->getEndDate()->format($this->getProjectData()['options']['dateTimeFormat'])) ?>
+            <div class="col-md-3">
+                <div class="input-group date form_datetime">
+                    <?=$this->formElement($auctionForm->get('endDate')->setValue($value))?>
+                    <span class="input-group-btn"><button class="btn default date-set" type="button"><i class="fa fa-calendar"></i></button></span>
+                </div>
+            </div>
+        <?php endif; ?>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-9">
+                <button type="submit" class="btn purple"><i class="fa fa-check"></i> <?=$this->translate('Save')?></button>
+                <a href="<?=$this->url('admin/default', ['controller' => 'auction'])?>" type="button" class="btn default"><?=$this->translate('Back')?></a>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="<?=$this->getAdminAssetsPath()?>/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script >
+    var handleDatetimePicker = function () {
+
+        $(".form_datetime").datetimepicker({
+            autoclose: true,
+            format: "<?=$this->getProjectData()['options']['dateTimeFormatJs']?>",
+            pickerPosition: "bottom-left"
+        });
+    };
+    handleDatetimePicker()
+</script>
+<?=$this->form()->closeTag(); ?>

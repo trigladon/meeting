@@ -11,15 +11,15 @@ class AdvertisingPlaceForm extends BaseForm
 
     public function init()
     {
-        $this->setAttributes([
-            'method' => 'post',
-            'class' => 'form-horizontal form-bordered'
-        ]);
-
         $this->setInputFilter(new AdvertisingPlaceFormFilter($this->getServiceLocator()))
             ->setHydrator(new DoctrineObject($this->getDoctrineEntityManager()))
             ->setObject(new AdvertisingPlace())
         ;
+
+        $this->setAttributes([
+            'method' => 'post',
+            'class' => 'form-horizontal form-bordered'
+        ]);
 
         $this->add([
             'name' => 'name',
@@ -27,7 +27,7 @@ class AdvertisingPlaceForm extends BaseForm
             'attributes' => [
                 'class' => 'form-control input-large',
                 'maxlength' => 50,
-                'placeholder' => 'Name',
+                'placeholder' => 'Name'
             ],
             'options' => [
                 'label' => 'Name',
@@ -42,7 +42,7 @@ class AdvertisingPlaceForm extends BaseForm
             'type' => 'TextArea',
             'attributes' => [
                 'class' => 'form-control input-large',
-                'placeholder' => 'Description',
+                'placeholder' => 'Description'
             ],
             'options' => [
                 'label' => 'Description',
@@ -60,13 +60,13 @@ class AdvertisingPlaceForm extends BaseForm
                 'data-size' => 'normal',
                 'data-on-text' => 'Yes',
                 'data-off-text' => 'No',
-                'data-on-color' => 'success',
+                'data-on-color' => 'success'
             ],
             'options' => [
                 'label' => 'Is Published',
                 'label_attributes' => [
                     'class' => 'col-sm-3 control-label'
-                ],
+                ]
             ]
         ]);
 

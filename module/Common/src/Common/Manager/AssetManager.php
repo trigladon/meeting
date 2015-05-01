@@ -81,7 +81,7 @@ class AssetManager extends BaseEntityManager
     {
         return [
             User::DELETED_NO => $this->getTranslatorManager()->translate('No'),
-            User::DELETED_YES => $this->getTranslatorManager()->translate('Yes'),
+            User::DELETED_YES => $this->getTranslatorManager()->translate('Yes')
         ];
     }
 
@@ -195,8 +195,8 @@ class AssetManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-asset',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ['controller' => 'asset'],
                 ],
                 'tableId' => 'admin-list-all-patient',
             ],
@@ -241,8 +241,12 @@ class AssetManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-asset',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'asset',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit'
@@ -259,8 +263,12 @@ class AssetManager extends BaseEntityManager
                     ],
                     [
                         'url' => [
-                            'route' => 'admin-asset',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    'name' => 'controller',
+                                    'value' => 'asset',
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete',

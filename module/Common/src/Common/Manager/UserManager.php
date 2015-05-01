@@ -5,6 +5,7 @@ namespace Common\Manager;
 use Common\DAO\LanguageDAO;
 use Common\DAO\UserCodeDAO;
 use Common\DAO\UserDAO;
+use Common\DAO\UserRoleDAO;
 use Common\Entity\Role;
 use Common\Entity\User;
 use Common\Entity\UserCode;
@@ -18,6 +19,8 @@ class UserManager extends BaseEntityManager
 
     protected $userCodeDAO = null;
 
+    protected $userRoleDAO = null;
+
     /**
      * @return UserDAO|null
      */
@@ -30,6 +33,9 @@ class UserManager extends BaseEntityManager
         return $this->userDAO;
     }
 
+    /**
+     * @return UserCodeDAO|null
+     */
     public function getDAOUserCode()
     {
         if ($this->userCodeDAO === null) {
@@ -37,6 +43,18 @@ class UserManager extends BaseEntityManager
         }
 
         return $this->userCodeDAO;
+    }
+
+    /**
+     * @return UserRoleDAO|null
+     */
+    public function getDAOUserRole()
+    {
+        if ($this->userRoleDAO === null) {
+            $this->userRoleDAO = new UserRoleDAO($this->getServiceLocator());
+        }
+
+        return $this->userRoleDAO;
     }
 
 
@@ -155,6 +173,54 @@ class UserManager extends BaseEntityManager
 
     }
 
+    public function registeredUser(User $user, $locale=null)
+    {
+        $languageDAO = new LanguageDAO($this->getServiceLocator());
+
+        $salt = Rand::getString(Bcrypt::MIN_SALT_SIZE);
+        $secure = new Bcrypt(['salt' => $salt]);
+
+        if (!$locale){
+            $language = $languageDAO->findById($this->getServiceLocator()->get('config')['projectData']['defaultLanguageId']);
+        }else{
+            $language = $languageDAO->findByLocale($locale);
+            if ($language){
+                $language = $languageDAO->findById($this->getServiceLocator()->get('config')['projectData']['defaultLanguageId']);
+            }
+        }
+
+        $user->setSalt($salt)
+            ->setPassword($secure->create($user->getPassword()))
+            ->setLanguage($language)
+            ->setType(User::TYPE_USER)
+            ->setDeleted(User::DELETED_NO)
+            ->setStatus(User::STATUS_NOT_CONFIRMED_REGISTRATION)
+            ->addRoles($this->getDAOUserRole()->findById(Role::ROLE_USER_ID));
+
+        $user->setCode($this->createUserCode($user, UserCode::TYPE_REGISTRATION, $user->getCode()));
+
+        $mailManager = new MailManager($this->getServiceLocator());
+
+        $mailManager->sendEmailLayout(
+            $user->getEmail(),
+            $this->translate('Registration in').' '.$mailManager->getProjectConfig()['siteName'],
+            ['user' => $user],
+            'mail/registration',
+            true
+        );
+
+        $this->getDAO()->save($user);
+    }
+
+    public function userActivate(User $user)
+    {
+        $user->setStatus(User::STATUS_ACTIVE);
+        $this->getDAO()->save($user, false);
+        $this->getDAO()->remove($user->getCode());
+    }
+
+
+
     protected function generatePassword($length = 8)
     {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -214,8 +280,8 @@ class UserManager extends BaseEntityManager
             [
                 'type' => TableManager::TYPE_TABLE,
                 'ajaxRoute' => [
-                    'route' => 'admin-user',
-                    'parameters' => [],
+                    'route' => 'admin/default',
+                    'parameters' => ["controller"=>"user"],
                 ],
                 'tableId' => 'admin-list-all-users',
             ],
@@ -270,8 +336,12 @@ class UserManager extends BaseEntityManager
                 TableManager::TYPE_COLUMN_BUTTON => [
                     [
                         'url' => [
-                            'route' => 'admin-user',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    "name" => "controller",
+                                    "value" => "user",
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'edit'
@@ -292,8 +362,12 @@ class UserManager extends BaseEntityManager
                     //                        TableManager::BUTTON_TYPE_FROM_VALUE => [
                     //                            0 => [
                     //                                'url' => [
-                    //                                    'route' => 'admin-user',
+                    //                                    'route' => 'admin/default',
                     //                                    'parameters' => [
+                    //                                        [
+                    //                                            "name" => "controller",
+                    //                                            "value" => "user",
+                    //                                        ],
                     //                                        [
                     //                                            'name' => 'action',
                     //                                            'value' => 'delete',
@@ -315,8 +389,12 @@ class UserManager extends BaseEntityManager
                     //                            ],
                     //                            1 => [
                     //                                'url' => [
-                    //                                    'route' => 'admin-user',
+                    //                                    'route' => 'admin/default',
                     //                                    'parameters' => [
+                    //                                        [
+                    //                                            "name" => "controller",
+                    //                                            "value" => "user",
+                    //                                        ],
                     //                                        [
                     //                                            'name' => 'action',
                     //                                            'value' => 'delete',
@@ -341,8 +419,12 @@ class UserManager extends BaseEntityManager
                     //                    ],
                     [
                         'url' => [
-                            'route' => 'admin-user',
+                            'route' => 'admin/default',
                             'parameters' => [
+                                [
+                                    "name" => "controller",
+                                    "value" => "user",
+                                ],
                                 [
                                     'name' => 'action',
                                     'value' => 'delete',

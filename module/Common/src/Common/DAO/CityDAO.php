@@ -2,6 +2,7 @@
 
 namespace Common\DAO;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\AbstractQuery;
 
 class CityDAO extends BaseDAO

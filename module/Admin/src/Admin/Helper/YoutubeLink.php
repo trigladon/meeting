@@ -2,6 +2,7 @@
 
 namespace Admin\Helper;
 
+use Admin\Form\Validator\YoutubeUrl;
 use Zend\View\Helper\AbstractHelper;
 
 class YoutubeLink extends AbstractHelper
@@ -9,13 +10,18 @@ class YoutubeLink extends AbstractHelper
 
     protected $partLink = 'http://www.youtube.com/embed/';
 
-    public function __invoke($youtubeId){
+    public function __invoke($youtube){
 
-        if (strlen($youtubeId) !== 11){
-            throw new \Exception('Bad youtube id');
+        if (strlen($youtube) === 11){
+            return $this->getPartLink().$youtube;
         }
 
-        return $this->getPartLink().$youtubeId;
+        if (preg_match(YoutubeUrl::YOUTUBE_REGEXP, $youtube, $data)) {
+            return $this->getPartLink().$data[1];
+        }
+
+        return '';
+
     }
 
     /**

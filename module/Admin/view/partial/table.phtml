@@ -2,9 +2,9 @@
 <div class="table-container">
     <table class="table table-striped table-bordered table-hover" id="<?=$tableInfo['options']['id']; ?>">
         <thead>
-        <tr role="row" class="heading">
+        <tr class="heading">
             <?php foreach($tableInfo['columns'] as $aData): ?>
-                <th <?=(isset($aData['percent']) ? 'width="'.$aData['percent'].'" ': '') ?>><?=$aData['name']?></th>
+                <th <?=(isset($aData['percent']) ? 'style="width:'.$aData['percent'].'" ': '') ?>><?=$aData['name']?></th>
             <?php endforeach; ?>
         </tr>
         </thead>

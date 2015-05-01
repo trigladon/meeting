@@ -35,18 +35,18 @@
         <div class="col-sm-4"><?=$this->formElement($newsForm->get('published')->setAttribute('checked', ($newsForm->getObject()->getPublished() === 'yes' ? 'checked' : '')))?></div>
     </div>
     <?php $assets = $newsForm->get('assets'); ?>
-    <?=$this->render('/common/_asset-form_block.phtml', ['assets' => $assets]); ?>
+    <?=$this->render('common/_asset-form_block', ['assets' => $assets]); ?>
     <div class="form-actions">
         <div class="row">
             <div class="col-md-offset-3 col-md-9">
                 <button type="submit" class="btn purple"><i class="fa fa-check"></i> <?=$this->translate('Save')?></button>
-                <a href="<?=$this->url('admin-category')?>" type="button" class="btn default"><?=$this->translate('Back')?></a>
+                <a href="<?=$this->url('admin/default', ['controller' => 'news'])?>" type="button" class="btn default"><?=$this->translate('Back')?></a>
             </div>
         </div>
     </div>
 </div>
 <?=$this->form()->closeTag(); ?>
-<?=$this->render('/common/_asset-add-block.phtml',
+<?=$this->render('common/_asset-add-block',
     ['modalSettings' =>
          [
              'name' => '#basic-confirm',

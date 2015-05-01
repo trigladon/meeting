@@ -11,12 +11,14 @@ class RecoveryPasswordForm extends Form
 	public function __construct(ServiceLocatorInterface $serviceLocatorInterface, $name = __CLASS__)
 	{
 		parent::__construct($name);
+
+		$this->setInputFilter(new Filter\RecoveryPasswordFormFilter($serviceLocatorInterface));
+
 		$this->setAttributes([
 			'method' => 'post',
 			'class' => 'forget-form',
 			'novalidate' => 'novalidate'
 		]);
-		$this->setInputFilter(new Filter\RecoveryPasswordFormFilter($serviceLocatorInterface));
 
 		$this->add([
 			'name' => 'email',

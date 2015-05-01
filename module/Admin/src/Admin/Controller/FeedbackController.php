@@ -4,19 +4,16 @@ namespace Admin\Controller;
 
 use Common\Entity\Feedback;
 use Common\Manager\FeedbackManager;
-use Common\Manager\TableManager;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class FeedbackController extends BaseController
 {
 
-    protected $defaultRoute = 'admin-feedback';
-
     public function allAction()
     {
         $feedbackManager = new FeedbackManager($this->getServiceLocator());
-        $tableManager = new TableManager($this->getServiceLocator(), $feedbackManager);
+        $tableManager = new \Common\Manager\TableManager($this->getServiceLocator(), $feedbackManager);
         $tableManager->setColumnsList($feedbackManager->feedbackTable());
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -31,7 +28,7 @@ class FeedbackController extends BaseController
             'url' => false
         ]);
 
-        return $view->setTemplate('/common/all-page');
+        return $view->setTemplate('common/all-page');
     }
 
     public function readAction()
@@ -39,33 +36,35 @@ class FeedbackController extends BaseController
         try{
             $feedbackManager = new FeedbackManager($this->getServiceLocator());
             $feedback = $feedbackManager->getDAO()->findById($this->params()->fromRoute('id', 0));
+
             if ($feedback === null) {
                 $this->setSuccessMessage($feedbackManager->getTranslatorManager()->translate('Feedback not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute("admin/default", ['controller' => 'feedback']);
             }
+
             /** @var $answerForm \Admin\Form\FeedbackAnswerForm */
             $answerForm = $this->getForm('Admin\Form\FeedbackAnswerForm');
-
             $feedbackData = $feedbackManager->extractFeedback($feedback);
+
             $request = $this->getRequest();
             if ($request->isPost())
             {
+                $answerForm->getObject()->setUser($this->identity())->setFeedback($feedback);
                 $answerForm->setData($request->getPost());
 
                 if ($answerForm->isValid()){
 
-                    $feedbackManager->saveFeedbackAnswer(
-                        $answerForm->getObject()
-                            ->setUser($this->identity())
-                            ->setFeedback($feedback)
-                    );
+                    $feedbackManager->saveFeedbackAnswer($answerForm->getObject());
 
                     if ($feedback->getStatus() !== Feedback::FEEDBACK_ANSWER){
+
                         $feedback->setStatus(Feedback::FEEDBACK_ANSWER);
                         $feedbackManager->saveFeedback($feedback);
+
                     }
+
                     $this->setSuccessMessage($feedbackManager->getTranslatorManager()->getTranslator()->translate('Answer send success'));
-                    return $this->toRoute('admin-feedback', ['action' => 'read', 'id' => $feedback->getId()]);
+                    return $this->toRoute('admin/feedback', ['controller' => 'feedback', 'action' => 'read', 'id' => $feedback->getId()]);
 
                 }
 
@@ -79,11 +78,13 @@ class FeedbackController extends BaseController
             throw new \Exception($e->getMessage());
         }
 
-        return [
+        $viewModel = new ViewModel([
             'feedback' => $feedback,
             'feedbackData' => $feedbackData,
             'answerForm' => $answerForm
-        ];
+        ]);
+
+        return $viewModel->setTemplate('admin/feedback/read');
     }
 
     public function deleteAction()
@@ -93,16 +94,17 @@ class FeedbackController extends BaseController
             $feedback = $feedbackManager->getDAO()->findById($this->params()->fromRoute('id', 0));
             if ($feedback === null) {
                 $this->setSuccessMessage($feedbackManager->getTranslatorManager()->translate('Feedback not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute("admin/default", ['controller' => 'feedback']);
             }
 
             $feedbackManager->getDAO()->remove($feedback);
-            $this->setSuccessMessage($feedbackManager->getTranslatorManager()->translate('Feedback remove success'));
-            return $this->toDefaultRoute();
 
         }catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
+
+        $this->setSuccessMessage($feedbackManager->getTranslatorManager()->translate('Feedback remove success'));
+        return $this->toRoute("admin/default", ['controller' => 'feedback']);
     }
 
     public function answerAction()
@@ -112,16 +114,17 @@ class FeedbackController extends BaseController
             $answer = $feedbackManager->getDAOAnswer()->findByIdJoin($this->params()->fromRoute('idAnswer', 0));
             if ($answer === null) {
                 $this->setSuccessMessage($feedbackManager->getTranslatorManager()->translate('Feedback answer not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute("admin/default", ['controller' => 'feedback']);
             }
         }catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
-        return [
+        $viewModel = new ViewModel([
             'answerData' => $feedbackManager->extractAnswer($answer),
             'feedback' => $answer->getFeedback(),
-        ];
+        ]);
+        return $viewModel->setTemplate('admin/feedback/answer');
     }
 
 

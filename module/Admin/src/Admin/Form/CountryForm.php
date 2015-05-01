@@ -10,13 +10,14 @@ class CountryForm extends BaseForm
 
     public function init()
     {
+
+        $this->setInputFilter(new CountryFormFilter($this->getServiceLocator()))
+            ->setObject(new Country());
+
         $this->setAttributes([
             'method' => 'post',
             'class' => 'form-horizontal form-bordered'
         ]);
-
-        $this->setInputFilter(new CountryFormFilter($this->getServiceLocator()))
-            ->setObject(new Country());
 
         $this->add([
             'name' => 'name',

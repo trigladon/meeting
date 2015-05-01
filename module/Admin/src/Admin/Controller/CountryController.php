@@ -3,19 +3,16 @@
 namespace Admin\Controller;
 
 use Common\Manager\CountryManager;
-use Common\Manager\TableManager;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class CountryController extends BaseController
 {
 
-    protected $defaultRoute = 'admin-country';
-
     public function allAction()
     {
         $countryManager = new CountryManager($this->getServiceLocator());
-        $tableManager = new TableManager($this->getServiceLocator(), $countryManager);
+        $tableManager = new \Common\Manager\TableManager($this->getServiceLocator(), $countryManager);
         $tableManager->setColumnsList($countryManager->countryTable());
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -28,19 +25,19 @@ class CountryController extends BaseController
         $view = new ViewModel([
             'tableInfo' => $tableManager->getTableInfo(),
             'url' => [
-                'route' => 'admin-country',
-                'parameters' => ['action' => 'add']
+                'route' => 'admin/default',
+                'parameters' => ['controller' => 'country', 'action' => 'add']
             ]
         ]);
 
-        return $view->setTemplate('/common/all-page');
+        return $view->setTemplate('common/all-page');
     }
 
 
     public function allCitiesAction()
     {
         $countryManager = new CountryManager($this->getServiceLocator());
-        $tableManager = new TableManager($this->getServiceLocator(), $countryManager);
+        $tableManager = new \Common\Manager\TableManager($this->getServiceLocator(), $countryManager);
         $tableManager->setColumnsList($countryManager->citiesTable());
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -53,18 +50,18 @@ class CountryController extends BaseController
         $view = new ViewModel([
             'tableInfo' => $tableManager->getTableInfo(),
             'url' => [
-                'route' => 'admin-city',
-                'parameters' => ['action' => 'add-city']
+                'route' => 'admin/default',
+                'parameters' => ['controller' => 'city', 'action' => 'add-city']
             ]
         ]);
 
-        return $view->setTemplate('/common/all-page');
+        return $view->setTemplate('common/all-page');
     }
 
     public function addAction()
     {
         /** @var $countryForm \Admin\Form\CountryForm */
-        $countryForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\CountryForm');
+        $countryForm = $this->getForm('Admin\Form\CountryForm');
 
         $request = $this->getRequest();
 
@@ -79,7 +76,7 @@ class CountryController extends BaseController
                     $countryManager->saveCountry($countryForm->getObject());
 
                     $this->setSuccessMessage($countryManager->getTranslatorManager()->translate('Country added success'));
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', ['controller' => 'country']);
                 }
 
             }catch (\Exception $e)
@@ -90,11 +87,11 @@ class CountryController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/country/_countryForm.phtml',
+            'template' => 'admin/country/_countryForm',
             'parameters' => ['countryForm' => $countryForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
 
     }
 
@@ -103,14 +100,14 @@ class CountryController extends BaseController
         try{
             $countryManager = new CountryManager($this->getServiceLocator());
             $country = $countryManager->getDAO()->findById($this->params()->fromRoute('id', 0));
+
             if ($country === null) {
                 $this->setErrorMessage($countryManager->getTranslatorManager()->translate('Country not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => 'country']);
             }
 
             /** @var $countryForm \Admin\Form\CountryForm */
-            $countryForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\CountryForm');
-            $countryForm->bind($country);
+            $countryForm = $this->getForm('Admin\Form\CountryForm')->bind($country);
             $request = $this->getRequest();
 
             if ($request->isPost())
@@ -123,7 +120,7 @@ class CountryController extends BaseController
                     $countryManager->saveCountry($countryForm->getObject());
 
                     $this->setSuccessMessage($countryManager->getTranslatorManager()->translate('Country save success'));
-                    return $this->toDefaultRoute();
+                    return $this->toRoute('admin/default', ['controller' => 'country']);
                 }
             }
 
@@ -133,11 +130,11 @@ class CountryController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/country/_countryForm.phtml',
+            'template' => 'admin/country/_countryForm',
             'parameters' => ['countryForm' => $countryForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
 
     }
 
@@ -148,24 +145,25 @@ class CountryController extends BaseController
             $country = $countryManager->getDAO()->findById($this->params()->fromRoute('id', 0));
             if ($country === null) {
                 $this->setErrorMessage($countryManager->getTranslatorManager()->translate('Country not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => 'country']);
             }
 
             $countryManager->getDAO()->remove($country);
+
         }catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
 
 
         $this->setSuccessMessage($countryManager->getTranslatorManager()->translate('Page delete success'));
-        return $this->toDefaultRoute();
+        return $this->toRoute('admin/default', ['controller' => 'country']);
 
     }
 
     public function addCityAction()
     {
         /** @var $cityForm \Admin\Form\CityForm */
-        $cityForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\CityForm');
+        $cityForm = $this->getForm('Admin\Form\CityForm');
 
         $request = $this->getRequest();
 
@@ -180,7 +178,7 @@ class CountryController extends BaseController
                     $countryManager->saveCity($cityForm->getObject());
 
                     $this->setSuccessMessage($countryManager->getTranslatorManager()->translate('City added success'));
-                    return $this->toRoute('admin-city');
+                    return $this->toRoute('admin/default', ['controller' => 'city']);
                 }
 
             }catch (\Exception $e) {
@@ -190,11 +188,11 @@ class CountryController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/country/_cityForm.phtml',
+            'template' => 'admin/country/_cityForm',
             'parameters' => ['cityForm' => $cityForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
     }
 
     public function editCityAction()
@@ -206,12 +204,11 @@ class CountryController extends BaseController
 
             if ($city === null) {
                 $this->setErrorMessage($countryManager->getTranslatorManager()->translate('City not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => 'country']);
             }
 
             /** @var $cityForm \Admin\Form\CityForm */
-            $cityForm = $this->getServiceLocator()->get('FormElementManager')->get('Admin\Form\CityForm');
-            $cityForm->bind($city);
+            $cityForm = $this->getForm('Admin\Form\CityForm')->bind($city);
 
             $request = $this->getRequest();
 
@@ -226,7 +223,7 @@ class CountryController extends BaseController
                     $countryManager->saveCity($cityForm->getObject());
 
                     $this->setSuccessMessage($countryManager->getTranslatorManager()->translate('City saved success'));
-                    return $this->toRoute('admin-city');
+                    return $this->toRoute('admin/default', ['controller' => 'city']);
                 }
 
             }
@@ -236,11 +233,11 @@ class CountryController extends BaseController
         }
 
         $view = new ViewModel([
-            'template' => '/admin/country/_cityForm.phtml',
+            'template' => 'admin/country/_cityForm',
             'parameters' => ['cityForm' => $cityForm]
         ]);
 
-        return $view->setTemplate('/common/add-edit-page');
+        return $view->setTemplate('common/add-edit-page');
     }
 
     public function deleteCityAction()
@@ -252,7 +249,7 @@ class CountryController extends BaseController
 
             if ($city === null) {
                 $this->setErrorMessage($countryManager->getTranslatorManager()->translate('City not found'));
-                return $this->toDefaultRoute();
+                return $this->toRoute('admin/default', ['controller' => 'city']);
             }
 
             $countryManager->getDAOCity()->remove($city);
@@ -262,7 +259,7 @@ class CountryController extends BaseController
         }
 
         $this->setSuccessMessage($countryManager->getTranslatorManager()->translate('City deleted success'));
-        return $this->toRoute('admin-city');
+        return $this->toRoute('admin/default', ['controller' => 'city']);
 
     }
 

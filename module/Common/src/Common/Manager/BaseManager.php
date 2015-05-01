@@ -65,4 +65,9 @@ class BaseManager
     }
 
 
+    public function translate($text, $textDomain = 'default', $locale = null)
+    {
+        return $this->getTranslatorManager()->translate($text, $textDomain, $locale);
+    }
+
 }

@@ -9,6 +9,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class BaseInputFilter extends InputFilter implements ServiceLocatorAwareInterface
 {
 
+    const CSRF_TIMEOUT = 1800;
+
     protected $serviceLocator = null;
 
     public function __construct(ServiceLocatorInterface $serviceLocator)

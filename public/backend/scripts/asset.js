@@ -7,7 +7,7 @@ var AssetPage = function(){
         $('input[name=type]').click(function(){
             view($('input[name=type]:checked').val());
         });
-    }
+    };
 
     var viewImageRows = function(){
         $('input[type=file]').closest('.form-group').show();
@@ -55,8 +55,6 @@ var AssetAdd = function()
             allowfullscreen: true
         }
     };
-
-
 
     var checkLink = function() {
 

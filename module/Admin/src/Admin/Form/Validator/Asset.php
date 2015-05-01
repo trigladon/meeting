@@ -13,7 +13,7 @@ class Asset extends AbstractValidator
 
     protected $messageTemplates = [
         self::ERROR_IMAGE_EMPTY => 'File not upload!',
-        self::ERROR_URL_EMPTY => 'Url is empty!',
+        self::ERROR_URL_EMPTY => 'Url is empty!'
     ];
 
 
@@ -24,12 +24,14 @@ class Asset extends AbstractValidator
             $this->error(self::ERROR_IMAGE_EMPTY);
             return false;
 
-        } else
-        if ($value === AssetEntity::TYPE_VIDEO && !trim($context['url'])) {
+        } else {
+            if ($value === AssetEntity::TYPE_VIDEO && !trim($context['url'])) {
 
-            $this->error(self::ERROR_URL_EMPTY);
-            return false;
+                $this->error(self::ERROR_URL_EMPTY);
+                return false;
+            }
         }
+
 
         return true;
     }

@@ -3,7 +3,6 @@
 namespace Common\Manager;
 
 use Common\Entity\User;
-use Zend\Mail\Protocol\AbstractProtocol;
 use Zend\Mail\Protocol\Smtp\Auth;
 use Zend\Mail\Transport\Smtp as SmtpTransport;
 use Zend\Mail\Transport\SmtpOptions;
@@ -102,7 +101,8 @@ class MailManager extends BaseManager
 
     protected function getContent( $template, $variables, $useLayout = true )
     {
-        $viewModel = new ViewModel( $variables, [ 'template' => $template ] );
+        $viewModel = new ViewModel( $variables );
+        $viewModel->setTemplate($template);
         $viewRenderer = $this->getServiceLocator()->get( 'viewrenderer' );
         $content = $viewRenderer->render( $viewModel->setTerminal( true ) );
 
@@ -130,7 +130,7 @@ class MailManager extends BaseManager
 
     protected function sendTo($to)
     {
-        if (empty($to)) {
+        if (!$to) {
             throw new \Exception('Recipient is not found');
         }
 
@@ -141,12 +141,13 @@ class MailManager extends BaseManager
 
         if (is_array($to)) {
             $result[ 'user' ] = $to;
-        } else
+        } else {
             if ($to instanceof User) {
                 $result = ['user' => ['email' => $to->getEmail(), 'name' => $to->getFullName()], 'language' => [] ];
             } else {
                 $result['user']['email'] = $to;
             }
+        }
 
         return $result;
     }
