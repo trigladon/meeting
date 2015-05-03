@@ -92,6 +92,27 @@ return array(
                     )
                 )
             ),
+            'recovery-password' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/recovery-password',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action' => 'recovery-password',
+                    )
+                )
+            ),
+            'recovery-password-new' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/recovery-password/:code',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action' => 'recovery-password-new',
+                        'code' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    )
+                )
+            ),
             'sign-out' => array(
                 'type' => 'Literal',
                 'options' => array(

@@ -72,7 +72,13 @@ class UserManager extends BaseEntityManager
         $userCode = $this->createUserCode($user, UserCode::TYPE_RECOVERY, $code);
         $this->getDAOUserCode()->save($userCode);
 
-        $mailManager->sendEmailContent($user, 'Subject', '<h1>content</h1>');
+        $mailManager->sendEmailLayout(
+            $user->getEmail(),
+            $mailManager->getProjectConfig()['siteName'].': '.$this->translate('Recovery password'),
+            ['user' => $user, 'code' => $userCode],
+            'mails/recoveryPassword',
+            true
+        );
 
         return true;
     }
@@ -82,6 +88,7 @@ class UserManager extends BaseEntityManager
         if (!($code instanceof UserCode))
         {
             $code = new UserCode();
+            $code->setUser($user);
         }
 
         $code->setType($type);
@@ -177,9 +184,6 @@ class UserManager extends BaseEntityManager
     {
         $languageDAO = new LanguageDAO($this->getServiceLocator());
 
-        $salt = Rand::getString(Bcrypt::MIN_SALT_SIZE);
-        $secure = new Bcrypt(['salt' => $salt]);
-
         if (!$locale){
             $language = $languageDAO->findById($this->getServiceLocator()->get('config')['projectData']['defaultLanguageId']);
         }else{
@@ -189,8 +193,10 @@ class UserManager extends BaseEntityManager
             }
         }
 
+        list($password, $salt) = $this->getHashPassword($user->getPassword());
+
         $user->setSalt($salt)
-            ->setPassword($secure->create($user->getPassword()))
+            ->setPassword($password)
             ->setLanguage($language)
             ->setType(User::TYPE_USER)
             ->setDeleted(User::DELETED_NO)
@@ -205,7 +211,7 @@ class UserManager extends BaseEntityManager
             $user->getEmail(),
             $this->translate('Registration in').' '.$mailManager->getProjectConfig()['siteName'],
             ['user' => $user],
-            'mail/registration',
+            'mails/registration',
             true
         );
 
@@ -219,7 +225,23 @@ class UserManager extends BaseEntityManager
         $this->getDAO()->remove($user->getCode());
     }
 
+    public function newPassword(User $user, $password)
+    {
+        list($hashPassword, $salt) = $this->getHashPassword($password, $user->getSalt());
+        $user->setPassword($hashPassword);
+        $this->getDAO()->save($user, false);
+        $this->getDAO()->remove($user->getCode());
+    }
 
+    public function getHashPassword($password, $salt=null)
+    {
+        if (!$salt){
+            $salt = Rand::getString(Bcrypt::MIN_SALT_SIZE);
+        }
+        $secure = new Bcrypt(['salt' => $salt]);
+
+        return [$secure->create($password), $salt];
+    }
 
     protected function generatePassword($length = 8)
     {

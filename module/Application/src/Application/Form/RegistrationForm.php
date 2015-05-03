@@ -4,7 +4,6 @@ namespace Application\Form;
 
 use Common\Entity\User;
 use DoctrineModule\Stdlib\Hydrator\DoctrineObject;
-use Zend\Form\Element\Csrf;
 
 
 class RegistrationForm extends BaseForm

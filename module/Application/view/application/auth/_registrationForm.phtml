@@ -4,7 +4,7 @@ $form->prepare();
 ?>
 <?php echo $this->form()->openTag($form); ?>
 <?php echo $this->formElementErrors($form); ?>
-<?php echo $this->formRow($form->get('csrf'));?>
+<?php echo $this->formHidden($form->get('csrf'));?>
 <div class="form-group">
     <?php echo $this->formLabel($form->get('firstName')); ?>
     <?php echo $this->formInput($form->get('firstName')); ?>

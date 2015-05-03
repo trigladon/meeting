@@ -32,6 +32,9 @@ $loginForm->prepare();
         <?php echo $this->formInput($loginForm->get('remember')); ?>
     </div>
     <div class="form-group">
+        <a href="<?=$this->url('recovery-password')?>"><?=$this->translate('Forgot your password?')?></a>
+    </div>
+    <div class="form-group">
         <?php echo $this->formSubmit($loginForm->get('submit')); ?>
     </div>
 <?php echo $this->form()->closeTag(); ?>

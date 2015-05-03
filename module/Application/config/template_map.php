@@ -13,14 +13,22 @@ return [
 
     'application/auth/_loginForm'   => __DIR__ . '/../view/application/auth/_loginForm.phtml',
     'application/auth/login'    => __DIR__ . '/../view/application/auth/login.phtml',
-
     'application/auth/_registrationForm'   => __DIR__ . '/../view/application/auth/_registrationForm.phtml',
     'application/auth/registration'    => __DIR__ . '/../view/application/auth/registration.phtml',
     'application/auth/registration-success'    => __DIR__ . '/../view/application/auth/registration-success.phtml',
+    'application/auth/recovery-password'    => __DIR__ . '/../view/application/auth/recovery-password.phtml',
+    'application/auth/new-password'    => __DIR__ . '/../view/application/auth/new-password.phtml',
+    'application/auth/_newPasswordForm'    => __DIR__ . '/../view/application/auth/_newPasswordForm.phtml',
+    'application/auth/recovery-password-send'    => __DIR__ . '/../view/application/auth/recovery-password-send.phtml',
+    'application/auth/_recoveryPasswordForm'   => __DIR__ . '/../view/application/auth/_recoveryPasswordForm.phtml',
+    'application/auth/new-password-success'   => __DIR__ . '/../view/application/auth/new-password-success.phtml',
 
     //mail template
     'layout/email'           => __DIR__ . '/../view/layout/mail/layout.phtml',
 
-    'mail/registration' => __DIR__ . '/../view/mails/registration.phtml'
+    'mails/registration' => __DIR__ . '/../view/mails/registration.phtml',
+    'mails/recoveryPassword' => __DIR__ . '/../view/mails/recovery-password.phtml',
 
 ];
+
+

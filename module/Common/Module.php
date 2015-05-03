@@ -221,7 +221,13 @@ class Module implements Feature\FormElementProviderInterface, Feature\BootstrapL
                 //form
                 'Application\Form\RegistrationForm' => function($sm) {
                     return new \Application\Form\RegistrationForm($sm->getServiceLocator());
-                }
+                },
+                'Application\Form\RecoveryPasswordForm' => function($sm) {
+                    return new \Application\Form\RecoveryPasswordForm($sm->getServiceLocator());
+                },
+                'Application\Form\NewPasswordForm' => function($sm) {
+                    return new \Application\Form\NewPasswordForm($sm->getServiceLocator());
+                },
             )
         ];
     }
