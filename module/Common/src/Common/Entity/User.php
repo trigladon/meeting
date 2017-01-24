@@ -13,7 +13,7 @@ use Rbac\Role\RoleInterface;
  *
  * TODO add profile image
  *
- * @ORM\Table(name="users")
+ * @ORM\Table(name="user")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */

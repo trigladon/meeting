@@ -2,25 +2,10 @@
 
 namespace Admin;
 
-use Zend\ModuleManager\ModuleManager;
-use Zend\Mvc\MvcEvent;
 
 class Module
 {
 
-    public function init(ModuleManager $moduleManager)
-    {
-        $moduleManager->getEventManager()->getSharedManager()->attach('Admin', MvcEvent::EVENT_DISPATCH, function(MvcEvent $e){
-
-            $controller = $e->getTarget();
-            if ($controller instanceof \Admin\Controller\AuthController){
-                $controller->layout('layout/admin-login');
-            } else {
-                $controller->layout('layout/admin');
-            }
-
-        }, 100);
-    }
 
     public function getConfig()
     {

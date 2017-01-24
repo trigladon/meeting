@@ -125,6 +125,10 @@ class BaseController extends AbstractActionController
         return $this->getTranslator()->translate($message, $textDomain, $locale);
     }
 
+    /**
+     * @param $name
+     * @return \Application\Form\BaseForm
+     */
     protected function getForm($name)
     {
         return $this->getServiceLocator()->get('FormElementManager')->get($name);

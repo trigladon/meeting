@@ -1,0 +1,31 @@
+<?php
+/** @var $form \Application\Form\ProfileForm */
+$form->prepare();
+?>
+<?php echo $this->form()->openTag($form); ?>
+<?php echo $this->formElementErrors($form); ?>
+<?php echo $this->formHidden($form->get('csrf'));?>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('firstName')); ?>
+        <?php echo $this->formInput($form->get('firstName')); ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('lastName')); ?>
+        <?php echo $this->formInput($form->get('lastName')); ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('middleName')); ?>
+        <?php echo $this->formInput($form->get('middleName')); ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('birthday')); ?>
+        <?php echo $this->formInput($form->get('birthday')); ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formLabel($form->get('about')); ?>
+        <?php echo $this->formTextarea($form->get('about')); ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+    </div>
+<?php echo $this->form()->closeTag(); ?>

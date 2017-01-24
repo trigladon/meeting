@@ -7,7 +7,7 @@ use \Doctrine\ORM\Mapping as ORM;
 /**
  * Class UserBanned
  *
- * @ORM\Table(name="users_banned")
+ * @ORM\Table(name="user_banned")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  */

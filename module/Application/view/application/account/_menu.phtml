@@ -1,0 +1,23 @@
+<div class="sidebar">
+    <div class="widget">
+        <h5><?=$this->translate('Account')?></h5>
+        <ul class="link-list">
+            <li><a href="<?=$this->url('account-settings')?>"><?=$this->translate('Settings')?></a><a href="<?=$this->url('account-settings-edit')?>">(<?=$this->translate('Edit')?>)</a></li>
+            <li><a href="<?=$this->url('account-notifications')?>"><?=$this->translate('Notifications')?></a></li>
+        </ul>
+    </div>
+    <div class="widget">
+        <h5><?=$this->translate('Payments')?></h5>
+        <ul class="link-list">
+            <li><a href="<?=$this->url('account-payments-for-pay')?>"><?=$this->translate('For pay')?></a></li>
+            <li><a href="<?=$this->url('account-payments-history')?>"><?=$this->translate('History')?></a></li>
+        </ul>
+    </div>
+    <div class="widget">
+        <h5><?=$this->translate('Lots')?></h5>
+        <ul class="link-list">
+            <li><a href="<?=$this->url('account-lots-current')?>"><?=$this->translate('Current')?></a></li>
+            <li><a href="<?=$this->url('account-lots-history')?>"><?=$this->translate('History')?></a></li>
+        </ul>
+    </div>
+</div>

@@ -2,6 +2,7 @@
 
 return [
     'layout/layout'           => __DIR__ . '/../view/layout/layout-home.phtml',
+    'layout/home-identity'           => __DIR__ . '/../view/layout/layout-identity-home.phtml',
     'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
     'application/index/about' => __DIR__ . '/../view/application/index/about.phtml',
     'application/index/contacts' => __DIR__ . '/../view/application/index/contacts.phtml',
@@ -23,6 +24,18 @@ return [
     'application/auth/_recoveryPasswordForm'   => __DIR__ . '/../view/application/auth/_recoveryPasswordForm.phtml',
     'application/auth/new-password-success'   => __DIR__ . '/../view/application/auth/new-password-success.phtml',
 
+    'application/account/settings'   => __DIR__ . '/../view/application/account/settings.phtml',
+    'application/account/notifications'   => __DIR__ . '/../view/application/account/notifications.phtml',
+    'application/account/settings-edit'   => __DIR__ . '/../view/application/account/settings-edit.phtml',
+    'application/account/_profileForm'   => __DIR__ . '/../view/application/account/_profileForm.phtml',
+    'application/account/payments/for-pay'   => __DIR__ . '/../view/application/account/payments/for-pay.phtml',
+    'application/account/payments/history'   => __DIR__ . '/../view/application/account/payments/history.phtml',
+    'application/account/lots/current'   => __DIR__ . '/../view/application/account/lots/current.phtml',
+    'application/account/lots/history'   => __DIR__ . '/../view/application/account/lots/history.phtml',
+    'application/account/_menu'   => __DIR__ . '/../view/application/account/_menu.phtml',
+
+    'application/search/index'   => __DIR__ . '/../view/application/search/index.phtml',
+
     //mail template
     'layout/email'           => __DIR__ . '/../view/layout/mail/layout.phtml',
 
@@ -30,5 +43,6 @@ return [
     'mails/recoveryPassword' => __DIR__ . '/../view/mails/recovery-password.phtml',
 
 ];
+
 
 

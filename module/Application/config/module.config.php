@@ -5,6 +5,8 @@ return array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Auth' => 'Application\Controller\AuthController',
+            'Application\Controller\Account' => 'Application\Controller\AccountController',
+            'Application\Controller\Search' => 'Application\Controller\SearchController',
         ),
     ),
 
@@ -123,6 +125,93 @@ return array(
                     )
                 )
             ),
+            'account-settings' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/account/settings',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Account',
+                        'action' => 'settings'
+                    ]
+                ]
+            ],
+
+            'account-settings-edit' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/account/settings/edit',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Account',
+                        'action' => 'settings-edit'
+                    ]
+                ]
+            ],
+
+            'account-notifications' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/account/notifications',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Account',
+                        'action' => 'notifications'
+                    ]
+                ]
+            ],
+
+            'account-payments-for-pay' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/account/payments/for-pay',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Account',
+                        'action' => 'for-pay'
+                    ]
+                ]
+            ],
+
+            'account-payments-history' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/account/payments/history',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Account',
+                        'action' => 'payments-history'
+                    ]
+                ]
+            ],
+
+            'account-lots-current' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/account/lots/current',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Account',
+                        'action' => 'lots-current'
+                    ]
+                ]
+            ],
+
+            'account-lots-history' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/account/lots/history',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Account',
+                        'action' => 'lots-history'
+                    ]
+                ]
+            ],
+
+            'search' => [
+                'type' => 'literal',
+                'options' => [
+                    'route' => '/search',
+                    'defaults' => [
+                        'controller' => 'Application\Controller\Search',
+                        'action' => 'index'
+                    ]
+                ]
+            ],
 
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new

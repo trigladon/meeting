@@ -1,5 +1,5 @@
 <?php
-
+use Zend\Cache\StorageFactory;
 
 return array(
 

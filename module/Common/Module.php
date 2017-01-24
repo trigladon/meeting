@@ -6,9 +6,20 @@ use Zend\Mvc\MvcEvent;
 use Zend\Session\Container;
 use Zend\ModuleManager\Feature;
 use Zend\EventManager\EventInterface;
+use Zend\ModuleManager\ModuleManager;
 
 class Module implements Feature\FormElementProviderInterface, Feature\BootstrapListenerInterface
 {
+
+    public function init(ModuleManager $moduleManager)
+    {
+        $moduleManager->getEventManager()->getSharedManager()
+            ->attach('Admin', MvcEvent::EVENT_DISPATCH, function(MvcEvent $e){$this->dispatcherAdmin($e);}, 100);
+
+        $moduleManager->getEventManager()->getSharedManager()
+            ->attach('Application', MvcEvent::EVENT_DISPATCH, function(MvcEvent $e) {$this->dispatcherApplication($e);}, 100);
+
+    }
 
     public function onBootstrap(EventInterface $e)
     {
@@ -228,6 +239,9 @@ class Module implements Feature\FormElementProviderInterface, Feature\BootstrapL
                 'Application\Form\NewPasswordForm' => function($sm) {
                     return new \Application\Form\NewPasswordForm($sm->getServiceLocator());
                 },
+                'Application\Form\ProfileForm' => function($sm) {
+                    return new \Application\Form\ProfileForm($sm->getServiceLocator());
+                },
             )
         ];
     }
@@ -252,6 +266,29 @@ class Module implements Feature\FormElementProviderInterface, Feature\BootstrapL
         Container::setDefaultManager(
           $e->getApplication()->getServiceManager()->get('Zend\Session\SessionManager')
         );
+    }
+
+    private function dispatcherAdmin(MvcEvent $e)
+    {
+        $controller = $e->getTarget();
+        if ($controller instanceof \Admin\Controller\AuthController){
+            $controller->layout('layout/admin-login');
+        } else {
+            $controller->layout('layout/admin');
+        }
+    }
+
+    private function dispatcherApplication(MvcEvent $e)
+    {
+        $controller = $e->getTarget();
+
+//        if ($controller instanceof \Application\Controller\IndexController){
+//            /** @var $authService \Zend\Authentication\AuthenticationService */
+            $authService = $e->getApplication()->getServiceManager()->get('Zend\Authentication\AuthenticationService');
+            if ($authService->hasIdentity()) {
+                $controller->layout('layout/home-identity');
+            }
+//        }
     }
 
 }

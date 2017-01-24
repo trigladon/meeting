@@ -2,17 +2,13 @@
 
 namespace Application\Form;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Form\Form;
-
-class RecoveryPasswordForm extends Form
+class RecoveryPasswordForm extends BaseForm
 {
 
-    public function __construct(ServiceLocatorInterface $serviceLocatorInterface, $name = __CLASS__)
+    public function init()
     {
-        parent::__construct($name);
 
-        $this->setInputFilter(new Filter\RecoveryPasswordFormFilter($serviceLocatorInterface));
+        $this->setInputFilter(new Filter\RecoveryPasswordFormFilter($this->getServiceLocator()));
 
         $this->setAttributes([
             'method' => 'post',

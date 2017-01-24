@@ -26,10 +26,10 @@
                             </a>
                             <ul class="menu">
                                 <?php $route = $this->getRouteName();?>
-                                <li><a <?=($route==="home"?"class='active'":"")?> href="<?=$this->url('home')?>"><?=$this->translate('Home')?></a></li>
-                                <li><a <?=($route==="about"?"class='active'":"")?> href="<?=$this->url("about")?>"><?=$this->translate('News')?></a></li>
-                                <li><a <?=($route==="about"?"class='active'":"")?> href="<?=$this->url("about")?>"><?=$this->translate('About')?></a></li>
-                                <li><a <?=($route==="contacts"?"class='active'":"")?> href="<?=$this->url("contacts")?>"><?=$this->translate('Contact')?></a></li>
+                                <li><a <?=($route==="home"?"class='active'":"")?> href="<?=$this->url('home')?>"><?=$this->translate('My lots')?></a></li>
+                                <li><a <?=($route==="search"?"class='active'":"")?> href="<?=$this->url("search")?>"><?=$this->translate('Search')?></a></li>
+                                <li><a <?=($route==="search"?"class='active'":"")?> href="<?=$this->url("account-settings")?>"><?=$this->translate('Settings')?></a></li>
+
                                 <?php if (!$this->getAuthService()->hasIdentity()): ?>
                                     <li><a <?=($route==="sign-in"?"class='active'":"")?> href="<?=$this->url("sign-in")?>"><?=$this->translate('Sign in')?></a></li>
                                     <li><a <?=(in_array($route, ['sign-up', 'sign-up-success'])?"class='active'":"")?> href="<?=$this->url("sign-up")?>"><?=$this->translate('Sign up')?></a></li>

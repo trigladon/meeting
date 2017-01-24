@@ -21,7 +21,7 @@ class AuthController extends BaseController
         $errorMessage = null;
         $loginForm = null;
 
-	    try{
+//	    try{
 	        if ($authManager->hasIdentity()){
 	            $this->setErrorMessage($translatorManager->translate('You are logged!'));
 	            return $this->toHome();
@@ -55,9 +55,10 @@ class AuthController extends BaseController
 					$loginForm->updateSessionLoginContainer();
 				}
 	        }
-	    }catch (\Exception $e){
-//            throw new \Exception($e->getMessage());
-	    }
+//	    }catch (\Exception $e){
+//			var_dump($e->getMessage());
+////            throw new \Exception($e->getMessage());
+//	    }
 		$viewModel = new ViewModel([
 			'loginForm' => $loginForm,
             'errorMessage' => $errorMessage,
